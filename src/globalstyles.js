@@ -5,9 +5,8 @@ export const colors = {
   white: '#ffffff',
   black: '#000000',
   yellow: '#FDF60A',
-  button: "#FFC261",
+  button: "#72A3D4",
   black: "#363636",
-  button: '#B6DAFC',
   grey:'#545454',
   lightblue: '#92C5C6'
 };
@@ -47,6 +46,11 @@ const style = StyleSheet.create({
     fontSize: 18,
     color:"#545454"
   },
+  nunitomateri: {
+    fontFamily: "NunitoSans-Regular",
+    fontSize: 16,
+    color:"#545454"
+  },
   nunitosans: {
     fontFamily: "NunitoSans-Regular",
     fontSize: 16,
@@ -58,7 +62,7 @@ const style = StyleSheet.create({
     color:"gray"
   },
   button: {
-    backgroundColor: "#92B1CD",
+    backgroundColor: "#72A3D4",
     borderRadius: 5,
   },
   content: {

@@ -10,6 +10,8 @@ import styles from './globalstyles';
 
 import Mainpage from './containers/pasien/mainpage';
 import Login from './containers/login';
+import Materiedukasi from './containers/pasien/materiedukasi';
+import Detailmateri from './containers/pasien/detailmateri';
 
 
 const Stack = createStackNavigator();
@@ -30,6 +32,16 @@ function Navigation() {
           name="Login"
           component={Login}
           options={{ headerShown:false }}
+        />
+        <Stack.Screen
+          name="Materiedukasi"
+          component={Materiedukasi}
+          options={{ headerTitle:"Materi Edukasi" }}
+        />
+        <Stack.Screen
+          name="Detailmateri"
+          component={Detailmateri}
+          options={{ headerTitle:"Materi Edukasi" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

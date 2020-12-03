@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
-
-import { colors } from '../globalstyles';
-
-import style from '../globalstyles';
+import { colors } from '../../globalstyles';
+import style from '../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-function Login(props) {
+import Ionicons from 'react-native-vector-icons/Ionicons';
+function Materiedukasi(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -30,7 +29,6 @@ function Login(props) {
     }
 
     const login = () => {
-        props.navigation.navigate("Mainpage")
         /*
         setspinner(true)
         fetch(global.url + '/login', {
@@ -76,6 +74,7 @@ function Login(props) {
             */
     };
     const [spinner, setspinner] = useState(false)
+    const [kosong, setkosong] = useState(false)
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -84,51 +83,37 @@ function Login(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-            <Modal isVisible={isModalVisible}
-                onBackdropPress={toggleModal}
-                onBackButtonPress={toggleModal}>
-                <View style={style.content}>
-                    <View>
-                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal}>
-                            <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
-                        </TouchableOpacity>
-                        <View style={{ alignItems: "center" }}>
-                            <Image
-                                source={require("../assets/image/exit.png")}
-                                style={{ width: 50, height: 50 }}
-                                resizeMode="contain"
-                            />
-                        </View>
-                        <Text style={[style.nunitosans, { textAlign: "center", marginTop: 15 }]}>{isipesan}</Text>
-                    </View>
-
-                </View>
-            </Modal>
-
+            
             <View style={{ flex: 1 }}>
-                <ScrollView>
-                    <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 50 }}>
-                        <Image
-                            source={require("../assets/image/baby.png")}
-                            style={{ width: "50%", height: DEVICE_WIDTH * 0.40 }}
-                            resizeMode="contain"
-                        />
+                <View style={{ flex: 1, padding: 20 }}>
+                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0,backgroundColor:"#F3F4F6",marginBottom:15 }]}>
+                        <TextInput onChangeText={setemail} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                        <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>
-                    <View style={{ flex: 1, marginTop: 10, padding: 22 }}>
-                        <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18 }]}>Aplikasi Berat Badan Lahir Rendah</Text>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
-                        <TextInput onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
-                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                    </View>
-                </ScrollView>
-                <View style={{ padding: 22 }}>
-                    <Button title="Masuk" onPress={login} buttonStyle={style.button} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    <ScrollView>
+                        <View style={{ padding: 3 }}>
+                     
+                                    <View>
+
+                                        <TouchableOpacity style={[style.card, { marginBottom: 15, flexDirection: "row",backgroundColor:colors.button }]} onPress={()=>props.navigation.navigate("Detailmateri")}>
+                                            <Image
+                                                source={require("../../assets/image/empty.png")}
+                                                style={{ width: 35, height: 35 }}
+                                                resizeMode="contain"
+                                            />
+                                            <View style={{ marginLeft: 15,justifyContent:"center" }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 14,color:"white" }]}>Cara Memandikan Bayi</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        
+                            
+                                    </View>
+                        </View>
+                    </ScrollView>
                 </View>
             </View>
-
         </View>
     );
 };
 
-export default Login;
+export default Materiedukasi;
