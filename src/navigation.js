@@ -8,10 +8,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import styles from './globalstyles';
 
 
-import Mainpage from './containers/pasien/mainpage';
+import Mainpage from './containers/nurse/mainpage';
 import Login from './containers/login';
-import Materiedukasi from './containers/pasien/materiedukasi';
-import Detailmateri from './containers/pasien/detailmateri';
+import Materiedukasi from './containers/nurse/materiedukasi';
+import Detailmateri from './containers/nurse/detailmateri';
 
 
 const Stack = createStackNavigator();
