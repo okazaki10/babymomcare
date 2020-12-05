@@ -13,9 +13,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 function Materiedukasi(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
-    const [isipesan, setisipesan] = useState("")
-    const [email, setemail] = useState("")
-    const [password, setpassword] = useState("")
+
+    const [cari, setcari] = useState("")
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -87,7 +87,7 @@ function Materiedukasi(props) {
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0,backgroundColor:"#F3F4F6",marginBottom:15 }]}>
-                        <TextInput onChangeText={setemail} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                        <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>
                     <ScrollView>

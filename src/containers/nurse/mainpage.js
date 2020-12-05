@@ -16,8 +16,8 @@ function Mainpage(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [email, setemail] = useState("")
-    const [password, setpassword] = useState("")
+    const [cari, setcari] = useState("")
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -102,7 +102,7 @@ function Mainpage(props) {
                     <View style={{ flex: 1, padding: 20 }}>
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3,flex:0 }]}>
                             <Ionicons name={'search-outline'} size={24} color={colors.button} />
-                            <TextInput onChangeText={setemail} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                            <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         </View>
                         <ScrollView>
                             <View style={{ padding: 3 }}>

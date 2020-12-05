@@ -12,6 +12,7 @@ import Mainpage from './containers/nurse/mainpage';
 import Login from './containers/login';
 import Materiedukasi from './containers/nurse/materiedukasi';
 import Detailmateri from './containers/nurse/detailmateri';
+import Daftarpasien from './containers/nurse/daftarpasien';
 
 
 const Stack = createStackNavigator();
@@ -42,6 +43,11 @@ function Navigation() {
           name="Detailmateri"
           component={Detailmateri}
           options={{ headerTitle:"Materi Edukasi" }}
+        />
+         <Stack.Screen
+          name="Daftarpasien"
+          component={Daftarpasien}
+          options={{ headerTitle:"Register Pasien" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -2,19 +2,21 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../globalstyles';
+import { colors } from '../../globalstyles';
 
-import style from '../globalstyles';
+import style from '../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-function Login(props) {
+function Daftarpasien(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
+    const [email, setemail] = useState("")
+    const [nohp, setnohp] = useState("")
     const [username, setusername] = useState("")
     const [password, setpassword] = useState("")
     const toggleModal = () => {
@@ -94,7 +96,7 @@ function Login(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../assets/image/exit.png")}
+                                source={require("../../assets/image/exit.png")}
                                 style={{ width: 50, height: 50 }}
                                 resizeMode="contain"
                             />
@@ -106,16 +108,12 @@ function Login(props) {
 
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 50 }}>
-                        <Image
-                            source={require("../assets/image/baby.png")}
-                            style={{ width: "50%", height: DEVICE_WIDTH * 0.40 }}
-                            resizeMode="contain"
-                        />
-                    </View>
-                    <View style={{ flex: 1, marginTop: 10, padding: 22 }}>
-                        <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18 }]}>Aplikasi Berat Badan Lahir Rendah</Text>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
+                    <View style={{ flex: 1, padding: 22 }}>
+                        <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Email</Text>
+                        <TextInput onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>No hp</Text>
+                        <TextInput onChangeText={setnohp} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14,marginTop:20 }]}>Username</Text>
                         <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
                         <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
@@ -130,4 +128,4 @@ function Login(props) {
     );
 };
 
-export default Login;
+export default Daftarpasien;
