@@ -11,14 +11,23 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-function Daftarpasien(props) {
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+function Daftarbayi(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [email, setemail] = useState("")
-    const [nohp, setnohp] = useState("")
-    const [username, setusername] = useState("")
-    const [password, setpassword] = useState("")
+    const [nama, setnama] = useState("")
+    const [tgllahir, settgllahir] = useState("")
+    const [gestasi, setgestasi] = useState("")
+    const [anak, setanak] = useState("")
+    const [bbnow, setbbnow] = useState("")
+    const [bblater, setbblater] = useState("")
+    const [show, setShow] = useState(false);
+    const [date, setDate] = useState(new Date());
+    const [mode, setMode] = useState('date');
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -31,6 +40,16 @@ function Daftarpasien(props) {
         }
     }
 
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+    };
+
+    const showDatepicker = (tipe) => {
+        setMode(tipe);
+        setShow(true);
+    };
     const login = () => {
         props.navigation.navigate("Mainpage")
         /*
@@ -78,11 +97,19 @@ function Daftarpasien(props) {
             */
     };
     const [spinner, setspinner] = useState(false)
-    const lanjut = () => {
-        props.navigation.navigate("Daftarbayi")
-    }
     return (
         <View style={style.main}>
+            {show && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
+
+                />
+            )}
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -114,27 +141,47 @@ function Daftarpasien(props) {
                     <View style={{ flex: 1, padding: 22 }}>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/register-pasien-1.png")}
+                                source={require("../../assets/image/register-pasien-2.png")}
                                 style={{ width: "100%", height: DEVICE_WIDTH * 0.15 }}
                                 resizeMode="stretch"
                             />
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Email</Text>
-                        <TextInput onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="email-address"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>No hp</Text>
-                        <TextInput onChangeText={setnohp} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
-                        <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
-                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Nama</Text>
+                        <TextInput onChangeText={setnama} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tanggal Lahir</Text>
+                        <TouchableOpacity  style={{ flexDirection: "row" }}  onPress={() => showDatepicker('date')}>
+                            <View style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20,elevation:5 }]}>
+                                <View style={{ marginLeft: 10 }}>
+                                    <Text style={[style.nunitosansemi, { fontSize: 15, color: "black" }]}>{format(date, "dd'/'MM'/'yyyy'", { locale: id })}</Text>
+                               </View>
+                                <View style={{ flex: 1, alignItems: "flex-end" }}>
+                                    <Ionicons name={'calendar-outline'} size={24} color="black" />
+                                </View>
+                            </View>
+                        </TouchableOpacity>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Usia Gestasi</Text>
+                        <TextInput onChangeText={setgestasi} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Anak Ke</Text>
+                        <TextInput onChangeText={setanak} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>BB Lahir</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center",elevation:5 }]}>
+                            <TextInput onChangeText={setbbnow} style={{padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <Text style={{marginLeft:5}}>Kg</Text>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>BB Sekarang</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center",elevation:5 }]}>
+                            <TextInput onChangeText={setbblater} style={{padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <Text style={{marginLeft:5}}>Kg</Text>
+                        </View>
+                      
                     </View>
                 </ScrollView>
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1, marginRight: 10 }}>
-                        <Button title="Batalkan" onPress={login} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        <Button title="Kembali" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                     </View>
                     <View style={{ flex: 1, marginLeft: 10 }}>
-                        <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        <Button title="Selanjutnya" onPress={() => props.navigation.navigate("Daftarortu")} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     </View>
                 </View>
             </View>
@@ -143,4 +190,4 @@ function Daftarpasien(props) {
     );
 };
 
-export default Daftarpasien;
+export default Daftarbayi;

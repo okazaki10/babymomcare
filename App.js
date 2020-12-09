@@ -19,7 +19,7 @@ LogBox.ignoreLogs([
   'Looks like'
 ]);
 global.url = "https://backend.hmti-its.com/api";
-global.initialroute = "Login"
+global.initialroute = "Menubar"
 global.status = 0
 global.key = "";
 global.user_id = "";

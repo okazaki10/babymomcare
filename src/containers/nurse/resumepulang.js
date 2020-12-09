@@ -12,7 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-function Mainpage(props) {
+function Resumepulang(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -76,7 +76,10 @@ function Mainpage(props) {
             */
     };
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
+    const [kosong, setkosong] = useState(true)
+    const tambahresume = () => {
+        props.navigation.navigate("Tambahresume")
+    }
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -89,16 +92,6 @@ function Mainpage(props) {
 
             <View style={{ flex: 1 }}>
 
-                <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 50 }}>
-                    <Image
-                        source={require("../../assets/image/profilcewe.png")}
-                        style={{ width: 100, height: 100 }}
-                        resizeMode="contain"
-                    />
-                </View>
-                <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>Resma Andini</Text>
-                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>Nurse</Text>
-                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
 
                     <ScrollView>
@@ -110,16 +103,15 @@ function Mainpage(props) {
                                         style={{ width: 100, height: 100 }}
                                         resizeMode="contain"
                                     />
-                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki pasien</Text>
+                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki resume pulang</Text>
                                 </View>
-                                <Button title="+ Tambah Pasien Baru" onPress={()=>{props.navigation.navigate("Daftarpasien")}} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                <Button title="+ Tambah Resume Pulang" onPress={tambahresume} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                             </View>) : (
                                     <View>
                                         <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
                                             <Ionicons name={'search-outline'} size={24} color={colors.button} />
                                             <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                                         </View>
-                                        <Button title="+ Tambah Pasien Baru" onPress={()=>{props.navigation.navigate("Daftarpasien")}} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                         <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Datapasien") }}>
                                             <Image
                                                 source={require("../../assets/image/empty.png")}
@@ -201,4 +193,4 @@ function Mainpage(props) {
     );
 };
 
-export default Mainpage;
+export default Resumepulang;

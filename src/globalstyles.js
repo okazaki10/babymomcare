@@ -6,9 +6,12 @@ export const colors = {
   black: '#000000',
   yellow: '#FDF60A',
   button: "#72A3D4",
+  button2: "#B6DAFC",
   black: "#363636",
-  grey:'#545454',
-  lightblue: '#92C5C6'
+  grey: '#545454',
+  lightblue: '#92C5C6',
+  judulforum: "#6D8197",
+  menubutton: "#92B1CD"
 };
 
 const style = StyleSheet.create({
@@ -23,43 +26,43 @@ const style = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 2,
   },
-  main:{
-    flex:1,
-    backgroundColor:"white"
+  main: {
+    flex: 1,
+    backgroundColor: "white"
   },
-  container:{
-    flex:1,
-    padding:22
+  container: {
+    flex: 1,
+    padding: 22
   },
   poppinsbold: {
     fontFamily: "Poppins-SemiBold",
     fontSize: 27,
-    color:"#545454"
+    color: "#545454"
   },
   poppinsmedium: {
     fontFamily: "Poppins-Medium",
     fontSize: 18,
-    color:"#545454"
+    color: "#545454"
   },
   poppinsbutton: {
     fontFamily: "Poppins-Medium",
     fontSize: 18,
-    color:"#545454"
+    color: "#545454"
   },
   nunitomateri: {
     fontFamily: "NunitoSans-Regular",
     fontSize: 16,
-    color:"#545454"
+    color: "#545454"
   },
   nunitosans: {
     fontFamily: "NunitoSans-Regular",
     fontSize: 16,
-    color:"#545454"
+    color: "#545454"
   },
   nunitosansemi: {
     fontFamily: "NunitoSans-SemiBold",
     fontSize: 12,
-    color:"gray"
+    color: "gray"
   },
   button: {
     backgroundColor: "#72A3D4",
@@ -77,6 +80,12 @@ const style = StyleSheet.create({
     height: 1,
     marginTop: 15,
   },
+  datapasien: {
+    fontSize: 14, color: colors.grey, marginTop: 10, flex:1
+  },
+  datapasien2: {
+    fontSize: 14, color: colors.grey, marginTop: 10, flex:1
+  }
 });
 
 export default style;

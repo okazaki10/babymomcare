@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -11,14 +11,21 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-function Daftarpasien(props) {
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Picker } from '@react-native-picker/picker';
+
+import { actions, defaultActions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
+function Addforum(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [email, setemail] = useState("")
-    const [nohp, setnohp] = useState("")
-    const [username, setusername] = useState("")
-    const [password, setpassword] = useState("")
+    const [judul, setjudul] = useState("")
+    const [pertanyaan, setpertanyaan] = useState("")
+    const [topik, settopik] = useState("")
+    const textref = createRef()
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -78,11 +85,18 @@ function Daftarpasien(props) {
             */
     };
     const [spinner, setspinner] = useState(false)
-    const lanjut = () => {
-        props.navigation.navigate("Daftarbayi")
+    const [nilai, setnilai] = useState("")
+    const forumdiubah = () => {
+        setisipesan("Forum berhasil diubah!")
+        toggleModal()
+    }
+    const forumdibuat = () => {
+        setisipesan("Forum berhasil dibuat!")
+        toggleModal()
     }
     return (
         <View style={style.main}>
+
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -99,42 +113,62 @@ function Daftarpasien(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/exit.png")}
-                                style={{ width: 50, height: 50 }}
+                                source={require("../../assets/image/check.png")}
+                                style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
                         </View>
-                        <Text style={[style.nunitosans, { textAlign: "center", marginTop: 15 }]}>{isipesan}</Text>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
+                        <View style={{  marginTop:15,marginRight:30,marginLeft:30 }}>
+                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
                     </View>
                 </View>
             </Modal>
-
             <View style={{ flex: 1 }}>
-                <ScrollView>
+                <ScrollView nestedScrollEnabled={true}>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <View style={{ alignItems: "center" }}>
-                            <Image
-                                source={require("../../assets/image/register-pasien-1.png")}
-                                style={{ width: "100%", height: DEVICE_WIDTH * 0.15 }}
-                                resizeMode="stretch"
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul Pertanyaan</Text>
+                        <TextInput onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Deskripsi Pertanyaan</Text>
+                        <View style={[style.card]}>
+                            <RichEditor
+                                ref={textref}
+                                onChangeText={setpertanyaan}
                             />
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Email</Text>
-                        <TextInput onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="email-address"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>No hp</Text>
-                        <TextInput onChangeText={setnohp} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
-                        <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
-                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pilih Topik</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={topik}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    settopik(itemValue)
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Makanan" value="makanan" />
+                                <Picker.Item label="Makanan" value="makanan" />
+                                <Picker.Item label="Makanan" value="makanan" />
+                            </Picker>
+                        </View>
+
                     </View>
                 </ScrollView>
+                <RichToolbar
+                    editor={textref}
+                    actions={[
+                        actions.setBold,
+                        actions.setItalic,
+                        actions.insertBulletsList,
+                        actions.insertOrderedList,
+                    ]}
+                />
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1, marginRight: 10 }}>
-                        <Button title="Batalkan" onPress={login} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        <Button title="Batal" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.button2, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                     </View>
                     <View style={{ flex: 1, marginLeft: 10 }}>
-                        <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        <Button title="Kirim" onPress={forumdibuat} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                     </View>
                 </View>
             </View>
@@ -143,4 +177,4 @@ function Daftarpasien(props) {
     );
 };
 
-export default Daftarpasien;
+export default Addforum;
