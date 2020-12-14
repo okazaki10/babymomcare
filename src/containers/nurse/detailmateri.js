@@ -99,7 +99,7 @@ function Detailmateri(props) {
                     </View>
                     <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Forum Terkait</Text>
                     <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
-                        <TouchableOpacity style={[ { flexDirection: "row"}]} onPress={()=>{props.navigation.navigate("Daftarpasien")}}>
+                        <TouchableOpacity style={[ { flexDirection: "row"}]} onPress={()=>{props.navigation.navigate("Daftarakun")}}>
                             <Image
                                 source={require("../../assets/image/empty.png")}
                                 style={{ width: 40, height: 40 }}

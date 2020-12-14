@@ -99,8 +99,7 @@ function Tambahresume(props) {
     const [gambar, setgambar] = useState("")
     const [hide, sethide] = useState(true)
     const [options, setoptions] = useState({
-        title: 'Select Avatar',
-        customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+        title: 'Pilih Foto',
         storageOptions: {
             skipBackup: true,
             path: 'images',
@@ -194,16 +193,21 @@ function Tambahresume(props) {
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tanggal Kontrol Selanjutnya</Text>
-                        <TouchableOpacity style={{ flexDirection: "row" }} onPress={() => showDatepicker('date')}>
-                            <View style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
+                        <View style={{ flexDirection: "row" }} >
+                            <TouchableOpacity onPress={() => showDatepicker('date')} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
                                 <View style={{ marginLeft: 10 }}>
-                                    <Text style={[style.nunitosansemi, { fontSize: 15, color: "black" }]}>{format(date, "dd'/'MM'/'yyyy'", { locale: id })}</Text>
+                                    <Text style={[style.nunitosansemi, { fontSize: 15, color: "black", textDecorationLine: "underline" }]}>{format(date, "dd'/'MM'/'yyyy'", { locale: id })}</Text>
                                 </View>
                                 <View style={{ flex: 1, alignItems: "flex-end" }}>
                                     <Ionicons name={'calendar-outline'} size={24} color="black" />
                                 </View>
+                            </TouchableOpacity>
+                            <View style={{ justifyContent: "flex-end", marginLeft: 10 }}>
+                                <TouchableOpacity onPress={() => setDate(new Date())}>
+                                    <Text style={[style.nunitosans, { fontSize: 12, textDecorationLine: "underline" }]}>Set as Now</Text>
+                                </TouchableOpacity>
                             </View>
-                        </TouchableOpacity>
+                        </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Kontrol</Text>
                         <TextInput onChangeText={settempatkontrol} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
 
@@ -238,7 +242,7 @@ function Tambahresume(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Upload Foto Bayi</Text>
                         {hide ? (null) : (<Image
                             source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
-                            style={{ width: "100%", height: DEVICE_WIDTH*0.7 }}
+                            style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
                             resizeMode="cover"
                         ></Image>)}
 
@@ -255,7 +259,9 @@ function Tambahresume(props) {
                 </ScrollView>
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1 }}>
-                        <Button title="Simpan" onPress={resumedibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        {global.add == 1 ? (<Button title="Simpan" onPress={resumedibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
+                            <Button title="Simpan" onPress={resumediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+
                     </View>
                 </View>
             </View>

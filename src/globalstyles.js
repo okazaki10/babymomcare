@@ -81,10 +81,10 @@ const style = StyleSheet.create({
     marginTop: 15,
   },
   datapasien: {
-    fontSize: 14, color: colors.grey, marginTop: 10, flex:1
+    fontSize: 14, color: colors.grey, marginTop: 15, flex:1
   },
   datapasien2: {
-    fontSize: 14, color: colors.grey, marginTop: 10, flex:1
+    fontSize: 14, color: colors.grey, marginTop: 15, flex:1
   }
 });
 

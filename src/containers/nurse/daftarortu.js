@@ -21,20 +21,22 @@ function Daftarortu(props) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [namaibu, setnamaibu] = useState("")
-    const [umuribu, setumuribu] = useState("")
     const [agamaibu, setagamaibu] = useState("")
-    const [sukuibu, setsukuibu] = useState("")
     const [pendidikanibu, setpendidikanibu] = useState("")
     const [pengalamanibu, setpengalamanibu] = useState("")
+    const [pekerjaanibu, setpekerjaanibu] = useState("")
+    const [paritas, setparitas] = useState("")
     const [namaayah, setnamaayah] = useState("")
-    const [umurayah, setumurayah] = useState("")
     const [agamaayah, setagamaayah] = useState("")
-    const [sukuayah, setsukuayah] = useState("")
     const [pendidikanayah, setpendidikanayah] = useState("")
     const [pengalamanayah, setpengalamanayah] = useState("")
+    const [pekerjaanayah, setpekerjaanayah] = useState("")
     const [show, setShow] = useState(false);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
+    const [show2, setShow2] = useState(false);
+    const [date2, setDate2] = useState(new Date());
+    const [mode2, setMode2] = useState('date');
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -56,6 +58,16 @@ function Daftarortu(props) {
     const showDatepicker = (tipe) => {
         setMode(tipe);
         setShow(true);
+    };
+    const onChange2 = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow2(Platform.OS === 'ios');
+        setDate2(currentDate);
+    };
+
+    const showDatepicker2 = (tipe) => {
+        setMode2(tipe);
+        setShow2(true);
     };
     const login = () => {
         props.navigation.navigate("Mainpage")
@@ -105,9 +117,16 @@ function Daftarortu(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
+    const pasiendiubah = () => {
+        setisipesan("Data ortu berhasil diubah!")
+        toggleModal()
+    }
+    const pasiendibuat = () => {
+        setisipesan("Data pasien berhasil dibuat!")
+        toggleModal()
+    }
     return (
         <View style={style.main}>
-
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -116,7 +135,16 @@ function Daftarortu(props) {
                     is24Hour={true}
                     display="default"
                     onChange={onChange}
-
+                />
+            )}
+            {show2 && (
+                <DateTimePicker
+                    testID="dateTimePicker"
+                    value={date2}
+                    mode={mode2}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange2}
                 />
             )}
             <StatusBar backgroundColor={colors.primary} />
@@ -135,12 +163,16 @@ function Daftarortu(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/exit.png")}
-                                style={{ width: 50, height: 50 }}
+                                source={require("../../assets/image/check.png")}
+                                style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
                         </View>
-                        <Text style={[style.nunitosans, { textAlign: "center", marginTop: 15 }]}>{isipesan}</Text>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
+                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -149,22 +181,36 @@ function Daftarortu(props) {
 
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <View style={{ alignItems: "center" }}>
+                        {global.add == 1 ? (<View style={{ alignItems: "center" }}>
                             <Image
                                 source={require("../../assets/image/register-pasien-3.png")}
                                 style={{ width: "100%", height: DEVICE_WIDTH * 0.15 }}
                                 resizeMode="stretch"
                             />
-                        </View>
+                        </View>) : (null)}
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ibu</Text>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5 }]}>Nama Ibu</Text>
                         <TextInput onChangeText={setnamaibu} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Umur</Text>
-                        <TextInput onChangeText={setumuribu} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Tanggal lahir ibu</Text>
+                        <View style={{ flexDirection: "row" }} >
+                            <TouchableOpacity onPress={() => showDatepicker('date')} style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                                <View style={{ marginLeft: 10 }}>
+                                    <Text style={[style.nunitosansemi, { fontSize: 15, color: "black", textDecorationLine: "underline" }]}>{format(date, "dd'/'MM'/'yyyy'", { locale: id })}</Text>
+                                </View>
+                                <View style={{ flex: 1, alignItems: "flex-end" }}>
+                                    <Ionicons name={'calendar-outline'} size={24} color="black" />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{ justifyContent: "flex-end", marginLeft: 10 }}>
+                                <TouchableOpacity onPress={() => setDate(new Date())}>
+                                    <Text style={[style.nunitosans, { fontSize: 12, textDecorationLine: "underline" }]}>Set as Now</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pekerjaan</Text>
+                        <TextInput onChangeText={setpekerjaanibu} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
                         <TextInput onChangeText={setagamaibu} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Suku Bangsa</Text>
-                        <TextInput onChangeText={setsukuibu} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -181,9 +227,9 @@ function Daftarortu(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pengalaman Merawat Bayi</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
-                                selectedValue={pendidikanayah}
+                                selectedValue={pengalamanibu}
                                 onValueChange={(itemValue, itemIndex) =>
-                                    setpendidikanayah(itemValue)
+                                    setpengalamanibu(itemValue)
                                 }
                                 mode="dropdown">
                                 <Picker.Item label="Pernah" value="pernah" />
@@ -193,12 +239,26 @@ function Daftarortu(props) {
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ayah</Text>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5 }]}>Nama Ayah</Text>
                         <TextInput onChangeText={setnamaayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Umur</Text>
-                        <TextInput onChangeText={setumurayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Tanggal lahir ayah</Text>
+                        <View style={{ flexDirection: "row" }} >
+                            <TouchableOpacity onPress={() => showDatepicker2('date')} style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                                <View style={{ marginLeft: 10 }}>
+                                    <Text style={[style.nunitosansemi, { fontSize: 15, color: "black", textDecorationLine: "underline" }]}>{format(date2, "dd'/'MM'/'yyyy'", { locale: id })}</Text>
+                                </View>
+                                <View style={{ flex: 1, alignItems: "flex-end" }}>
+                                    <Ionicons name={'calendar-outline'} size={24} color="black" />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{ justifyContent: "flex-end", marginLeft: 10 }}>
+                                <TouchableOpacity onPress={() => setDate2(new Date())}>
+                                    <Text style={[style.nunitosans, { fontSize: 12, textDecorationLine: "underline" }]}>Set as Now</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
                         <TextInput onChangeText={setagamaayah} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Suku Bangsa</Text>
-                        <TextInput onChangeText={setsukuayah} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pekerjaan</Text>
+                        <TextInput onChangeText={setpekerjaanayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -212,17 +272,24 @@ function Daftarortu(props) {
                                 <Picker.Item label="Doktor" value="doktor" />
                             </Picker>
                         </View>
-                        
+
                     </View>
                 </ScrollView>
-                <View style={{ padding: 22, flexDirection: "row" }}>
-                    <View style={{ flex: 1, marginRight: 10 }}>
-                        <Button title="Kembali" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                    </View>
-                    <View style={{ flex: 1, marginLeft: 10 }}>
-                        <Button title="Selanjutnya" onPress={login} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    </View>
-                </View>
+        
+                    {global.add == 1 ? (
+                        <View style={{ padding: 22, flexDirection: "row" }}>
+                            <View style={{ flex: 1, marginRight: 10 }}>
+                                <Button title="Kembali" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            </View>
+                            <View style={{ flex: 1, marginLeft: 10 }}>
+                                <Button title="Selanjutnya" onPress={pasiendibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            </View>
+                        </View>) : (
+                         <View style={{ padding: 22 }}>
+                                <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            </View>)}
+               
+
             </View>
 
         </View>

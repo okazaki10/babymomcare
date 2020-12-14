@@ -80,13 +80,17 @@ function Datapasien(props) {
     const [kosong, setkosong] = useState(false)
     const ubahpasien = (index) => {
         if (index == 0) {
-            props.navigation.navigate("Daftarbayi", { nama: "Ubah Bayi" })
+            props.navigation.navigate("Daftarbayi", { nama: "Edit Data Bayi" })
+            global.add = 0
         } else if (index == 1) {
             props.navigation.navigate("Daftarortu", { nama: "Ubah Ortu" })
+            global.add = 0
         } else if (index == 2) {
-            props.navigation.navigate("Daftarpasien", { nama: "Ubah Akun" })
+            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun" })
+            global.add = 0
         }
     }
+ 
     const addpasien = () => {
         props.navigation.navigate("Addforum", { nama: "Buat Forum" })
     }
@@ -97,9 +101,33 @@ function Datapasien(props) {
     const gantidata = (index) => {
         setmenuswitch(index)
     }
+    const [title2, settitle2] = useState("")
+    const [description2, setdescription2] = useState("")
+    const [isModalVisible2, setModalVisible2] = useState(false);
+    const toggleModal2 = () => {
+        setModalVisible2(!isModalVisible2);
+    };
+
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
+            <Modal isVisible={isModalVisible2}
+                onBackdropPress={toggleModal2}
+                onBackButtonPress={toggleModal2}>
+                <View style={style.content}>
+                    <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
+                    <View style={{ flexDirection: "row", marginTop: 40 }}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={toggleModal2} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                        </View>
+                        
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <Spinner
                 visible={spinner}
                 textContent={'Loading...'}
@@ -140,31 +168,36 @@ function Datapasien(props) {
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                     </View>
 
-                                    <TouchableOpacity onLongPress={()=>{ubahpasien(0)}} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
+                                    <TouchableOpacity  onPress={() => { ubahpasien(0) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Nama</Text>
                                             <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: Rafif iqbal saputra</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
-                                        </View>
-                                        <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>Nomor Batch</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: 28/09/2019</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Usia Getas</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: -</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Jenis Kelamin</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: Laki-laki</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Panjang bayi lahir</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: 20 cm</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>BB Lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: 2.2 kg</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>BB Sekarang</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: 2.5 kg</Text>
                                         </View>
+
 
                                     </TouchableOpacity>
                                 </View>) : (null)}
@@ -173,52 +206,57 @@ function Datapasien(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Data Ortu</Text>
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                     </View>
-                                    <TouchableOpacity onLongPress={()=>{ubahpasien(1)}} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
+                                    <TouchableOpacity  onPress={() => { ubahpasien(1) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View>
                                             <Text style={[style.poppinsbold, { fontSize: 14, color: colors.grey, paddingRight: 50 }]}>Data Ibu</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Nama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: Selina Maurizka</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: 28/09/2019</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Umur</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Pekerjaan</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: Guru</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Tingkat pendidikan</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: Sarjana</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Agama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: Islam</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Suku Bangsa</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Paritas</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: 1</Text>
                                             </View>
+
                                             <Text style={[style.poppinsbold, { fontSize: 14, color: colors.grey, marginTop: 22, paddingRight: 50 }]}>Data Ayah</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Nama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: Luthfi Ferdian</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: 28/09/2019</Text>
+                                            </View>
+
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Pekerjaan</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: Guru</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Umur</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Tingkat pendidikan</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: Sarjana</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Agama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
-                                            </View>
-                                            <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Suku Bangsa</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: Islam</Text>
                                             </View>
                                         </View>
-
                                     </TouchableOpacity>
                                 </View>) : (null)}
                                 {menuswitch == 2 ? (<View>
@@ -226,23 +264,23 @@ function Datapasien(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Data Akun</Text>
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                     </View>
-                                    <TouchableOpacity onLongPress={()=>{ubahpasien(2)}} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
+                                    <TouchableOpacity  onPress={() => { ubahpasien(2) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Nama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Email</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: rafifshaputra25@gmail.com</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>No Hp</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: 0821632713232</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Username</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: rafifsaputra</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Password</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Rafif iqbal saputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: *******</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>

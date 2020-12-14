@@ -5,13 +5,14 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog } from '@fortawesome/free-solid-svg-icons';
-import Mainpage from './mainpage';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../globalstyles';
 import Beranda from './beranda';
 import Forum from './forum';
 import Detailmateri from './detailmateri';
 import Materiedukasi from './materiedukasi';
+import Listpasien from './listpasien';
 
 const Tab = createBottomTabNavigator();
 
@@ -45,7 +46,7 @@ function Menubar() {
       />
       <Tab.Screen
         name="Chat"
-        component={Mainpage}
+        component={Listpasien}
         options={{
           tabBarLabel: 'Chat',
           tabBarIcon: ({color, size}) => (
@@ -65,7 +66,7 @@ function Menubar() {
       />
        <Tab.Screen
         name="Settings"
-        component={Mainpage}
+        component={Listpasien}
         options={{
           tabBarLabel: 'Settings',
           tabBarIcon: ({color, size}) => (

@@ -103,7 +103,7 @@ function Beranda(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Mainpage") }} style={[style.card, { marginTop: 15, flexDirection: "row",padding:0 }]}>
+                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Listpasien") }} style={[style.card, { marginTop: 15, flexDirection: "row",padding:0 }]}>
                                     <Image
                                         source={require("../../assets/image/addpeople.png")}
                                         style={{ width:55, height:65 }}
@@ -131,6 +131,16 @@ function Beranda(props) {
                                     />
                                     <View style={{ marginLeft: 15,justifyContent:"center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Kelolakuis") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
+                                    <Image
+                                        source={require("../../assets/image/resume.png")}
+                                        style={{ width:55, height:65 }}
+                                        resizeMode="stretch"
+                                    />
+                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Mengelola Kuis</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>

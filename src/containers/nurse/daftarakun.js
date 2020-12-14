@@ -11,7 +11,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-function Daftarpasien(props) {
+function Daftarakun(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -81,6 +81,14 @@ function Daftarpasien(props) {
     const lanjut = () => {
         props.navigation.navigate("Daftarbayi")
     }
+    const pasiendiubah = () => {
+        setisipesan("Data pasien berhasil diubah!")
+        toggleModal()
+    }
+    const pasiendibuat = () => {
+        setisipesan("Data pasien berhasil dibuat!")
+        toggleModal()
+    }
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -99,12 +107,16 @@ function Daftarpasien(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/exit.png")}
-                                style={{ width: 50, height: 50 }}
+                                source={require("../../assets/image/check.png")}
+                                style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
                         </View>
-                        <Text style={[style.nunitosans, { textAlign: "center", marginTop: 15 }]}>{isipesan}</Text>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
+                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
                     </View>
                 </View>
             </Modal>
@@ -112,13 +124,13 @@ function Daftarpasien(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <View style={{ alignItems: "center" }}>
+                        {global.add == 1 ? (<View style={{ alignItems: "center" }}>
                             <Image
                                 source={require("../../assets/image/register-pasien-1.png")}
                                 style={{ width: "100%", height: DEVICE_WIDTH * 0.15 }}
                                 resizeMode="stretch"
                             />
-                        </View>
+                        </View>) : (null)}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Email</Text>
                         <TextInput onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="email-address"></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>No hp</Text>
@@ -129,18 +141,28 @@ function Daftarpasien(props) {
                         <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                     </View>
                 </ScrollView>
-                <View style={{ padding: 22, flexDirection: "row" }}>
-                    <View style={{ flex: 1, marginRight: 10 }}>
-                        <Button title="Batalkan" onPress={login} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                    </View>
-                    <View style={{ flex: 1, marginLeft: 10 }}>
-                        <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    </View>
-                </View>
+         
+                    {global.add == 1 ? (
+                        <View style={{ padding: 22, flexDirection: "row" }}>
+                            <View style={{ flex: 1, marginRight: 10 }}>
+                                <Button title="Batalkan" onPress={login} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            </View>
+                            <View style={{ flex: 1, marginLeft: 10 }}>
+                                <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            </View>
+                        </View>
+                    ) : (
+
+                        <View style={{ padding: 22 }}>
+                                <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            </View>
+                        )}
+            
+
             </View>
 
         </View>
     );
 };
 
-export default Daftarpasien;
+export default Daftarakun;

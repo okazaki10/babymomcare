@@ -3,11 +3,11 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import styles from './globalstyles';
-import Mainpage from './containers/nurse/mainpage';
+
 import Login from './containers/login';
 import Materiedukasi from './containers/nurse/materiedukasi';
 import Detailmateri from './containers/nurse/detailmateri';
-import Daftarpasien from './containers/nurse/daftarpasien';
+import Daftarakun from './containers/nurse/daftarakun';
 import Daftarbayi from './containers/nurse/daftarbayi';
 import Daftarortu from './containers/nurse/daftarortu';
 import Forum from './containers/nurse/forum';
@@ -15,11 +15,15 @@ import Forumdetail from './containers/nurse/forumdetail';
 import Addforum from './containers/nurse/addforum';
 import Datapasien from './containers/nurse/datapasien';
 import Menubar from './containers/nurse/menubar';
-import Reminderpasien from './containers/nurse/resumepulang';
+
 import Resumepulang from './containers/nurse/resumepulang';
 import Tambahresume from './containers/nurse/tambahresume';
 import Anjuranpasien from './containers/nurse/anjuranpasien';
 import Tambahanjuran from './containers/nurse/tambahanjuran';
+import Kelolakuis from './containers/nurse/kelolakuis';
+import Listpasien from './containers/nurse/listpasien';
+import Detailresumepulang from './containers/nurse/detailresumepulang';
+import Tambahkuis from './containers/nurse/tambahkuis';
 
 
 const Stack = createStackNavigator();
@@ -32,8 +36,8 @@ function Navigation() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialroute}>
       <Stack.Screen
-          name="Mainpage"
-          component={Mainpage}
+          name="Listpasien"
+          component={Listpasien}
           options={{ headerShown:false }}
         />
         <Stack.Screen
@@ -52,8 +56,8 @@ function Navigation() {
           options={{ headerTitle:"Materi Edukasi" }}
         />
          <Stack.Screen
-          name="Daftarpasien"
-          component={Daftarpasien}
+          name="Daftarakun"
+          component={Daftarakun}
           options={({ route }) => ({ title: route.params?route.params.nama:"Register Pasien" })}
         />
          <Stack.Screen
@@ -99,7 +103,7 @@ function Navigation() {
         <Stack.Screen
           name="Tambahresume"
           component={Tambahresume}
-          options={{ headerTitle:"Tambah Resume Pulang" }}
+          options={({ route }) => ({ title: route.params?route.params.nama:"Tambah Resume Pulang" })}
         />
         <Stack.Screen
           name="Anjuranpasien"
@@ -110,6 +114,21 @@ function Navigation() {
           name="Tambahanjuran"
           component={Tambahanjuran}
           options={{ headerTitle:"Buat Reminder" }}
+        />
+        <Stack.Screen
+          name="Kelolakuis"
+          component={Kelolakuis}
+          options={{ headerTitle:"Mengelola Kuis" }}
+        />
+           <Stack.Screen
+          name="Detailresumepulang"
+          component={Detailresumepulang}
+          options={{ headerTitle:"Resume Pulang" }}
+        />
+        <Stack.Screen
+          name="Tambahkuis"
+          component={Tambahkuis}
+          options={({ route }) => ({ title: route.params?route.params.nama:"Tambah Kuis" })}
         />
       </Stack.Navigator>
     </NavigationContainer>
