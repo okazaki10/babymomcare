@@ -24,6 +24,7 @@ import Kelolakuis from './containers/nurse/kelolakuis';
 import Listpasien from './containers/nurse/listpasien';
 import Detailresumepulang from './containers/nurse/detailresumepulang';
 import Tambahkuis from './containers/nurse/tambahkuis';
+import Chat from './containers/pasien/chat';
 
 
 const Stack = createStackNavigator();
@@ -113,7 +114,7 @@ function Navigation() {
         <Stack.Screen
           name="Tambahanjuran"
           component={Tambahanjuran}
-          options={{ headerTitle:"Buat Reminder" }}
+          options={({ route }) => ({ title: route.params?route.params.nama:"Buat Reminder" })}
         />
         <Stack.Screen
           name="Kelolakuis"
@@ -129,6 +130,11 @@ function Navigation() {
           name="Tambahkuis"
           component={Tambahkuis}
           options={({ route }) => ({ title: route.params?route.params.nama:"Tambah Kuis" })}
+        />
+        <Stack.Screen
+          name="Chat"
+          component={Chat}
+          options={{ headerTitle:"Chat" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

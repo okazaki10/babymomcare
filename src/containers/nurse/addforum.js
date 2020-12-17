@@ -167,9 +167,12 @@ function Addforum(props) {
                     <View style={{ flex: 1, marginRight: 10 }}>
                         <Button title="Batal" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.button2, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                     </View>
-                    <View style={{ flex: 1, marginLeft: 10 }}>
+                    {global.add == 1 ? (  <View style={{ flex: 1, marginLeft: 10 }}>
                         <Button title="Kirim" onPress={forumdibuat} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                    </View>
+                    </View>):(<View style={{ flex: 1, marginLeft: 10 }}>
+                        <Button title="Kirim" onPress={forumdiubah} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                    </View>)}
+                  
                 </View>
             </View>
 

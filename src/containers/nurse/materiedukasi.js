@@ -92,9 +92,7 @@ function Materiedukasi(props) {
                     </View>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-                     
                                     <View>
-
                                         <TouchableOpacity style={[style.card, { marginBottom: 15, flexDirection: "row",backgroundColor:colors.button }]} onPress={()=>props.navigation.navigate("Detailmateri")}>
                                             <Image
                                                 source={require("../../assets/image/empty.png")}

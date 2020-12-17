@@ -77,6 +77,32 @@ function Anjuranpasien(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
+    const tambahanjuran = () => {
+        props.navigation.navigate("Tambahanjuran")
+    }
+    const ubahanjuran = () => {
+        props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder" })
+        global.add = 0
+    }
+    const tindakananjuran = () => {
+        setisipesan("Pilih tindakan untuk reminder ini")
+        toggleModal2()
+    }
+    const hapusanjuran = () => {
+        toggleModal2()
+        setisipesan("Apakah anda yakin untuk menghapus reminder ini")
+        toggleModal3()
+    }
+    const [title2, settitle2] = useState("")
+    const [description2, setdescription2] = useState("")
+    const [isModalVisible2, setModalVisible2] = useState(false);
+    const toggleModal2 = () => {
+        setModalVisible2(!isModalVisible2);
+    };
+    const [isModalVisible3, setModalVisible3] = useState(false);
+    const toggleModal3 = () => {
+        setModalVisible3(!isModalVisible3);
+    };
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -86,15 +112,60 @@ function Anjuranpasien(props) {
                 textStyle={{ color: '#FFF' }}
             />
 
+            <Modal isVisible={isModalVisible3}
+                onBackdropPress={toggleModal3}
+                onBackButtonPress={toggleModal3}>
+                <View style={style.content}>
+                    <View>
+                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal3}>
+                            <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
+                        </TouchableOpacity>
+                        <View style={{ alignItems: "center" }}>
+                            <Image
+                                source={require("../../assets/image/exit.png")}
+                                style={{ width: 100, height: 100 }}
+                                resizeMode="contain"
+                            />
+                        </View>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
 
+                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
+                            <View style={{ flex: 1, marginRight: 15 }}>
+                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                            </View>
+                            <View style={{ flex: 1, marginLeft: 15 }}>
+                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
+                                </Button>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            <Modal isVisible={isModalVisible2}
+                onBackdropPress={toggleModal2}
+                onBackButtonPress={toggleModal2}>
+                <View style={style.content}>
+                    <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
+                    <View style={{ flexDirection: "row", marginTop: 40 }}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={hapusanjuran} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    <Button title="+ Buat Anjuran Pasien" onPress={() => { props.navigation.navigate("Tambahanjuran") }} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    <Button title="+ Buat Anjuran Pasien" onPress={tambahanjuran} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onPress={() => { props.navigation.navigate("Tambahanjuran") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                <TouchableOpacity onLongPress={tindakananjuran} onPress={ubahanjuran} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../assets/image/addpeople.png")}
                                         style={{ width: 55, height: 65 }}

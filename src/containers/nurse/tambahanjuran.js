@@ -74,13 +74,17 @@ function Tambahanjuran(props) {
             */
     };
     const [spinner, setspinner] = useState(false)
-    const simpan = () => {
+    const tambahnajuran = () => {
         setisipesan("Reminder berhasil dibuat!")
+        toggleModal()
+    }
+    const ubahanjuran = () => {
+        setisipesan("Reminder berhasil diubah!")
         toggleModal()
     }
     return (
         <View style={style.main}>
-   
+
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -104,7 +108,7 @@ function Tambahanjuran(props) {
                         </View>
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
-                        <View style={{  marginTop:15,marginRight:30,marginLeft:30 }}>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
                             <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
@@ -115,12 +119,16 @@ function Tambahanjuran(props) {
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Reminder</Text>
-                        <TextInput onChangeText={setjudul} style={[style.card, { elevation: 5,height:200,textAlignVertical:"top",marginTop:15 }]} multiline={true}></TextInput>   
+                        <TextInput onChangeText={setjudul} style={[style.card, { elevation: 5, height: 200, textAlignVertical: "top", marginTop: 15 }]} multiline={true}></TextInput>
                     </View>
                 </ScrollView>
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1, marginLeft: 10 }}>
-                        <Button title="Simpan" onPress={simpan} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        {global.add == 1 ? (
+                            <Button title="Simpan" onPress={tambahnajuran} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        ) : (
+                            <Button title="Simpan" onPress={ubahanjuran} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+
                     </View>
                 </View>
             </View>

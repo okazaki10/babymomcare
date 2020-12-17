@@ -78,15 +78,40 @@ function Forum(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const ubahforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Ubah Forum" })
-    }
-    const addforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
-    }
+
     const forumdetail = () => {
         props.navigation.navigate("Forumdetail")
     }
+    const tambahforum = () => {
+        props.navigation.navigate("Addforum",{nama:"Buat Forum"})
+    }
+    const ubahforum = () => {
+        props.navigation.navigate("Addforum", { nama: "Ubah Forum" })
+        global.add = 0
+        toggleModal2()
+    }
+    const tindakanforum = () => {
+
+        setisipesan("Pilih tindakan untuk forum ini")
+        toggleModal2()
+
+    }
+    const hapusforum = () => {
+        toggleModal2()
+        setisipesan("Apakah anda yakin untuk menghapus forum ini")
+        toggleModal3()
+
+    }
+    const [title2, settitle2] = useState("")
+    const [description2, setdescription2] = useState("")
+    const [isModalVisible2, setModalVisible2] = useState(false);
+    const toggleModal2 = () => {
+        setModalVisible2(!isModalVisible2);
+    };
+    const [isModalVisible3, setModalVisible3] = useState(false);
+    const toggleModal3 = () => {
+        setModalVisible3(!isModalVisible3);
+    };
  
     return (
         <View style={style.main}>
@@ -96,8 +121,56 @@ function Forum(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-
-
+            <Modal isVisible={isModalVisible3}
+                onBackdropPress={toggleModal3}
+                onBackButtonPress={toggleModal3}>
+                <View style={style.content}>
+                    <View>
+                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal3}>
+                            <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
+                        </TouchableOpacity>
+                        <View style={{ alignItems: "center" }}>
+                            <Image
+                                source={require("../../assets/image/exit.png")}
+                                style={{ width: 100, height: 100 }}
+                                resizeMode="contain"
+                            />
+                        </View>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
+                       
+                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15,flexDirection:"row" }}>
+                            <View style={{ flex: 1,marginRight:15 }}>
+                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red"  }]}></Button>
+                            </View>
+                            <View style={{ flex: 1,marginLeft:15}}>
+                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white"  }]}>
+                                </Button>
+                            </View>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
+            <Modal isVisible={isModalVisible2}
+                onBackdropPress={toggleModal2}
+                onBackButtonPress={toggleModal2}>
+                <View style={style.content}>
+                    <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
+                    <View style={{ flexDirection: "row", marginTop: 40 }}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={hapusforum} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={ubahforum} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={{ flexDirection: "row" }}>
@@ -105,7 +178,7 @@ function Forum(props) {
                             <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                             <TextInput onChangeText={setcari} placeholder="Cari Pertanyaan" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         </View>
-                        <TouchableOpacity onPress={addforum} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
+                        <TouchableOpacity onPress={tambahforum} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
                             <Ionicons name={'add-circle-outline'} size={24} color="#92B1CD" />
                         </TouchableOpacity>
 
@@ -113,7 +186,7 @@ function Forum(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={ubahforum} onPress={forumdetail} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
+                                <TouchableOpacity onLongPress={tindakanforum} onPress={forumdetail} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
                                     <Image
                                         source={require("../../assets/image/empty.png")}
                                         style={{ width: 40, height: 40 }}
