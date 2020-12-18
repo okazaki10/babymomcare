@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../../globalstyles';
+import { colors } from '../../../globalstyles';
 
-import style from '../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Forumdetail from './forumdetail';
+
 function Datapasien(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -120,7 +120,6 @@ function Datapasien(props) {
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-                        
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>

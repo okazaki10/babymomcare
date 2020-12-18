@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../../globalstyles';
+import { colors } from '../../../globalstyles';
 
-import style from '../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -115,7 +115,7 @@ function Listpasien(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/exit.png")}
+                                source={require("../../../assets/image/exit.png")}
                                 style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
@@ -157,7 +157,7 @@ function Listpasien(props) {
 
                 <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 50 }}>
                     <Image
-                        source={require("../../assets/image/profilcewe.png")}
+                        source={require("../../../assets/image/profilcewe.png")}
                         style={{ width: 100, height: 100 }}
                         resizeMode="contain"
                     />
@@ -172,7 +172,7 @@ function Listpasien(props) {
                             {kosong ? (<View>
                                 <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 20 }}>
                                     <Image
-                                        source={require("../../assets/image/empty.png")}
+                                        source={require("../../../assets/image/empty.png")}
                                         style={{ width: 100, height: 100 }}
                                         resizeMode="contain"
                                     />
@@ -194,7 +194,7 @@ function Listpasien(props) {
                                         }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                         <TouchableOpacity onLongPress={tindakanpasien} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Datapasien") }}>
                                             <Image
-                                                source={require("../../assets/image/empty.png")}
+                                                source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode="contain"
                                             />
@@ -211,7 +211,7 @@ function Listpasien(props) {
                                         </TouchableOpacity>
                                         <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
-                                                source={require("../../assets/image/empty.png")}
+                                                source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode="contain"
                                             />
@@ -228,7 +228,7 @@ function Listpasien(props) {
                                         </TouchableOpacity>
                                         <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
-                                                source={require("../../assets/image/empty.png")}
+                                                source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode="contain"
                                             />
@@ -245,7 +245,7 @@ function Listpasien(props) {
                                         </TouchableOpacity>
                                         <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
-                                                source={require("../../assets/image/empty.png")}
+                                                source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode="contain"
                                             />

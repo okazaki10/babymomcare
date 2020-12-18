@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../../globalstyles';
+import { colors } from '../../../globalstyles';
 
-import style from '../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -121,7 +121,7 @@ function Resumepulang(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/exit.png")}
+                                source={require("../../../assets/image/exit.png")}
                                 style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
@@ -177,7 +177,7 @@ function Resumepulang(props) {
                             {kosong ? (<View>
                                 <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 20 }}>
                                     <Image
-                                        source={require("../../assets/image/empty.png")}
+                                        source={require("../../../assets/image/empty.png")}
                                         style={{ width: 100, height: 100 }}
                                         resizeMode="contain"
                                     />
@@ -193,7 +193,7 @@ function Resumepulang(props) {
                                         <Button title="+ Tambah Resume Pulang" onPress={tambahresume} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                         <TouchableOpacity onLongPress={tindakanresume} onPress={() => { props.navigation.navigate("Detailresumepulang") }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
-                                                source={require("../../assets/image/empty.png")}
+                                                source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode="contain"
                                             />
@@ -210,7 +210,7 @@ function Resumepulang(props) {
                                         </TouchableOpacity>
                                         <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
-                                                source={require("../../assets/image/empty.png")}
+                                                source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode="contain"
                                             />
@@ -227,7 +227,7 @@ function Resumepulang(props) {
                                         </TouchableOpacity>
                                         <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
-                                                source={require("../../assets/image/empty.png")}
+                                                source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode="contain"
                                             />
@@ -244,7 +244,7 @@ function Resumepulang(props) {
                                         </TouchableOpacity>
                                         <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
-                                                source={require("../../assets/image/empty.png")}
+                                                source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
                                                 resizeMode="contain"
                                             />

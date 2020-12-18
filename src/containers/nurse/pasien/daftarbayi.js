@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
+import { colors } from '../../../globalstyles';
 
-import { colors } from '../../globalstyles';
-
-import style from '../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -136,7 +135,7 @@ function Daftarbayi(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/check.png")}
+                                source={require("../../../assets/image/check.png")}
                                 style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
@@ -155,7 +154,7 @@ function Daftarbayi(props) {
                     <View style={{ flex: 1, padding: 22 }}>
                         {global.add == 1 ? (<View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/register-pasien-2.png")}
+                                source={require("../../../assets/image/register-pasien-2.png")}
                                 style={{ width: "100%", height: DEVICE_WIDTH * 0.15 }}
                                 resizeMode="stretch"
                             />

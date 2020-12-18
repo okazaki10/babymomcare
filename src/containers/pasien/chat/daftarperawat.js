@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../../globalstyles';
+import { colors } from '../../../globalstyles';
 
-import style from '../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -12,7 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-function Beranda(props) {
+function Daftarperawat(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -77,6 +77,32 @@ function Beranda(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
+    const tambahanjuran = () => {
+        props.navigation.navigate("Tambahanjuran")
+    }
+    const kontakperawat = () => {
+        props.navigation.navigate("Kontakperawat")
+     
+    }
+    const tindakananjuran = () => {
+        setisipesan("Pilih tindakan untuk reminder ini")
+        toggleModal2()
+    }
+    const hapusanjuran = () => {
+        toggleModal2()
+        setisipesan("Apakah anda yakin untuk menghapus reminder ini")
+        toggleModal3()
+    }
+    const [title2, settitle2] = useState("")
+    const [description2, setdescription2] = useState("")
+    const [isModalVisible2, setModalVisible2] = useState(false);
+    const toggleModal2 = () => {
+        setModalVisible2(!isModalVisible2);
+    };
+    const [isModalVisible3, setModalVisible3] = useState(false);
+    const toggleModal3 = () => {
+        setModalVisible3(!isModalVisible3);
+    };
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -86,73 +112,44 @@ function Beranda(props) {
                 textStyle={{ color: '#FFF' }}
             />
 
-
             <View style={{ flex: 1 }}>
-
-                <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 50 }}>
-                    <Image
-                        source={require("../../assets/image/profilcewe.png")}
-                        style={{ width: 100, height: 100 }}
-                        resizeMode="contain"
-                    />
-                </View>
-                <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>Resma Andini</Text>
-                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>Nurse</Text>
-                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
+            <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20,textAlign:"center" }]}>{global.status == 1?"Daftar Perawat":"Daftar Pasien"}</Text>
+            <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
+                   
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Listpasien") }} style={[style.card, { marginTop: 15, flexDirection: "row",padding:0 }]}>
+                                <TouchableOpacity  onPress={kontakperawat} style={[style.card, { marginTop: 0, flexDirection: "row", padding: 0 }]}>
                                     <Image
-                                        source={require("../../assets/image/addpeople.png")}
-                                        style={{ width:55, height:65 }}
+                                        source={require("../../../assets/image/addpeople.png")}
+                                        style={{ width: 55, height: 65 }}
                                         resizeMode="stretch"
                                     />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Pasien</Text>
+                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Ari Susanti</Text>
                                     </View>
+                                
                                 </TouchableOpacity>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Anjuranpasien") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
+                                <TouchableOpacity onPress={() => { props.navigation.navigate("Tambahanjuran") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
-                                        source={require("../../assets/image/note.png")}
-                                        style={{ width:55, height:65 }}
+                                        source={require("../../../assets/image/addpeople.png")}
+                                        style={{ width: 55, height: 65 }}
                                         resizeMode="stretch"
                                     />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Reminder Pasien</Text>
+                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Selina Maurizka</Text>
                                     </View>
+                              
                                 </TouchableOpacity>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Resumepulang") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
-                                    <Image
-                                        source={require("../../assets/image/resume.png")}
-                                        style={{ width:55, height:65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Kelolakuis") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
-                                    <Image
-                                        source={require("../../assets/image/resume.png")}
-                                        style={{ width:55, height:65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Mengelola Kuis</Text>
-                                    </View>
-                                </TouchableOpacity>
+
                             </View>
                         </View>
                     </ScrollView>
                 </View>
-
-
             </View>
-
         </View>
     );
 };
 
-export default Beranda;
+export default Daftarperawat;

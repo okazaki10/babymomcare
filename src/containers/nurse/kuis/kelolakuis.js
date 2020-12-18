@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../../globalstyles';
+import { colors } from '../../../globalstyles';
 
-import style from '../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -130,7 +130,7 @@ function Kelolakuis(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/exit.png")}
+                                source={require("../../../assets/image/exit.png")}
                                 style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />

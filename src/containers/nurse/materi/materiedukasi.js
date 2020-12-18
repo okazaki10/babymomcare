@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
-import { colors } from '../../globalstyles';
-import style from '../../globalstyles';
+import { colors } from '../../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -83,29 +83,31 @@ function Materiedukasi(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-            
+
             <View style={{ flex: 1 }}>
+                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Materi Edukasi</Text>
+                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
-                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0,backgroundColor:"#F3F4F6",marginBottom:15 }]}>
+                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-                                    <View>
-                                        <TouchableOpacity style={[style.card, { marginBottom: 15, flexDirection: "row",backgroundColor:colors.button }]} onPress={()=>props.navigation.navigate("Detailmateri")}>
-                                            <Image
-                                                source={require("../../assets/image/empty.png")}
-                                                style={{ width: 35, height: 35 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 14,color:"white" }]}>Cara Memandikan Bayi</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                        
-                            
+                            <View>
+                                <TouchableOpacity style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} onPress={() => props.navigation.navigate("Detailmateri")}>
+                                    <Image
+                                        source={require("../../../assets/image/empty.png")}
+                                        style={{ width: 35, height: 35 }}
+                                        resizeMode="contain"
+                                    />
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>Cara Memandikan Bayi</Text>
                                     </View>
+                                </TouchableOpacity>
+
+
+                            </View>
                         </View>
                     </ScrollView>
                 </View>

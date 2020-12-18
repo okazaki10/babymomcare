@@ -143,6 +143,16 @@ function Beranda(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Mengelola Kuis</Text>
                                     </View>
                                 </TouchableOpacity>
+                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Daftarsurvey") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
+                                    <Image
+                                        source={require("../../assets/image/resume.png")}
+                                        style={{ width:55, height:65 }}
+                                        resizeMode="stretch"
+                                    />
+                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Survey</Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </ScrollView>

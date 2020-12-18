@@ -4,21 +4,24 @@ import * as React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {  faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog } from '@fortawesome/free-solid-svg-icons';
+import {  faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../globalstyles';
-import Beranda from './beranda';
-import Forum from './forum/forum';
-import Materiedukasi from './materi/materiedukasi';
-import Listpasien from './pasien/listpasien';
-import Daftarperawat from '../pasien/chat/daftarperawat';
-import { Settings } from 'react-native';
-import Pengaturan from './pengaturan/pengaturan';
+import Beranda from '../nurse/beranda';
+import Materiedukasi from '../nurse/materi/materiedukasi';
+import Listpasien from '../nurse/pasien/listpasien';
+import Forum from '../nurse/forum/forum';
+import Chat from './chat/chat';
+import Daftarperawat from './chat/daftarperawat';
+import Anjuranpasien from '../nurse/reminder/anjuranpasien';
+import Tabreminder from './tabreminder';
+import Pengaturan from '../nurse/pengaturan/pengaturan';
+
 
 const Tab = createBottomTabNavigator();
 
-function Menubar() {
+function Menubarpasien() {
   return (
     <Tab.Navigator
       initialRouteName="Beranda"
@@ -47,7 +50,7 @@ function Menubar() {
         }}
       />
       <Tab.Screen
-        name="Chat"
+        name="Daftarperawat"
         component={Daftarperawat}
         options={{
           tabBarLabel: 'Chat',
@@ -57,12 +60,12 @@ function Menubar() {
         }}
       />
        <Tab.Screen
-        name="Forum"
-        component={Forum}
+        name="Reminder"
+        component={Tabreminder}
         options={{
-          tabBarLabel: 'Forum',
+          tabBarLabel: 'Reminder',
           tabBarIcon: ({color, size}) => (
-            <FontAwesomeIcon icon={faCommentDots} size={28} color={color}></FontAwesomeIcon>
+            <FontAwesomeIcon icon={faClipboardList} size={28} color={color}></FontAwesomeIcon>
           ),
         }}
       />
@@ -80,4 +83,4 @@ function Menubar() {
   );
 };
 
-export default Menubar;
+export default Menubarpasien;

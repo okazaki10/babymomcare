@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../../globalstyles';
+import { colors } from '../../../globalstyles';
 
-import style from '../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -131,7 +131,7 @@ function Forum(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../assets/image/exit.png")}
+                                source={require("../../../assets/image/exit.png")}
                                 style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
@@ -172,6 +172,8 @@ function Forum(props) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
+            <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20,textAlign:"center" }]}>Forum</Text>
+            <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={{ flexDirection: "row" }}>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 1 }]}>
@@ -188,7 +190,7 @@ function Forum(props) {
                             <View>
                                 <TouchableOpacity onLongPress={tindakanforum} onPress={forumdetail} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
                                     <Image
-                                        source={require("../../assets/image/empty.png")}
+                                        source={require("../../../assets/image/empty.png")}
                                         style={{ width: 40, height: 40 }}
                                         resizeMode="contain"
                                     />

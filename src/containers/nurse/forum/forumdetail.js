@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../../globalstyles';
+import { colors } from '../../../globalstyles';
 
-import style from '../../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -101,7 +101,7 @@ function Forumdetail(props) {
                         <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
                             <View style={[{ flexDirection: "row" }]}>
                                 <Image
-                                    source={require("../../assets/image/empty.png")}
+                                    source={require("../../../assets/image/empty.png")}
                                     style={{ width: 40, height: 40 }}
                                     resizeMode="contain"
                                 />
@@ -114,7 +114,7 @@ function Forumdetail(props) {
                             <View style={[style.line, { marginBottom: 15 }]}></View>
                             <View style={[{ flexDirection: "row" }]}>
                                 <Image
-                                    source={require("../../assets/image/empty.png")}
+                                    source={require("../../../assets/image/empty.png")}
                                     style={{ width: 40, height: 40 }}
                                     resizeMode="contain"
                                 />
@@ -132,7 +132,7 @@ function Forumdetail(props) {
                         <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
                             <View style={[{ flexDirection: "row" }]}>
                                 <Image
-                                    source={require("../../assets/image/empty.png")}
+                                    source={require("../../../assets/image/empty.png")}
                                     style={{ width: 40, height: 40 }}
                                     resizeMode="contain"
                                 />
