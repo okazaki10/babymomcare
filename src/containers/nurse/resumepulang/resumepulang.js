@@ -78,12 +78,13 @@ function Resumepulang(props) {
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahresume = () => {
+        global.mode = "resume"
         props.navigation.navigate("Tambahresume")
     }
     const ubahresume = () => {
-
-        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang" })
+        global.mode = "resume"
         global.add = 0
+        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang" })
         toggleModal2()
     }
     const tindakanresume = () => {
@@ -97,6 +98,10 @@ function Resumepulang(props) {
         setisipesan("Apakah anda yakin untuk menghapus konten ini")
         toggleModal3()
 
+    }
+    const detailresume = () => {
+        global.mode = "resume"
+        props.navigation.navigate("Detailresumepulang")
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -191,7 +196,7 @@ function Resumepulang(props) {
                                             <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                                         </View>
                                         <Button title="+ Tambah Resume Pulang" onPress={tambahresume} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                        <TouchableOpacity onLongPress={tindakanresume} onPress={() => { props.navigation.navigate("Detailresumepulang") }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                        <TouchableOpacity onLongPress={tindakanresume} onPress={detailresume} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
                                                 source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}

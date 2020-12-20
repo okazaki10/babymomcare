@@ -36,6 +36,9 @@ function Login(props) {
         } else if (username == "b") {
             props.navigation.navigate("Menubarpasien")
             global.status = 1
+        } else if (username == "c") {
+            props.navigation.navigate("Menubaradmin")
+            global.status = 3
         }
         /*
         setspinner(true)

@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-function Detailresumepulang(props) {
+function Datanurse(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -90,18 +90,7 @@ function Detailresumepulang(props) {
             global.add = 0
         }
     }
-    const tindakanpasien = (index) => {
-        if (index == 0) {
-            setisipesan("Pilih tindakan untuk data ini")
-            toggleModal2()
-        } else if (index == 1) {
-            setisipesan("Pilih tindakan untuk data ini")
-            toggleModal2()
-        } else if (index == 2) {
-            setisipesan("Pilih tindakan untuk data ini")
-            toggleModal2()
-        }
-    }
+
     const addpasien = () => {
         props.navigation.navigate("Addforum", { nama: "Buat Forum" })
     }
@@ -122,7 +111,6 @@ function Detailresumepulang(props) {
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
-            
             <Modal isVisible={isModalVisible2}
                 onBackdropPress={toggleModal2}
                 onBackButtonPress={toggleModal2}>
@@ -130,11 +118,10 @@ function Detailresumepulang(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={toggleModal2} title="Hapus" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            <Button onPress={toggleModal2} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={toggleModal2} title="Batal" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={{ backgroundColor: "white" }}>
+                            <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
                         </View>
                     </View>
@@ -147,58 +134,43 @@ function Detailresumepulang(props) {
             />
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 1, padding: 20 }}>
-
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-
                             <View>
+
                                 <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Tanggal Kontrol Selanjutnya</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: 25/01/2016</Text>
-                                </View>
-                                {global.mode == "resume"?(    <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Tempat Kontrol</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: Poli Bayi</Text>
-                                </View>):(null)}
-                            
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Berat Badan</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: 63 kg</Text>
+                                    <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Nama</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: Nikmah salsabila</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Panjang Badan</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: 50 cm</Text>
+                                    <Text style={[style.nunitosans, style.datapasien]}>Username</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: nikmah</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Lingkar Kepala</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: 50 cm</Text>
+                                    <Text style={[style.nunitosans, style.datapasien]}>Password</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: ********</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Suhu</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: 30 celcius</Text>
+                                    <Text style={[style.nunitosans, style.datapasien]}>Alamat Rumah Sakit</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: Jalan radio raya</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>{global.status == 1?"Catatan Tambahan":"Catatan dari perawat"}</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>:</Text>
-                                </View>
-                                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 30 }}>
-                                    <View style={{ width: 10, height: 10, borderRadius: 50, backgroundColor: colors.primary }}></View>
-                                    <Text style={[style.nunitosans, style.datapasien2, { marginLeft: 15, marginTop: 0 }]}>Memberikan ASI</Text>
-                                </View>
-                                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                    <View style={{ width: 10, height: 10, borderRadius: 50, backgroundColor: colors.primary }}></View>
-                                    <Text style={[style.nunitosans, style.datapasien2, { marginLeft: 15, marginTop: 0 }]}>Mencuci Tangan</Text>
+                                    <Text style={[style.nunitosans, style.datapasien]}>Tingkat Pendidikan</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: S1</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien, { marginTop: 30 }]}>Foto Bayi</Text>
+                                    <Text style={[style.nunitosans, style.datapasien]}>Nomor Telepon</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: 087880992192</Text>
                                 </View>
-                                <View style={{marginTop:15}}>
-                                <Image
-                                    source={{ uri: "https://www.thailandmedical.news/uploads/editor/files/Coronavirus-babies.jpg" }}
-                                    style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
-                                    resizeMode="cover"
-                                ></Image>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={[style.nunitosans, style.datapasien]}>Tempat Rumah Sakit</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: sentra medika</Text>
                                 </View>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={[style.nunitosans, style.datapasien]}>Lama Bekerja</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: 5 tahun</Text>
+                                </View>
+
                             </View>
                         </View>
                     </ScrollView>
@@ -213,4 +185,4 @@ function Detailresumepulang(props) {
 
 
 
-export default Detailresumepulang;
+export default Datanurse;

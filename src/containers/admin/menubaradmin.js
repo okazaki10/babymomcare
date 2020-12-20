@@ -9,21 +9,16 @@ import {  faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faComme
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../globalstyles';
 import Beranda from '../nurse/beranda';
-import Materiedukasi from '../nurse/materi/materiedukasi';
-import Listpasien from '../nurse/pasien/listpasien';
-import Forum from '../nurse/forum/forum';
-import Chat from './chat/chat';
-import Daftarperawat from './chat/daftarperawat';
-import Anjuranpasien from '../nurse/reminder/anjuranpasien';
-import Tabreminder from './tabreminder';
-import Pengaturan from '../nurse/pengaturan/pengaturan';
-import Tabedukasi from '../nurse/materi/tabmateri';
 import Tabmateri from '../nurse/materi/tabmateri';
+import Daftarperawat from '../pasien/chat/daftarperawat';
+import Tabreminder from '../pasien/tabreminder';
+import Pengaturan from '../nurse/pengaturan/pengaturan';
+
 
 
 const Tab = createBottomTabNavigator();
 
-function Menubarpasien() {
+function Menubaradmin() {
   return (
     <Tab.Navigator
       initialRouteName="Beranda"
@@ -85,4 +80,4 @@ function Menubarpasien() {
   );
 };
 
-export default Menubarpasien;
+export default Menubaradmin;

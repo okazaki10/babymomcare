@@ -129,9 +129,9 @@ function Addforum(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView nestedScrollEnabled={true}>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul Pertanyaan</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul</Text>
                         <TextInput onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Deskripsi Pertanyaan</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pertanyaan</Text>
                         <View style={[style.card]}>
                             <RichEditor
                                 ref={textref}
@@ -162,6 +162,7 @@ function Addforum(props) {
                         actions.insertBulletsList,
                         actions.insertOrderedList,
                     ]}
+
                 />
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1, marginRight: 10 }}>

@@ -7,13 +7,12 @@ import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Forumdetail from './forumdetail';
-function Forum(props) {
+function Datakontrol(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -78,29 +77,31 @@ function Forum(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-
-    const forumdetail = () => {
-        props.navigation.navigate("Forumdetail")
+    const tambahkontrol = () => {
+        global.mode = "kontrol"
+        props.navigation.navigate("Tambahresume",{nama:"Tambah data kontrol"})
     }
-    const tambahforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
-    }
-    const ubahforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Ubah Forum" })
+    const ubahkontrol = () => {
+        global.mode = "kontrol"
         global.add = 0
+        props.navigation.navigate("Tambahresume", { nama: "Ubah data kontrol" })
         toggleModal2()
     }
-    const tindakanforum = () => {
+    const tindakankontrol = () => {
 
-        setisipesan("Pilih tindakan untuk forum ini")
+        setisipesan("Pilih tindakan untuk resume ini")
         toggleModal2()
 
     }
-    const hapusforum = () => {
+    const hapuskontrol = () => {
         toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus forum ini")
+        setisipesan("Apakah anda yakin untuk menghapus konten ini")
         toggleModal3()
 
+    }
+    const detailkontrol = () => {
+        global.mode = "kontrol"
+        props.navigation.navigate("Detailresumepulang",{nama:"Detail data kontrol"})
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -112,15 +113,9 @@ function Forum(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
-            <Spinner
-                visible={spinner}
-                textContent={'Loading...'}
-                textStyle={{ color: '#FFF' }}
-            />
             <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
@@ -158,10 +153,10 @@ function Forum(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapusforum} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            <Button onPress={hapuskontrol} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={ubahforum} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            <Button onPress={ubahkontrol} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -171,49 +166,54 @@ function Forum(props) {
                     </View>
                 </View>
             </Modal>
+            <Spinner
+                visible={spinner}
+                textContent={'Loading...'}
+                textStyle={{ color: '#FFF' }}
+            />
+
+
             <View style={{ flex: 1 }}>
-                {global.status == 2 ? (
-                    <View>
-                        <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Forum</Text>
-                        <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
-                    </View>
-                )
-                    : (null)}
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    <View style={{ flexDirection: "row" }}>
-                        <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 1 }]}>
-                            <Ionicons name={'search-outline'} size={24} color={colors.grey} />
-                            <TextInput onChangeText={setcari} placeholder="Cari Pertanyaan" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
-                        </View>
-                        <TouchableOpacity onPress={tambahforum} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
-                            <Ionicons name={'add-circle-outline'} size={24} color="#92B1CD" />
-                        </TouchableOpacity>
 
-                    </View>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-                            <View>
-                                <TouchableOpacity onLongPress={tindakanforum} onPress={forumdetail} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
+                            {kosong ? (<View>
+                                <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 20 }}>
                                     <Image
                                         source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 40, height: 40 }}
+                                        style={{ width: 100, height: 100 }}
                                         resizeMode="contain"
                                     />
-                                    <View style={{ marginLeft: 15 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15, color: colors.judulforum, paddingRight: 50 }]}>Bagaimana Mengatasi Berat Rendah?</Text>
-                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 2, paddingRight: 50 }]}>Oleh: Reza Artamevia</Text>
-                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
-                                        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
-                                            <Ionicons name={'chatbox-outline'} size={24} color={colors.grey} style={{ marginRight: 5 }} />
-                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginRight: 5 }]}>16</Text>
-                                            <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
-                                        </View>
-                                    </View>
+                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki data kontrol</Text>
+                                </View>
+                                <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            </View>) : (
+                                    <View>
+                                        <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                        <TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={tindakankontrol} onPress={detailkontrol}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kontrol ke-1</Text>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Tanggal kontrol</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: 25/01/2016</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Anjuran yang diberikan</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>:</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 30 }}>
+                                                <View style={{ width: 10, height: 10, borderRadius: 50, backgroundColor: colors.primary }}></View>
+                                                <Text style={[style.nunitosans, style.datapasien2, { marginLeft: 15, marginTop: 0 }]}>Memberikan ASI</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                <View style={{ width: 10, height: 10, borderRadius: 50, backgroundColor: colors.primary }}></View>
+                                                <Text style={[style.nunitosans, style.datapasien2, { marginLeft: 15, marginTop: 0 }]}>Mencuci Tangan</Text>
+                                            </View>
+                                            <Text style={[style.nunitosans, style.datapasien,{textAlign:"right",textDecorationLine:"underline"}]}>Lihat Selengkapnya</Text>
+                                        </TouchableOpacity>
 
-                                </TouchableOpacity>
-
-                            </View>
+                                    </View>)}
                         </View>
                     </ScrollView>
                 </View>
@@ -225,4 +225,4 @@ function Forum(props) {
     );
 };
 
-export default Forum;
+export default Datakontrol;

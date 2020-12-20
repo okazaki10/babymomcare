@@ -25,6 +25,7 @@ global.key = "";
 global.user_id = "";
 global.guide = "1";
 global.add = 1;
+global.mode = "";
 function App() {
   const { width: DEVICE_WIDTH } = Dimensions.get('window');
   const [sudah, setsudah] = useState(true);

@@ -85,8 +85,11 @@ function Materiedukasi(props) {
             />
 
             <View style={{ flex: 1 }}>
+                {global.status == 2 ? (  <View>
                 <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Materi Edukasi</Text>
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
+                </View>):(null)}
+              
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>

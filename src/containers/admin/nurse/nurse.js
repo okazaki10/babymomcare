@@ -7,13 +7,12 @@ import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Forumdetail from './forumdetail';
-function Forum(props) {
+function Nurse(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -78,29 +77,21 @@ function Forum(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-
-    const forumdetail = () => {
-        props.navigation.navigate("Forumdetail")
+    const tambahanjuran = () => {
+        props.navigation.navigate("Tambahanjuran")
     }
-    const tambahforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
-    }
-    const ubahforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Ubah Forum" })
+    const ubahnurse = () => {
+        props.navigation.navigate("Datanurse", { nama: "Nurse" })
         global.add = 0
+    }
+    const tindakananjuran = () => {
+        setisipesan("Pilih tindakan untuk reminder ini")
         toggleModal2()
     }
-    const tindakanforum = () => {
-
-        setisipesan("Pilih tindakan untuk forum ini")
+    const hapusanjuran = () => {
         toggleModal2()
-
-    }
-    const hapusforum = () => {
-        toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus forum ini")
+        setisipesan("Apakah anda yakin untuk menghapus reminder ini")
         toggleModal3()
-
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -112,7 +103,6 @@ function Forum(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -121,6 +111,7 @@ function Forum(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
+
             <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
@@ -158,11 +149,7 @@ function Forum(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapusforum} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
-                        </View>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={ubahforum} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
-                            </Button>
+                            <Button onPress={hapusanjuran} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
@@ -172,46 +159,25 @@ function Forum(props) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
-                {global.status == 2 ? (
-                    <View>
-                        <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Forum</Text>
-                        <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
-                    </View>
-                )
-                    : (null)}
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    <View style={{ flexDirection: "row" }}>
-                        <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 1 }]}>
-                            <Ionicons name={'search-outline'} size={24} color={colors.grey} />
-                            <TextInput onChangeText={setcari} placeholder="Cari Pertanyaan" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
-                        </View>
-                        <TouchableOpacity onPress={tambahforum} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
-                            <Ionicons name={'add-circle-outline'} size={24} color="#92B1CD" />
-                        </TouchableOpacity>
-
-                    </View>
+                    <Button title="+ Register Nurse" onPress={tambahanjuran} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={tindakanforum} onPress={forumdetail} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
+                                <TouchableOpacity onLongPress={tindakananjuran} onPress={ubahnurse} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
-                                        source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 40, height: 40 }}
-                                        resizeMode="contain"
+                                        source={require("../../../assets/image/addpeople.png")}
+                                        style={{ width: 55, height: 65 }}
+                                        resizeMode="stretch"
                                     />
-                                    <View style={{ marginLeft: 15 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15, color: colors.judulforum, paddingRight: 50 }]}>Bagaimana Mengatasi Berat Rendah?</Text>
-                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 2, paddingRight: 50 }]}>Oleh: Reza Artamevia</Text>
-                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
-                                        <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
-                                            <Ionicons name={'chatbox-outline'} size={24} color={colors.grey} style={{ marginRight: 5 }} />
-                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginRight: 5 }]}>16</Text>
-                                            <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
-                                        </View>
+                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Nikmah Salsabila</Text>
                                     </View>
 
+
                                 </TouchableOpacity>
+
 
                             </View>
                         </View>
@@ -225,4 +191,4 @@ function Forum(props) {
     );
 };
 
-export default Forum;
+export default Nurse;

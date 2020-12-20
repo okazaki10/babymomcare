@@ -163,7 +163,7 @@ function Kontakperawat(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15, marginRight: 50 }]}>Rumah sakit universitas indonesia, pondok cina, beji, depok</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign:"center",marginTop:15 }]}>Perawat tidak menjawab?</Text>
+                                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign:"center",marginTop:25 }]}>Perawat tidak menjawab?</Text>
                                 <TouchableOpacity onPress={()=>{props.navigation.goBack()}} style={{ alignItems: "center" }}>
                                     <Text style={[style.poppinsmedium, { fontSize: 14, textDecorationLine: "underline",color:colors.button }]}>Kontak perawat lainnya disini</Text>
                                 </TouchableOpacity>

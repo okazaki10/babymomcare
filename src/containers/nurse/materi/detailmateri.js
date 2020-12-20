@@ -77,6 +77,10 @@ function Detailmateri(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
+    const kerjakankuis = () => {
+        props.navigation.navigate("Kerjakankuis")
+    }
+    const [selesai, setselesai] = useState(false)
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -87,7 +91,24 @@ function Detailmateri(props) {
             />
             <ScrollView>
                 <View style={{ flex: 1, padding: 23 }}>
-                    <View style={[style.card, { elevation: 10, padding: 19 }]}>
+                    {global.status == 1 ? (
+                        selesai == true?
+                        (      <TouchableOpacity onPress={kerjakankuis} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
+                            <View style={{ flexDirection: "row",justifyContent:"center",alignItems:"center" }}>
+                                <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
+                                <View>
+                                    <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>8/10</Text>
+                                    <Text style={[style.poppinsmedium, { fontSize: 12, textDecorationLine: "underline", color: colors.button }]}>Kerjakan Lagi</Text>
+                                </View>
+                            </View>
+                    </TouchableOpacity>
+                            ):( 
+                                <Button title="Kerjakan Kuis" onPress={kerjakankuis} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
+                       
+                    ) : (null)}
+              
+
+                    <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
                         <Text style={[style.poppinsbold, { fontSize: 17 }]}>Pemantuan Pertumbuhan dan Perkembangan</Text>
                         <Text style={[style.nunitosans, { fontSize: 12 }]}>{format(new Date(), "iii', 'dd' 'MMM', 'yyyy'", { locale: id })}</Text>
                         <Image
@@ -99,7 +120,7 @@ function Detailmateri(props) {
                     </View>
                     <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Forum Terkait</Text>
                     <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
-                        <TouchableOpacity style={[ { flexDirection: "row"}]} onPress={()=>{props.navigation.navigate("Daftarakun")}}>
+                        <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Daftarakun") }}>
                             <Image
                                 source={require("../../../assets/image/empty.png")}
                                 style={{ width: 40, height: 40 }}
@@ -110,8 +131,8 @@ function Detailmateri(props) {
                                 <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey }]}>Oleh: Raffi Ahmad</Text>
                             </View>
                         </TouchableOpacity>
-                        <View style={[style.line,{marginBottom:15}]}></View>
-                        <TouchableOpacity style={[ { flexDirection: "row"}]}>
+                        <View style={[style.line, { marginBottom: 15 }]}></View>
+                        <TouchableOpacity style={[{ flexDirection: "row" }]}>
                             <Image
                                 source={require("../../../assets/image/empty.png")}
                                 style={{ width: 40, height: 40 }}

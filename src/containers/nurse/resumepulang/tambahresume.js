@@ -122,29 +122,37 @@ function Tambahresume(props) {
         setisipesan("Resume Pulang berhasil dibuat!")
         toggleModal()
     }
+    const kontroldiubah = () => {
+        setisipesan("Data Kontrol berhasil diubah!")
+        toggleModal()
+    }
+    const kontroldibuat = () => {
+        setisipesan("Data Kontrol berhasil dibuat!")
+        toggleModal()
+    }
     const gantiprofil = () => {
-    
-            ImagePicker.showImagePicker(options, (response) => {
-                //console.log('Response = ', response);
 
-                if (response.didCancel) {
-                    console.log('User cancelled image picker');
-                } else if (response.error) {
-                    console.log('ImagePicker Error: ', response.error);
-                } else if (response.customButton) {
-                    console.log('User tapped custom button: ', response.customButton);
-                } else {
-                    if (response.uri) {
-                        sethide(false)
-                        setgambar(response.uri)
-                    }
+        ImagePicker.showImagePicker(options, (response) => {
+            //console.log('Response = ', response);
 
-                    // You can also display the image using data:
-                    // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                if (response.uri) {
+                    sethide(false)
+                    setgambar(response.uri)
                 }
-            });
-     
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+            }
+        });
+
     }
     return (
         <View style={style.main}>
@@ -208,8 +216,10 @@ function Tambahresume(props) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Kontrol</Text>
-                        <TextInput onChangeText={settempatkontrol} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        {global.mode == "resume" ? (<View>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Kontrol</Text>
+                            <TextInput onChangeText={settempatkontrol} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        </View>) : (null)}
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat Badan</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
@@ -231,7 +241,8 @@ function Tambahresume(props) {
                             <TextInput onChangeText={setsuhu} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>celcius</Text>
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Anjuran Yang Diberikan</Text>
+
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>{global.status == 1 ? "Catatan Tambahan" : "Catatan dari perawat"}</Text>
                         {ayd.map((item, index) =>
                             <View>
                                 <TextInput onChangeText={(value) => { setanjuran(index, value) }} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
@@ -259,8 +270,15 @@ function Tambahresume(props) {
                 </ScrollView>
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1 }}>
-                        {global.add == 1 ? (<Button title="Simpan" onPress={resumedibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
-                            <Button title="Simpan" onPress={resumediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                        {global.mode == "resume" ? (<View>
+                            {global.add == 1 ? (
+                                <Button title="Simpan" onPress={resumedibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
+                                    <Button title="Simpan" onPress={resumediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                        </View>) : (<View>
+                            {global.add == 1 ? (
+                                <Button title="Simpan" onPress={kontroldibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
+                                    <Button title="Simpan" onPress={kontroldiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                        </View>)}
 
                     </View>
                 </View>

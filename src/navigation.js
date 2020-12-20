@@ -28,6 +28,13 @@ import Menubarpasien from './containers/pasien/menubarpasien';
 import Daftarperawat from './containers/pasien/chat/daftarperawat';
 import Kontakperawat from './containers/pasien/chat/kontakperawat';
 import Daftarsurvey from './containers/pasien/survey/daftarsurvey';
+import Datakontrol from './containers/nurse/resumepulang/datakontrol';
+import Kerjakankuis from './containers/nurse/kuis/kerjakankuis';
+import Menubaradmin from './containers/admin/menubaradmin';
+import Nurse from './containers/admin/nurse/nurse';
+import Datanurse from './containers/admin/nurse/datanurse';
+import Tabnurse from './containers/admin/nurse/tabnurse';
+
 
 
 const Stack = createStackNavigator();
@@ -39,125 +46,150 @@ function Navigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={initialroute}>
-      <Stack.Screen
+        <Stack.Screen
           name="Listpasien"
           component={Listpasien}
-          options={{ headerShown:false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Login"
           component={Login}
-          options={{ headerShown:false }}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Materiedukasi"
           component={Materiedukasi}
-          options={{ headerTitle:"Materi Edukasi" }}
+          options={{ headerTitle: "Materi Edukasi" }}
         />
         <Stack.Screen
           name="Detailmateri"
           component={Detailmateri}
-          options={{ headerTitle:"Materi Edukasi" }}
+          options={{ headerTitle: "Materi Edukasi" }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Daftarakun"
           component={Daftarakun}
-          options={({ route }) => ({ title: route.params?route.params.nama:"Register Pasien" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Register Pasien" })}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Daftarbayi"
           component={Daftarbayi}
-          options={({ route }) => ({title: route.params?route.params.nama:"Register Pasien"})}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Register Pasien" })}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Daftarortu"
           component={Daftarortu}
-          options={({ route }) => ({ title: route.params?route.params.nama:"Register Pasien" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Register Pasien" })}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Forum"
           component={Forum}
-          options={{ headerTitle:"Forum" }}
+          options={{ headerTitle: "Forum" }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Forumdetail"
           component={Forumdetail}
-          options={{ headerTitle:"Forum" }}
+          options={{ headerTitle: "Forum" }}
         />
         <Stack.Screen
           name="Addforum"
           component={Addforum}
           options={({ route }) => ({ title: route.params.nama })}
         />
-          <Stack.Screen
+        <Stack.Screen
           name="Datapasien"
           component={Datapasien}
-          options={{ headerTitle:"Data Pasien" }}
+          options={{ headerTitle: "Data Pasien" }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Menubar"
           component={Menubar}
-          options={{ headerShown:false }}
+          options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Resumepulang"
           component={Resumepulang}
-          options={{ headerTitle:"Resume Pulang" }}
+          options={{ headerTitle: "Resume Pulang" }}
         />
         <Stack.Screen
           name="Tambahresume"
           component={Tambahresume}
-          options={({ route }) => ({ title: route.params?route.params.nama:"Tambah Resume Pulang" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Tambah Resume Pulang" })}
         />
         <Stack.Screen
           name="Anjuranpasien"
           component={Anjuranpasien}
-          options={{ headerTitle:"Anjuran Pasien" }}
+          options={{ headerTitle: "Anjuran Pasien" }}
         />
         <Stack.Screen
           name="Tambahanjuran"
           component={Tambahanjuran}
-          options={({ route }) => ({ title: route.params?route.params.nama:"Buat Reminder" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Buat Reminder" })}
         />
         <Stack.Screen
           name="Kelolakuis"
           component={Kelolakuis}
-          options={{ headerTitle:"Mengelola Kuis" }}
+          options={{ headerTitle: "Mengelola Kuis" }}
         />
-           <Stack.Screen
+        <Stack.Screen
           name="Detailresumepulang"
           component={Detailresumepulang}
-          options={{ headerTitle:"Resume Pulang" }}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Resume Pulang" })}
         />
         <Stack.Screen
           name="Tambahkuis"
           component={Tambahkuis}
-          options={({ route }) => ({ title: route.params?route.params.nama:"Tambah Kuis" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Tambah Kuis" })}
         />
         <Stack.Screen
           name="Chat"
           component={Chat}
-          options={{ headerTitle:"Chat Perawat" }}
+          options={{ headerTitle: "Chat Perawat" }}
         />
         <Stack.Screen
           name="Menubarpasien"
           component={Menubarpasien}
-          options={{ headerShown:false }}
+          options={{ headerShown: false }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Daftarperawat"
           component={Daftarperawat}
-          options={{ headerTitle:"Daftar Perawat" }}
+          options={{ headerTitle: "Daftar Perawat" }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Kontakperawat"
           component={Kontakperawat}
-          options={{ headerTitle:"Kontak Perawat" }}
+          options={{ headerTitle: "Kontak Perawat" }}
         />
-         <Stack.Screen
+        <Stack.Screen
           name="Daftarsurvey"
           component={Daftarsurvey}
-          options={{ headerTitle:"Kontak Perawat" }}
+          options={{ headerTitle: "Daftar Survey" }}
+        />
+        <Stack.Screen
+          name="Datakontrol"
+          component={Datakontrol}
+          options={{ headerTitle: "Data Kontrol" }}
+        />
+        <Stack.Screen
+          name="Kerjakankuis"
+          component={Kerjakankuis}
+          options={{ headerTitle: "Kuis" }}
+        />
+        <Stack.Screen
+          name="Menubaradmin"
+          component={Menubaradmin}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Nurse"
+          component={Nurse}
+          options={{ headerTitle: "Nurse" }}
+        />
+        <Stack.Screen
+          name="Tabnurse"
+          component={Tabnurse}
+          options={{ headerTitle:"Nurse"}}
         />
       </Stack.Navigator>
     </NavigationContainer>

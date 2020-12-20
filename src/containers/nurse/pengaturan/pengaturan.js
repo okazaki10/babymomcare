@@ -112,7 +112,9 @@ function Pengaturan(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
- 
+    const logout = () =>{
+        props.navigation.navigate("Login")
+    }
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -178,7 +180,7 @@ function Pengaturan(props) {
                
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-                            <Button title="Log Out"  buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            <Button title="Log Out" onPress={logout} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         </View>
                     </ScrollView>
                 </View>
