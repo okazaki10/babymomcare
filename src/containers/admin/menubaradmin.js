@@ -13,6 +13,7 @@ import Tabmateri from '../nurse/materi/tabmateri';
 import Daftarperawat from '../pasien/chat/daftarperawat';
 import Tabreminder from '../pasien/tabreminder';
 import Pengaturan from '../nurse/pengaturan/pengaturan';
+import Materiedukasi from '../nurse/materi/materiedukasi';
 
 
 
@@ -38,7 +39,7 @@ function Menubaradmin() {
       />
       <Tab.Screen
         name="Materi"
-        component={Tabmateri}
+        component={Materiedukasi}
         options={{
           tabBarLabel: 'Materi',
           tabBarIcon: ({color, size}) => (

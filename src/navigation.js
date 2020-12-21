@@ -34,6 +34,9 @@ import Menubaradmin from './containers/admin/menubaradmin';
 import Nurse from './containers/admin/nurse/nurse';
 import Datanurse from './containers/admin/nurse/datanurse';
 import Tabnurse from './containers/admin/nurse/tabnurse';
+import Pendaftarannurse from './containers/admin/nurse/pendaftarannurse';
+import Tambahsurvey from './containers/pasien/survey/tambahsurvey';
+import Tambahmateri from './containers/nurse/materi/tambahmateri';
 
 
 
@@ -190,6 +193,21 @@ function Navigation() {
           name="Tabnurse"
           component={Tabnurse}
           options={{ headerTitle:"Nurse"}}
+        />
+         <Stack.Screen
+          name="Pendaftarannurse"
+          component={Pendaftarannurse}
+          options={{ headerTitle:"Nurse"}}
+        />
+          <Stack.Screen
+          name="Tambahsurvey"
+          component={Tambahsurvey}
+          options={{ headerTitle:"Tambah Survey"}}
+        />
+          <Stack.Screen
+          name="Tambahmateri"
+          component={Tambahmateri}
+          options={{ headerTitle:"Tambah Materi"}}
         />
       </Stack.Navigator>
     </NavigationContainer>

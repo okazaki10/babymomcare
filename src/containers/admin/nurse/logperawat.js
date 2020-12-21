@@ -12,7 +12,8 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-function Nurse(props) {
+import HyperLink from 'react-native-hyperlink';
+function Logperawat(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -77,28 +78,12 @@ function Nurse(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const tambahnurse = () => {
-        props.navigation.navigate("Pendaftarannurse")
-    }
-    const ubahnurse = () => {
-        props.navigation.navigate("Pendaftarannurse", { nama: "Nurse" })
-        global.add = 0
+    const tindakanpasien = () => {
+
+        setisipesan("Pilih tindakan untuk data ini")
         toggleModal2()
+
     }
-    const lihatnurse = () => {
-        props.navigation.navigate("Tabnurse", { nama: "Nurse" })
-    }
-    const tindakannurse = () => {
-        setisipesan("Pilih tindakan untuk reminder ini")
-        toggleModal2()
-    }
-    const hapusnurse = () => {
-        toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus reminder ini")
-        toggleModal3()
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -107,6 +92,11 @@ function Nurse(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const hapuspasien = () => {
+        toggleModal2()
+        setisipesan("Apakah anda yakin untuk menghapus pasien ini")
+        toggleModal3()
+    }
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -115,7 +105,6 @@ function Nurse(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-
             <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
@@ -153,12 +142,9 @@ function Nurse(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapusnurse} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            <Button onPress={hapuspasien} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={ubahnurse} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
-                            </Button>
-                        </View>
+
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -166,27 +152,16 @@ function Nurse(props) {
                     </View>
                 </View>
             </Modal>
-            <View style={{ flex: 1 }}>
 
+            <View style={{ flex: 1 }}>
                 <View style={{ flex: 1, padding: 20 }}>
-                    <Button title="+ Register Nurse" onPress={tambahnurse} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={tindakannurse} onPress={lihatnurse} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../../assets/image/addpeople.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Nikmah Salsabila</Text>
-                                    </View>
-
-
-                                </TouchableOpacity>
-
-
+                                <View style={[style.card, { padding: 22 }]}>
+                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>Membuat Pasien Ibu Alana</Text>
+                                        <Text style={[style.nunitosans, {marginTop:5, fontSize: 13 }]}>12/11/2019 12:00</Text>
+                                </View>
                             </View>
                         </View>
                     </ScrollView>
@@ -199,4 +174,4 @@ function Nurse(props) {
     );
 };
 
-export default Nurse;
+export default Logperawat;

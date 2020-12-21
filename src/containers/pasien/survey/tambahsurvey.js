@@ -2,44 +2,33 @@ import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
-import { colors } from '../globalstyles';
+import { colors } from '../../../globalstyles';
 
-import style from '../globalstyles';
+import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-function Login(props) {
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+function Tambahsurvey(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [username, setusername] = useState("")
-    const [password, setpassword] = useState("")
+    const [judul, setjudul] = useState("")
+    const [ditujukan,setditujukan] = useState("")
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
     const login = () => {
-        if (username == "b") {
-            props.navigation.navigate("Menubar")
-            global.status = 2
-        } else if (username == "a") {
-            props.navigation.navigate("Menubarpasien")
-            global.status = 1
-        } else if (username == "c") {
-            props.navigation.navigate("Menubaradmin")
-            global.status = 3
-        }
+        props.navigation.navigate("Mainpage")
         /*
         setspinner(true)
         fetch(global.url + '/login', {
@@ -85,8 +74,17 @@ function Login(props) {
             */
     };
     const [spinner, setspinner] = useState(false)
+    const tambahsurvey = () => {
+        setisipesan("Survey berhasil dibuat!")
+        toggleModal()
+    }
+    const ubahsurvey = () => {
+        setisipesan("Survey berhasil diubah!")
+        toggleModal()
+    }
     return (
         <View style={style.main}>
+
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -103,35 +101,37 @@ function Login(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../assets/image/exit.png")}
-                                style={{ width: 50, height: 50 }}
+                                source={require("../../../assets/image/check.png")}
+                                style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
                         </View>
-                        <Text style={[style.nunitosans, { textAlign: "center", marginTop: 15 }]}>{isipesan}</Text>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
+                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
                     </View>
                 </View>
             </Modal>
 
             <View style={{ flex: 1 }}>
                 <ScrollView>
-                    <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 50 }}>
-                        <Image
-                            source={require("../assets/image/baby.png")}
-                            style={{ width: "50%", height: DEVICE_WIDTH * 0.40 }}
-                            resizeMode="contain"
-                        />
-                    </View>
-                    <View style={{ flex: 1, marginTop: 10, padding: 22 }}>
-                        <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18 }]}>Aplikasi Berat Badan Lahir Rendah</Text>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
-                        <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
-                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                    <View style={{ flex: 1, padding: 22 }}>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul</Text>
+                        <TextInput onChangeText={setjudul} style={[style.card, { elevation: 5,  marginTop: 15 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Ditujukan</Text>
+                        <TextInput onChangeText={setditujukan} style={[style.card, { elevation: 5, marginTop: 15 }]}></TextInput>
                     </View>
                 </ScrollView>
-                <View style={{ padding: 22 }}>
-                    <Button title="Masuk" onPress={login} buttonStyle={style.button} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                <View style={{ padding: 22, flexDirection: "row" }}>
+                    <View style={{ flex: 1, marginLeft: 10 }}>
+                        {global.add == 1 ? (
+                            <Button title="Simpan" onPress={tambahsurvey} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        ) : (
+                            <Button title="Simpan" onPress={ubahsurvey} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+
+                    </View>
                 </View>
             </View>
 
@@ -139,4 +139,4 @@ function Login(props) {
     );
 };
 
-export default Login;
+export default Tambahsurvey;

@@ -96,7 +96,10 @@ function Daftarsurvey(props) {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus pasien ini")
         toggleModal3()
-
+    }
+    const tambahsurvey = () =>{
+        props.navigation.navigate("Tambahsurvey")
+        global.add = 1
     }
     return (
         <View style={style.main}>
@@ -159,10 +162,14 @@ function Daftarsurvey(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <View style={[style.card, { padding: 22 }]}>
+                                {global.status == 3 ?
+                                    (<Button title="+ Buat Survey" onPress={tambahsurvey} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
+                                    : (null)}
+
+                                <View style={[style.card, { padding: 22,marginTop:15 }]}>
                                     <Text style={[style.poppinsbold, { fontSize: 15 }]}>Survey Iterasi 1</Text>
                                     <HyperLink linkDefault={true} linkStyle={{ color: '#2980b9' }}>
-                                        <Text style={[style.nunitosans, {marginTop:15, fontSize: 15, textDecorationLine: "underline" }]}>docs.google.com/survey</Text>
+                                        <Text style={[style.nunitosans, { marginTop: 15, fontSize: 15, textDecorationLine: "underline" }]}>docs.google.com/survey</Text>
                                     </HyperLink>
                                 </View>
                             </View>
