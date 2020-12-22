@@ -30,13 +30,13 @@ function Login(props) {
     }
 
     const login = () => {
-        if (username == "b") {
-            props.navigation.navigate("Menubar")
-            global.status = 2
-        } else if (username == "a") {
+        if (username == "pasien") {
             props.navigation.navigate("Menubarpasien")
             global.status = 1
-        } else if (username == "c") {
+        }else if (username == "nurse") {
+            props.navigation.navigate("Menubar")
+            global.status = 2
+        } else if (username == "admin") {
             props.navigation.navigate("Menubaradmin")
             global.status = 3
         }
@@ -87,6 +87,9 @@ function Login(props) {
     const [spinner, setspinner] = useState(false)
     return (
         <View style={style.main}>
+            <Text>usename = pasien</Text>
+            <Text>usename = nurse</Text>
+            <Text>usename = admin</Text>
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
