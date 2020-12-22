@@ -16,7 +16,7 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
-
+import ImagePicker from 'react-native-image-picker';
 import { actions, defaultActions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
 function Tambahmateri(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
@@ -87,13 +87,48 @@ function Tambahmateri(props) {
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
     const forumdiubah = () => {
-        setisipesan("Forum berhasil diubah!")
+        setisipesan("Materi berhasil diubah!")
         toggleModal()
     }
     const forumdibuat = () => {
-        setisipesan("Forum berhasil dibuat!")
+        setisipesan("Materi berhasil dibuat!")
         toggleModal()
     }
+    const [gambar, setgambar] = useState("")
+    const [hide, sethide] = useState(true)
+    const [options, setoptions] = useState({
+        title: 'Pilih Foto',
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+        quality: 0.5
+    })
+    const gantiprofil = () => {
+
+        ImagePicker.showImagePicker(options, (response) => {
+            //console.log('Response = ', response);
+
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+                console.log('User tapped custom button: ', response.customButton);
+            } else {
+                if (response.uri) {
+                    sethide(false)
+                    setgambar(response.uri)
+                }
+
+                // You can also display the image using data:
+                // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+            }
+        });
+
+    }
+    
     return (
         <View style={style.main}>
 
@@ -129,27 +164,30 @@ function Tambahmateri(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView nestedScrollEnabled={true}>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul Materi</Text>
                         <TextInput onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pertanyaan</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Deskripsi Materi</Text>
                         <View style={[style.card]}>
                             <RichEditor
                                 ref={textref}
                                 onChangeText={setpertanyaan}
                             />
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pilih Topik</Text>
-                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
-                            <Picker
-                                selectedValue={topik}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    settopik(itemValue)
-                                }
-                                mode="dropdown">
-                                <Picker.Item label="Makanan" value="makanan" />
-                                <Picker.Item label="Makanan" value="makanan" />
-                                <Picker.Item label="Makanan" value="makanan" />
-                            </Picker>
+                        {hide ? (null) : (
+                        <View style={{marginTop:15}}><Image
+                            source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
+                            style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
+                            resizeMode="cover"
+                        ></Image></View>)}
+
+
+                        <View style={{ flexDirection: "row", marginTop: 15 }}>
+                            <View style={{ flex: 1, marginRight: 10 }}>
+                                <Button title="Upload Dokumen" onPress={gantiprofil} buttonStyle={[style.button, { backgroundColor: "#C4C4C4" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            </View>
+                            <View style={{ flex: 1, marginLeft: 10, justifyContent: "center" }}>
+                                <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Pilih Dokumen Anda</Text>
+                            </View>
                         </View>
 
                     </View>

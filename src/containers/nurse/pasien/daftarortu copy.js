@@ -225,8 +225,18 @@ function Daftarortu(props) {
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
                         <TextInput onChangeText={setagamaibu} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Paritas</Text>
-                        <TextInput onChangeText={setagamaibu} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pengalaman Merawat Bayi</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={pengalamanibu}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setpengalamanibu(itemValue)
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Pernah" value="pernah" />
+                                <Picker.Item label="Tidak Pernah" value="tidak_pernah" />
+                            </Picker>
+                        </View>
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ayah</Text>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5 }]}>Nama Ayah</Text>
                         <TextInput onChangeText={setnamaayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
@@ -246,7 +256,8 @@ function Daftarortu(props) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-           
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
+                        <TextInput onChangeText={setagamaayah} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pekerjaan</Text>
                         <TextInput onChangeText={setpekerjaanayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>
@@ -262,8 +273,7 @@ function Daftarortu(props) {
                                 <Picker.Item label="Doktor" value="doktor" />
                             </Picker>
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
-                        <TextInput onChangeText={setagamaayah} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+
                     </View>
                 </ScrollView>
         

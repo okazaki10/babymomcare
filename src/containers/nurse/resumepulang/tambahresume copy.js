@@ -109,7 +109,11 @@ function Tambahresume(props) {
     const tambahanjuran = () => {
         setayd(index => [...index, ""])
     }
-    const [anjuran,setanjuran] = useState("")
+    const setanjuran = (index, value) => {
+        const anjuran = [...ayd]
+        anjuran[index] = value
+        setayd(anjuran)
+    }
     const resumediubah = () => {
         setisipesan("Resume Pulang berhasil diubah!")
         toggleModal()
@@ -239,9 +243,13 @@ function Tambahresume(props) {
                         </View>
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>{global.status == 1 ? "Catatan Tambahan" : "Catatan dari perawat"}</Text>
-                        <View>
-                        <TextInput onChangeText={setanjuran} style={[style.card, { elevation: 5, height: 200, textAlignVertical: "top", marginTop: 15 }]} multiline={true}></TextInput>
-                        </View>
+                        {ayd.map((item, index) =>
+                            <View>
+                                <TextInput onChangeText={(value) => { setanjuran(index, value) }} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                            </View>)}
+                        <TouchableOpacity onPress={tambahanjuran} style={{ alignItems: "flex-end", marginTop: 20 }}>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, textDecorationLine: "underline" }]}>+ Add Row</Text>
+                        </TouchableOpacity>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Upload Foto Bayi</Text>
                         {hide ? (null) : (<Image
                             source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}

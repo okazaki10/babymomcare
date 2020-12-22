@@ -37,6 +37,7 @@ import Tabnurse from './containers/admin/nurse/tabnurse';
 import Pendaftarannurse from './containers/admin/nurse/pendaftarannurse';
 import Tambahsurvey from './containers/pasien/survey/tambahsurvey';
 import Tambahmateri from './containers/nurse/materi/tambahmateri';
+import Chartkuis from './containers/nurse/kuis/chartkuis';
 
 
 
@@ -207,7 +208,12 @@ function Navigation() {
           <Stack.Screen
           name="Tambahmateri"
           component={Tambahmateri}
-          options={{ headerTitle:"Tambah Materi"}}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Tambah Materi" })}
+        />
+       <Stack.Screen
+          name="Chartkuis"
+          component={Chartkuis}
+          options={{ headerTitle:"Chart Kuis"}}
         />
       </Stack.Navigator>
     </NavigationContainer>

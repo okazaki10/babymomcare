@@ -83,22 +83,22 @@ function Kelolakuis(props) {
         setModalVisible2(!isModalVisible2);
     };
     const tindakankuis = () => {
-            setisipesan("Pilih tindakan untuk data ini")
-            toggleModal2()
+        setisipesan("Pilih tindakan untuk data ini")
+        toggleModal2()
     }
-  
+
     const ubahkuis = () => {
 
         props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis" })
         global.add = 0
-   
+
     }
 
     const tambahkuis = () => {
 
         props.navigation.navigate("Tambahkuis")
         global.add = 1
-   
+
     }
 
 
@@ -112,6 +112,7 @@ function Kelolakuis(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [jumlah, setjumlah] = useState("")
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -137,13 +138,13 @@ function Kelolakuis(props) {
                         </View>
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
-                       
-                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15,flexDirection:"row" }}>
-                            <View style={{ flex: 1,marginRight:15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red"  }]}></Button>
+
+                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
+                            <View style={{ flex: 1, marginRight: 15 }}>
+                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
-                            <View style={{ flex: 1,marginLeft:15}}>
-                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white"  }]}>
+                            <View style={{ flex: 1, marginLeft: 15 }}>
+                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
                                 </Button>
                             </View>
                         </View>
@@ -171,9 +172,20 @@ function Kelolakuis(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
+                 
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         <View style={{ flex: 1, marginRight: 15 }}>
+                            <TextInput onChangeText={setjumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
+                        </View>
+
+                        <View style={{ flex: 1 }}>
                             <Button title="+ Tambah Kuis" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        </View>
+
+                    </View>
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",marginTop:15 }}>
+                        <View style={{ flex: 1, marginRight: 15 }}>
+                            <Button title="Lihat Chart" onPress={()=>{props.navigation.navigate("Chartkuis")}} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         </View>
 
                         <View style={[style.card, { elevation: 5, padding: 0, marginLeft: 15 }]}>
