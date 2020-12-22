@@ -12,6 +12,14 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {
+    LineChart,
+    BarChart,
+    PieChart,
+    ProgressChart,
+    ContributionGraph,
+    StackedBarChart
+} from "react-native-chart-kit";
 function Chartkuis(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -82,7 +90,7 @@ function Chartkuis(props) {
     }
     const kontakperawat = () => {
         props.navigation.navigate("Kontakperawat")
-     
+
     }
     const tindakananjuran = () => {
         setisipesan("Pilih tindakan untuk reminder ini")
@@ -113,36 +121,60 @@ function Chartkuis(props) {
             />
 
             <View style={{ flex: 1 }}>
-       
+
                 <View style={{ flex: 1, padding: 20 }}>
-                   
+
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity  onPress={kontakperawat} style={[style.card, { marginTop: 0, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../../assets/image/addpeople.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Ari Susanti</Text>
-                                    </View>
-                                
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { props.navigation.navigate("Tambahanjuran") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../../assets/image/addpeople.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Selina Maurizka</Text>
-                                    </View>
-                              
-                                </TouchableOpacity>
 
+                                <Text>Bezier Line Chart</Text>
+                                <LineChart
+                                    data={{
+                                        labels: ["January", "February", "March", "April", "May", "June"],
+                                        datasets: [
+                                            {
+                                                data: [
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100,
+                                                    Math.random() * 100
+                                                ]
+                                            }
+                                        ]
+                                    }}
+                                    width={DEVICE_WIDTH-50} // from react-native
+                                    height={220}
+                                    yAxisLabel="$"
+                                    yAxisSuffix="k"
+                                    yAxisInterval={1} // optional, defaults to 1
+                                    chartConfig={{
+                                        backgroundColor: "#e26a00",
+                                        backgroundGradientFrom: "#fb8c00",
+                                        backgroundGradientTo: "#ffa726",
+                                        decimalPlaces: 2, // optional, defaults to 2dp
+                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        style: {
+                                            borderRadius: 16
+                                        },
+                                        propsForDots: {
+                                            r: "6",
+                                            strokeWidth: "2",
+                                            stroke: "#ffa726"
+                                        }
+                                    }}
+                                    bezier
+                                    style={{
+                                        marginVertical: 8,
+                                        borderRadius: 16
+                                    }}
+                                />
                             </View>
+
+
                         </View>
                     </ScrollView>
                 </View>

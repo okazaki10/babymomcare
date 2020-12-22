@@ -77,6 +77,13 @@ function Beranda(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
+    const resumepulang = () => {
+        if (global.status == 1) {
+            props.navigation.navigate("Detailresumepulang",{nama:"Resume Pulang"})
+        } else {
+            props.navigation.navigate("Resumepulang")
+        }
+    }
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -97,100 +104,101 @@ function Beranda(props) {
                     />
                 </View>
                 <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>Resma Andini</Text>
-                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1?"Pasien":""}{global.status == 2?"Nurse":""}{global.status == 3?"Admin":""}</Text>
+                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Nurse" : ""}{global.status == 3 ? "Admin" : ""}</Text>
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {global.status == 2 || global.status == 3?(
-                                <View>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Listpasien") }} style={[style.card, { marginTop: 15, flexDirection: "row",padding:0 }]}>
-                                    <Image
-                                        source={require("../../assets/image/addpeople.png")}
-                                        style={{ width:55, height:65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Pasien</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Anjuranpasien") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
-                                    <Image
-                                        source={require("../../assets/image/note.png")}
-                                        style={{ width:55, height:65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Reminder Pasien</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Kelolakuis") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
-                                    <Image
-                                        source={require("../../assets/image/resume.png")}
-                                        style={{ width:55, height:65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Mengelola Kuis</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                </View>):(null)}
-                                {global.status == 3?(
+                                {global.status == 2 || global.status == 3 ? (
                                     <View>
-                                     <TouchableOpacity  onPress={() => { props.navigation.navigate("Nurse") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
-                                     <Image
-                                         source={require("../../assets/image/resume.png")}
-                                         style={{ width:55, height:65 }}
-                                         resizeMode="stretch"
-                                     />
-                                     <View style={{ marginLeft: 15,justifyContent:"center" }}>
-                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Nurse</Text>
-                                     </View>
-                                 </TouchableOpacity>
-                                </View>):(null)}
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Daftarsurvey") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
+                                        <TouchableOpacity onPress={() => { props.navigation.navigate("Listpasien") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                            <Image
+                                                source={require("../../assets/image/addpeople.png")}
+                                                style={{ width: 55, height: 65 }}
+                                                resizeMode="stretch"
+                                            />
+                                            <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Pasien</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { props.navigation.navigate("Anjuranpasien") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                            <Image
+                                                source={require("../../assets/image/note.png")}
+                                                style={{ width: 55, height: 65 }}
+                                                resizeMode="stretch"
+                                            />
+                                            <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Reminder Pasien</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { props.navigation.navigate("Kelolakuis") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                            <Image
+                                                source={require("../../assets/image/resume.png")}
+                                                style={{ width: 55, height: 65 }}
+                                                resizeMode="stretch"
+                                            />
+                                            <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Mengelola Kuis</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>) : (null)}
+                                {global.status == 3 ? (
+                                    <View>
+                                        <TouchableOpacity onPress={() => { props.navigation.navigate("Nurse") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                            <Image
+                                                source={require("../../assets/image/resume.png")}
+                                                style={{ width: 55, height: 65 }}
+                                                resizeMode="stretch"
+                                            />
+                                            <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Nurse</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    </View>) : (null)}
+                                <TouchableOpacity onPress={() => { props.navigation.navigate("Daftarsurvey") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../assets/image/resume.png")}
-                                        style={{ width:55, height:65 }}
+                                        style={{ width: 55, height: 65 }}
                                         resizeMode="stretch"
                                     />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Survey</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Resumepulang") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
+
+                                <TouchableOpacity onPress={resumepulang} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../assets/image/resume.png")}
-                                        style={{ width:55, height:65 }}
+                                        style={{ width: 55, height: 65 }}
                                         resizeMode="stretch"
                                     />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang</Text>
                                     </View>
                                 </TouchableOpacity>
-                                
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Datakontrol") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
+
+                                <TouchableOpacity onPress={() => { props.navigation.navigate("Datakontrol") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../assets/image/resume.png")}
-                                        style={{ width:55, height:65 }}
+                                        style={{ width: 55, height: 65 }}
                                         resizeMode="stretch"
                                     />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity  onPress={() => { props.navigation.navigate("Forum") }} style={[style.card, { marginTop: 30, flexDirection: "row",padding:0 }]}>
+                                <TouchableOpacity onPress={() => { props.navigation.navigate("Forum") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../assets/image/resume.png")}
-                                        style={{ width:55, height:65 }}
+                                        style={{ width: 55, height: 65 }}
                                         resizeMode="stretch"
                                     />
-                                    <View style={{ marginLeft: 15,justifyContent:"center" }}>
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Forum</Text>
                                     </View>
                                 </TouchableOpacity>
-                           
+
                             </View>
                         </View>
                     </ScrollView>

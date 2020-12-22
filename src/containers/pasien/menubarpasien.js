@@ -6,18 +6,10 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog, faClipboardList } from '@fortawesome/free-solid-svg-icons';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { colors } from '../../globalstyles';
 import Beranda from '../nurse/beranda';
-import Materiedukasi from '../nurse/materi/materiedukasi';
-import Listpasien from '../nurse/pasien/listpasien';
-import Forum from '../nurse/forum/forum';
-import Chat from './chat/chat';
 import Daftarperawat from './chat/daftarperawat';
-import Anjuranpasien from '../nurse/reminder/anjuranpasien';
 import Tabreminder from './tabreminder';
 import Pengaturan from '../nurse/pengaturan/pengaturan';
-import Tabedukasi from '../nurse/materi/tabmateri';
 import Tabmateri from '../nurse/materi/tabmateri';
 
 

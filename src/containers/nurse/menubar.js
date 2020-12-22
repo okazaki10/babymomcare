@@ -47,7 +47,7 @@ function Menubar() {
         }}
       />
       <Tab.Screen
-        name="Chat"
+        name="Daftarperawat"
         component={Daftarperawat}
         options={{
           tabBarLabel: 'Chat',

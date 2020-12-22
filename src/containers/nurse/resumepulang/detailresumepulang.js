@@ -185,10 +185,6 @@ function Detailresumepulang(props) {
                                     <View style={{ width: 10, height: 10, borderRadius: 50, backgroundColor: colors.primary }}></View>
                                     <Text style={[style.nunitosans, style.datapasien2, { marginLeft: 15, marginTop: 0 }]}>Memberikan ASI</Text>
                                 </View>
-                                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                    <View style={{ width: 10, height: 10, borderRadius: 50, backgroundColor: colors.primary }}></View>
-                                    <Text style={[style.nunitosans, style.datapasien2, { marginLeft: 15, marginTop: 0 }]}>Mencuci Tangan</Text>
-                                </View>
                                 <View style={{ flexDirection: "row" }}>
                                     <Text style={[style.nunitosans, style.datapasien, { marginTop: 30 }]}>Foto Bayi</Text>
                                 </View>

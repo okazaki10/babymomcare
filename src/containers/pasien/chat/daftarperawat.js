@@ -81,8 +81,12 @@ function Daftarperawat(props) {
         props.navigation.navigate("Tambahanjuran")
     }
     const kontakperawat = () => {
-        props.navigation.navigate("Kontakperawat")
-     
+        if (global.status == 2) {
+            props.navigation.navigate("Chat",{nama:"Chat Pasien"})
+        } else {
+            props.navigation.navigate("Kontakperawat")
+        }
+
     }
     const tindakananjuran = () => {
         setisipesan("Pilih tindakan untuk reminder ini")
@@ -113,14 +117,14 @@ function Daftarperawat(props) {
             />
 
             <View style={{ flex: 1 }}>
-            <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20,textAlign:"center" }]}>{global.status == 1?"Daftar Perawat":"Daftar Pasien"}</Text>
-            <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
+                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>{global.status == 1 ? "Daftar Perawat" : "Daftar Pasien"}</Text>
+                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
-                   
+
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity  onPress={kontakperawat} style={[style.card, { marginTop: 0, flexDirection: "row", padding: 0 }]}>
+                                <TouchableOpacity onPress={kontakperawat} style={[style.card, { marginTop: 0, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../../assets/image/addpeople.png")}
                                         style={{ width: 55, height: 65 }}
@@ -129,7 +133,7 @@ function Daftarperawat(props) {
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Ari Susanti</Text>
                                     </View>
-                                
+
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => { props.navigation.navigate("Tambahanjuran") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
@@ -140,7 +144,7 @@ function Daftarperawat(props) {
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Selina Maurizka</Text>
                                     </View>
-                              
+
                                 </TouchableOpacity>
 
                             </View>

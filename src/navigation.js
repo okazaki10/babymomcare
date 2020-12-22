@@ -148,7 +148,7 @@ function Navigation() {
         <Stack.Screen
           name="Chat"
           component={Chat}
-          options={{ headerTitle: "Chat Perawat" }}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Chat Perawat" })}
         />
         <Stack.Screen
           name="Menubarpasien"
