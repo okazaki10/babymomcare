@@ -273,7 +273,7 @@ function Daftarortu(props) {
                                 <Button title="Kembali" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 10 }}>
-                                <Button title="Selanjutnya" onPress={pasiendibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                <Button title="Simpan" onPress={pasiendibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                             </View>
                         </View>) : (
                          <View style={{ padding: 22 }}>

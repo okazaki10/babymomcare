@@ -111,7 +111,14 @@ function Forumdetail(props) {
                                     <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
                                 </View>
                             </View>
-                            <View style={[style.line, { marginBottom: 15 }]}></View>
+
+                        </View>
+                        <View style={{ flexDirection: "row", marginTop: 15 }}>
+                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Komentar</Text>
+                        </View>
+
+                        <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
+               
                             <View style={[{ flexDirection: "row" }]}>
                                 <Image
                                     source={require("../../../assets/image/empty.png")}
@@ -124,12 +131,7 @@ function Forumdetail(props) {
                                     <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
                                 </View>
                             </View>
-                        </View>
-                        <View style={{ flexDirection: "row", marginTop: 15 }}>
-                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Komentar</Text>
-                        </View>
-
-                        <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
+                            <View style={[style.line, { marginBottom: 15 }]}></View>
                             <View style={[{ flexDirection: "row" }]}>
                                 <Image
                                     source={require("../../../assets/image/empty.png")}
@@ -138,13 +140,14 @@ function Forumdetail(props) {
                                 />
                                 <View style={{ marginLeft: 15 }}>
                                     <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>Reza Artamevia</Text>
-                                    <View style={{flexDirection:"row",alignItems:"center"}}>
-                                        <Ionicons name={'time-outline'} size={18} color={colors.button} style={{marginRight:5}} />
+                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                        <Ionicons name={'time-outline'} size={18} color={colors.button} style={{ marginRight: 5 }} />
                                         <Text style={[style.poppinsbold, { fontSize: 11, color: colors.grey, paddingRight: 50 }]}>{timeelapsed(new Date())} yang lalu</Text>
                                     </View>
+                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
                                 </View>
                             </View>
-                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
+                           
                         </View>
                     </View>
 

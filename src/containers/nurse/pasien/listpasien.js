@@ -155,16 +155,6 @@ function Listpasien(props) {
 
             <View style={{ flex: 1 }}>
 
-                <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 50 }}>
-                    <Image
-                        source={require("../../../assets/image/profilcewe.png")}
-                        style={{ width: 100, height: 100 }}
-                        resizeMode="contain"
-                    />
-                </View>
-                <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>Resma Andini</Text>
-                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>Nurse</Text>
-                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
 
                     <ScrollView>

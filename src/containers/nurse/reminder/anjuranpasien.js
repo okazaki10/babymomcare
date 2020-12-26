@@ -103,6 +103,30 @@ function Anjuranpasien(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [reminder, setreminder] = useState([{
+        judul: "Memberikan asi",
+        deskripsi: "asdasfasasdsas"
+    }, {
+        judul: "Memberikan asi",
+        deskripsi: "asdasfasasdsas"
+    }])
+    const [collapse, setcollapse] = useState([])
+    const tambahcollapse = () => {
+        var coba = []
+        for (var i = 0; i < reminder.length; i++) {
+            coba[i] = true
+        }
+        setcollapse(coba)
+    }
+    const setkolom = (index) => {
+        const collapse2 = [...collapse]
+        collapse2[index] = !collapse2[index]
+        setcollapse(collapse2)
+    }
+    useState(() => {
+        tambahcollapse()
+    })
+   
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -168,27 +192,29 @@ function Anjuranpasien(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={tindakananjuran} onPress={ubahanjuran} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../../assets/image/addpeople.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Memberi Asi</Text>
+                                {reminder.map((item, index) =>
+                                    <View><TouchableOpacity onLongPress={tindakananjuran} onPress={()=>{setkolom(index)}} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.judul}</Text>
+                                        {global.status == 2 ? (
+                                            <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                                <View style={{ marginRight: 15 }}>
+                                                    <Ionicons name={'pencil'} size={24} color={colors.grey} />
+                                                </View>
+                                                <View style={{ marginRight: 15 }}>
+                                                    <Ionicons name={'trash'} size={24} color={colors.grey} />
+                                                </View>
+
+                                            </View>) : (null)}
+                                    </TouchableOpacity>
+                                        {collapse[index] == true ? (null) : (
+                                            <View style={[style.card, { marginTop: 5, padding: 17 }]}>
+                                                <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.deskripsi}</Text>
+                                            </View>)}
+
                                     </View>
-                                    {global.status == 2 ? (
-                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                            <View style={{ marginRight: 15 }}>
-                                                <Ionicons name={'pencil'} size={24} color={colors.grey} />
-                                            </View>
-                                            <View style={{ marginRight: 15 }}>
-                                                <Ionicons name={'trash'} size={24} color={colors.grey} />
-                                            </View>
+                                )}
 
-                                        </View>) : (null)}
 
-                                </TouchableOpacity>
 
 
                             </View>

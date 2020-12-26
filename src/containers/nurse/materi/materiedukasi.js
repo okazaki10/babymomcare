@@ -185,7 +185,7 @@ function Materiedukasi(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} onPress={() => props.navigation.navigate("Detailmateri")}>
+                                <TouchableOpacity onPress={() => props.navigation.navigate("Judulmateri")} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
                                     <Image
                                         source={require("../../../assets/image/empty.png")}
                                         style={{ width: 35, height: 35 }}

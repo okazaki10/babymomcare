@@ -30,13 +30,13 @@ function Login(props) {
     }
 
     const login = () => {
-        if (username == "pasien") {
+        if (username == "a") {
             props.navigation.navigate("Menubarpasien")
             global.status = 1
-        }else if (username == "nurse") {
+        }else if (username == "b") {
             props.navigation.navigate("Menubar")
             global.status = 2
-        } else if (username == "admin") {
+        } else if (username == "c") {
             props.navigation.navigate("Menubaradmin")
             global.status = 3
         }

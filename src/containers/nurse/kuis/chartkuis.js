@@ -111,6 +111,18 @@ function Chartkuis(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const data = {
+        labels: ["Swim", "Bike", "Run"], // optional
+        data: [0.4, 0.6, 0.8]
+    };
+    const data2 = {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [
+          {
+            data: [20, 45, 28, 80, 99, 43]
+          }
+        ]
+      };
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -134,18 +146,14 @@ function Chartkuis(props) {
                                         labels: ["January", "February", "March", "April", "May", "June"],
                                         datasets: [
                                             {
-                                                data: [
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100,
-                                                    Math.random() * 100
-                                                ]
+                                                data: [20, 45, 28, 80, 99, 43],
+                                                color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
+                                                strokeWidth: 2 // optional
                                             }
-                                        ]
+                                        ],
+                                        legend: ["Rainy Days"] // optional
                                     }}
-                                    width={DEVICE_WIDTH-50} // from react-native
+                                    width={DEVICE_WIDTH - 50} // from react-native
                                     height={220}
                                     yAxisLabel="$"
                                     yAxisSuffix="k"
@@ -166,11 +174,61 @@ function Chartkuis(props) {
                                             stroke: "#ffa726"
                                         }
                                     }}
-                                    bezier
+
                                     style={{
                                         marginVertical: 8,
                                         borderRadius: 16
                                     }}
+                                />
+                                <Text>Bezier Line Chart</Text>
+                                <ProgressChart
+                                    data={data}
+                                    width={DEVICE_WIDTH - 50}
+                                    height={220}
+                                    strokeWidth={16}
+                                    radius={32}
+                                    chartConfig={{
+                                        backgroundColor: "#e26a00",
+                                        backgroundGradientFrom: "#fb8c00",
+                                        backgroundGradientTo: "#ffa726",
+                                        decimalPlaces: 2, // optional, defaults to 2dp
+                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        style: {
+                                            borderRadius: 16
+                                        },
+                                        propsForDots: {
+                                            r: "6",
+                                            strokeWidth: "2",
+                                            stroke: "#ffa726"
+                                        }
+                                    }}
+                                    hideLegend={false}
+                                />
+                                <BarChart
+                                    style={graphStyle}
+                                    data={data2}
+                                    width={DEVICE_WIDTH - 50}
+                                    height={220}
+                                    yAxisLabel="$"
+                                    radius={32}
+                                    chartConfig={{
+                                        backgroundColor: "#e26a00",
+                                        backgroundGradientFrom: "#fb8c00",
+                                        backgroundGradientTo: "#ffa726",
+                                        decimalPlaces: 2, // optional, defaults to 2dp
+                                        color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                                        style: {
+                                            borderRadius: 16
+                                        },
+                                        propsForDots: {
+                                            r: "6",
+                                            strokeWidth: "2",
+                                            stroke: "#ffa726"
+                                        }
+                                    }}
+                                    verticalLabelRotation={30}
                                 />
                             </View>
 

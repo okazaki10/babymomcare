@@ -19,7 +19,7 @@ const Tab = createMaterialTopTabNavigator();
 function Tabmateri() {
   return (
     <View style={{flex:1,backgroundColor:"white"}}>
-      <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Materi Edukasi</Text>
+      <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Kategori Materi Edukasi</Text>
       <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
       <View style={{
         flex: 1,

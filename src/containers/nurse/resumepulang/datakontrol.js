@@ -79,7 +79,7 @@ function Datakontrol(props) {
     const [kosong, setkosong] = useState(false)
     const tambahkontrol = () => {
         global.mode = "kontrol"
-        props.navigation.navigate("Tambahresume",{nama:"Tambah data kontrol"})
+        props.navigation.navigate("Tambahresume", { nama: "Tambah data kontrol" })
     }
     const ubahkontrol = () => {
         global.mode = "kontrol"
@@ -101,7 +101,7 @@ function Datakontrol(props) {
     }
     const detailkontrol = () => {
         global.mode = "kontrol"
-        props.navigation.navigate("Detailresumepulang",{nama:"Detail data kontrol"})
+        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -188,29 +188,34 @@ function Datakontrol(props) {
                                     />
                                     <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki data kontrol</Text>
                                 </View>
-                                <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                {global.status == 1 ? (
+                                    <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                ) : (null)}
                             </View>) : (
                                     <View>
-                                        <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                        {global.status == 1 ? (
+                                            <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                        ) : (null)}
                                         <TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={tindakankontrol} onPress={detailkontrol}>
                                             <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kontrol ke-1</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal kontrol</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: 25/01/2016</Text>
                                             </View>
+                                            {global.mode == "resume" ? (null) : (
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text style={[style.nunitosans, style.datapasien]}>Catatan Tambahan</Text>
+                                                    <Text style={{ marginTop: 15 }}>: </Text>
+                                                    <Text style={[style.nunitosans, style.datapasien2]}>Bayi harus diberikan asi</Text>
+                                                </View>)}
+
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Anjuran yang diberikan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>:</Text>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
+                                                <Text style={{ marginTop: 15 }}>: </Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>Bayi harus diberikan asi</Text>
                                             </View>
-                                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 30 }}>
-                                                <View style={{ width: 10, height: 10, borderRadius: 50, backgroundColor: colors.primary }}></View>
-                                                <Text style={[style.nunitosans, style.datapasien2, { marginLeft: 15, marginTop: 0 }]}>Memberikan ASI</Text>
-                                            </View>
-                                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                <View style={{ width: 10, height: 10, borderRadius: 50, backgroundColor: colors.primary }}></View>
-                                                <Text style={[style.nunitosans, style.datapasien2, { marginLeft: 15, marginTop: 0 }]}>Mencuci Tangan</Text>
-                                            </View>
-                                            <Text style={[style.nunitosans, style.datapasien,{textAlign:"right",textDecorationLine:"underline"}]}>Lihat Selengkapnya</Text>
+
+                                            <Text style={[style.nunitosans, style.datapasien, { textAlign: "right", textDecorationLine: "underline" }]}>Lihat Selengkapnya</Text>
                                         </TouchableOpacity>
 
                                     </View>)}

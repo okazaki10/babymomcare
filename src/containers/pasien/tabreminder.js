@@ -42,13 +42,7 @@ function Tabreminder() {
               tabBarLabel: "Hari ini",
             }}
           />
-          <Tab.Screen
-            name="Besok"
-            component={Anjuranpasien}
-            options={{
-              tabBarLabel: "Besok",
-            }}
-          />
+     
         </Tab.Navigator>
       </View>
     </View>

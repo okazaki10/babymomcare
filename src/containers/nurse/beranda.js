@@ -79,7 +79,8 @@ function Beranda(props) {
     const [kosong, setkosong] = useState(false)
     const resumepulang = () => {
         if (global.status == 1) {
-            props.navigation.navigate("Detailresumepulang",{nama:"Resume Pulang"})
+            global.mode = "tambahan"
+            props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang" })
         } else {
             props.navigation.navigate("Resumepulang")
         }
@@ -93,10 +94,14 @@ function Beranda(props) {
                 textStyle={{ color: '#FFF' }}
             />
 
-
             <View style={{ flex: 1 }}>
-
-                <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 50 }}>
+                <View style={{ alignItems: "flex-end",padding:22 }}>
+                <TouchableOpacity onPress={()=>{props.navigation.navigate("Notifikasi")}}  style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
+                    <Ionicons name={'notifications-outline'} size={24} color="#92B1CD" />
+                </TouchableOpacity>
+                </View>
+              
+                <View style={{ width: "100%", justifyContent: "center", alignItems: 'center' }}>
                     <Image
                         source={require("../../assets/image/profilcewe.png")}
                         style={{ width: 100, height: 100 }}
@@ -106,9 +111,9 @@ function Beranda(props) {
                 <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>Resma Andini</Text>
                 <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Nurse" : ""}{global.status == 3 ? "Admin" : ""}</Text>
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
-                <View style={{ flex: 1, padding: 20 }}>
+                <View style={{ flex: 1 }}>
                     <ScrollView>
-                        <View style={{ padding: 3 }}>
+                        <View style={{ padding: 3 , padding: 20}}>
                             <View>
                                 {global.status == 2 || global.status == 3 ? (
                                     <View>
@@ -188,7 +193,7 @@ function Beranda(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { props.navigation.navigate("Forum") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                <TouchableOpacity onPress={() => { props.navigation.navigate("Kategoriforum") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../assets/image/resume.png")}
                                         style={{ width: 55, height: 65 }}

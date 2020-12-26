@@ -7,7 +7,7 @@ import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faFrown, faThumbsUp, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
@@ -147,7 +147,7 @@ function Kerjakankuis(props) {
         setnomor(nomor - 1)
     }
     const [selesai, setselesai] = useState(false)
-    const kuisselesai = () =>{
+    const kuisselesai = () => {
         setselesai(true)
     }
     return (
@@ -220,11 +220,16 @@ function Kerjakankuis(props) {
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
                                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Pertanyaan 1</Text>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "right", color: colors.button }]}>Benar</Text>
+                                            <FontAwesomeIcon icon={faThumbsUp} size={22} color={"lightgreen"}></FontAwesomeIcon>
                                         </View>
-                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",marginTop:5 }}>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Pertanyaan 2</Text>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "right", color: "red" }]}>Salah</Text>
+                                            <FontAwesomeIcon icon={faFrown} size={22} color={"red"}></FontAwesomeIcon>
+                                        </View>
+                                        <View style={[style.line, { marginTop: 5, marginBottom: 5 }]}></View>
+                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Total Benar</Text>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "right"}]}>1/2</Text>
                                         </View>
                                     </View>
                                     <View style={{ marginTop: 20 }}>

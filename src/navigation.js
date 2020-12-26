@@ -38,6 +38,11 @@ import Pendaftarannurse from './containers/admin/nurse/pendaftarannurse';
 import Tambahsurvey from './containers/pasien/survey/tambahsurvey';
 import Tambahmateri from './containers/nurse/materi/tambahmateri';
 import Chartkuis from './containers/nurse/kuis/chartkuis';
+import Notifikasi from './containers/nurse/notifikasi';
+import Judulmateri from './containers/nurse/materi/judulmateri';
+import Tabmateri from './containers/nurse/materi/tabmateri';
+import Tabreminder from './containers/pasien/tabreminder';
+import Kategoriforum from './containers/nurse/forum/kategoriforum';
 
 
 
@@ -53,7 +58,7 @@ function Navigation() {
         <Stack.Screen
           name="Listpasien"
           component={Listpasien}
-          options={{ headerShown: false }}
+          options={{ headerTitle:"Data Pasien" }}
         />
         <Stack.Screen
           name="Login"
@@ -214,6 +219,26 @@ function Navigation() {
           name="Chartkuis"
           component={Chartkuis}
           options={{ headerTitle:"Chart Kuis"}}
+        />
+          <Stack.Screen
+          name="Notifikasi"
+          component={Notifikasi}
+          options={{ headerTitle:"Notifikasi"}}
+        />
+         <Stack.Screen
+          name="Judulmateri"
+          component={Judulmateri}
+          options={{ headerTitle:"Judul Materi"}}
+        />
+          <Stack.Screen
+          name="Tabreminder"
+          component={Tabreminder}
+          options={{ headerShown:false}}
+        />
+         <Stack.Screen
+          name="Kategoriforum"
+          component={Kategoriforum}
+          options={{ headerTitle: "Kategori Forum" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -151,6 +151,19 @@ function Addforum(props) {
                                 <Picker.Item label="Makanan" value="makanan" />
                             </Picker>
                         </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Kategori yang berhubungan</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={topik}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    settopik(itemValue)
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Makanan" value="makanan" />
+                                <Picker.Item label="Makanan" value="makanan" />
+                                <Picker.Item label="Makanan" value="makanan" />
+                            </Picker>
+                        </View>
 
                     </View>
                 </ScrollView>
