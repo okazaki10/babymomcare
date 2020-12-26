@@ -10,6 +10,7 @@ import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity,
 import { Input, Text, Button } from 'react-native-elements';
 import Datanurse from './datanurse';
 import Logperawat from './logperawat';
+import Relasipasien from './relasipasien';
 const Tab = createMaterialTopTabNavigator();
 
 function Tabnurse() {
@@ -31,11 +32,11 @@ function Tabnurse() {
               tabBarLabel: "Data Profil",
             }}
           />
-          <Tab.Screen
-            name="Log"
-            component={Logperawat}
+            <Tab.Screen
+            name="Relasipasien"
+            component={Relasipasien}
             options={{
-              tabBarLabel: "Log Perawat",
+              tabBarLabel: "Relasi Pasien",
             }}
           />
         </Tab.Navigator>

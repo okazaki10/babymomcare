@@ -84,6 +84,11 @@ function Anjuranpasien(props) {
         props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder" })
         global.add = 0
     }
+    const ubahanjuran2 = () => {
+        props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder" })
+        global.add = 0
+        toggleModal2()
+    }
     const tindakananjuran = () => {
         setisipesan("Pilih tindakan untuk reminder ini")
         toggleModal2()
@@ -126,7 +131,7 @@ function Anjuranpasien(props) {
     useState(() => {
         tambahcollapse()
     })
-   
+
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -176,6 +181,10 @@ function Anjuranpasien(props) {
                             <Button onPress={hapusanjuran} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={ubahanjuran2} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
                         </View>
@@ -193,8 +202,8 @@ function Anjuranpasien(props) {
                         <View style={{ padding: 3 }}>
                             <View>
                                 {reminder.map((item, index) =>
-                                    <View><TouchableOpacity onLongPress={tindakananjuran} onPress={()=>{setkolom(index)}} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.judul}</Text>
+                                    <View><TouchableOpacity onLongPress={tindakananjuran} onPress={() => { setkolom(index) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15, flex: 1 }]}>{item.judul}</Text>
                                         {global.status == 2 ? (
                                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                                 <View style={{ marginRight: 15 }}>

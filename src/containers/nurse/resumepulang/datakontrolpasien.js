@@ -12,7 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-function Listpasien(props) {
+function Datakontrolpasien(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -77,12 +77,34 @@ function Listpasien(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const tindakanpasien = () => {
+    const tambahresume = () => {
+        global.mode = "resume"
+        props.navigation.navigate("Tambahresume")
+    }
+    const ubahresume = () => {
+        global.mode = "resume"
+        global.add = 0
+        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang" })
+        toggleModal2()
+    }
+    const tindakanresume = () => {
 
-        setisipesan("Pilih tindakan untuk data ini")
+        setisipesan("Pilih tindakan untuk resume ini")
         toggleModal2()
 
     }
+    const hapusresume = () => {
+        toggleModal2()
+        setisipesan("Apakah anda yakin untuk menghapus konten ini")
+        toggleModal3()
+
+    }
+    const detailresume = () => {
+  
+        props.navigation.navigate("Datakontrol")
+    }
+    const [title2, settitle2] = useState("")
+    const [description2, setdescription2] = useState("")
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -91,20 +113,9 @@ function Listpasien(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-    const hapuspasien = () => {
-        toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus pasien ini")
-        toggleModal3()
-
-    }
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
-            <Spinner
-                visible={spinner}
-                textContent={'Loading...'}
-                textStyle={{ color: '#FFF' }}
-            />
             <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
@@ -142,9 +153,12 @@ function Listpasien(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapuspasien} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            <Button onPress={hapusresume} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={ubahresume} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -152,6 +166,12 @@ function Listpasien(props) {
                     </View>
                 </View>
             </Modal>
+            <Spinner
+                visible={spinner}
+                textContent={'Loading...'}
+                textStyle={{ color: '#FFF' }}
+            />
+
 
             <View style={{ flex: 1 }}>
 
@@ -166,23 +186,17 @@ function Listpasien(props) {
                                         style={{ width: 100, height: 100 }}
                                         resizeMode="contain"
                                     />
-                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki pasien</Text>
+                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki resume pulang</Text>
                                 </View>
-                                <Button title="+ Tambah Pasien Baru" onPress={() => {
-                                    global.add = 1
-                                    props.navigation.navigate("Daftarakun")
-                                }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                             
                             </View>) : (
                                     <View>
                                         <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
                                             <Ionicons name={'search-outline'} size={24} color={colors.button} />
                                             <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                                         </View>
-                                        <Button title="+ Tambah Pasien Baru" onPress={() => {
-                                            global.add = 1
-                                            props.navigation.navigate("Daftarakun")
-                                        }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                        <TouchableOpacity onLongPress={tindakanpasien} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Datapasien") }}>
+                                      
+                                        <TouchableOpacity onPress={detailresume} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                             <Image
                                                 source={require("../../../assets/image/empty.png")}
                                                 style={{ width: 100, height: 100 }}
@@ -196,11 +210,61 @@ function Listpasien(props) {
                                                 </View>
                                                 <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
                                                 <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Nama Nurse : Resma</Text>
                                             </View>
 
                                         </TouchableOpacity>
-                                       
+                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                            <Image
+                                                source={require("../../../assets/image/empty.png")}
+                                                style={{ width: 100, height: 100 }}
+                                                resizeMode="contain"
+                                            />
+                                            <View style={{ marginLeft: 15 }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Ionicons name={'person'} size={17} color={colors.button} />
+                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
+                                                </View>
+                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
+                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
+                                            </View>
+
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                            <Image
+                                                source={require("../../../assets/image/empty.png")}
+                                                style={{ width: 100, height: 100 }}
+                                                resizeMode="contain"
+                                            />
+                                            <View style={{ marginLeft: 15 }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Ionicons name={'person'} size={17} color={colors.button} />
+                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
+                                                </View>
+                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
+                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
+                                            </View>
+
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                            <Image
+                                                source={require("../../../assets/image/empty.png")}
+                                                style={{ width: 100, height: 100 }}
+                                                resizeMode="contain"
+                                            />
+                                            <View style={{ marginLeft: 15 }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Ionicons name={'person'} size={17} color={colors.button} />
+                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
+                                                </View>
+                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
+                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
+                                            </View>
+
+                                        </TouchableOpacity>
+
                                     </View>)}
                         </View>
                     </ScrollView>
@@ -213,4 +277,4 @@ function Listpasien(props) {
     );
 };
 
-export default Listpasien;
+export default Datakontrolpasien;

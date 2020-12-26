@@ -15,13 +15,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Tambahresume from '../resumepulang/tambahresume';
-function Tambahanjuran(props) {
+
+function Tambahsurvey(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [judul, setjudul] = useState("")
-
+    const [ditujukan,setditujukan] = useState("")
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -74,12 +74,12 @@ function Tambahanjuran(props) {
             */
     };
     const [spinner, setspinner] = useState(false)
-    const tambahnajuran = () => {
-        setisipesan("Reminder berhasil dibuat!")
+    const tambahsurvey = () => {
+        setisipesan("Survey berhasil dibuat!")
         toggleModal()
     }
-    const ubahanjuran = () => {
-        setisipesan("Reminder berhasil diubah!")
+    const ubahsurvey = () => {
+        setisipesan("Survey berhasil diubah!")
         toggleModal()
     }
     return (
@@ -118,20 +118,18 @@ function Tambahanjuran(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Reminder</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul</Text>
                         <TextInput onChangeText={setjudul} style={[style.card, { elevation: 5,  marginTop: 15 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Deskripsi</Text>
-                        <TextInput onChangeText={setjudul} style={[style.card, { elevation: 5,  marginTop: 15 }]} multiline={true}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Frekuensi (berapa hari sekali)</Text>
-                        <TextInput onChangeText={setjudul} style={[style.card, { elevation: 5,  marginTop: 15 }]} keyboardType={"numeric"}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Ditujukan</Text>
+                        <TextInput onChangeText={setditujukan} style={[style.card, { elevation: 5, marginTop: 15 }]}></TextInput>
                     </View>
                 </ScrollView>
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1, marginLeft: 10 }}>
                         {global.add == 1 ? (
-                            <Button title="Simpan" onPress={tambahnajuran} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            <Button title="Simpan" onPress={tambahsurvey} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         ) : (
-                            <Button title="Simpan" onPress={ubahanjuran} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                            <Button title="Simpan" onPress={ubahsurvey} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
 
                     </View>
                 </View>
@@ -141,4 +139,4 @@ function Tambahanjuran(props) {
     );
 };
 
-export default Tambahanjuran;
+export default Tambahsurvey;

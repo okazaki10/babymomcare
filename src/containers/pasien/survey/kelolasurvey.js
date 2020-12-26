@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
+
 import { colors } from '../../../globalstyles';
+
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -10,12 +12,13 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-function Materiedukasi(props) {
+import { Picker } from '@react-native-picker/picker';
+function Kelolasurvey(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
-
+    const [isipesan, setisipesan] = useState("")
     const [cari, setcari] = useState("")
-
+    const [materi, setmateri] = useState("")
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -75,41 +78,41 @@ function Materiedukasi(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const [isipesan, setisipesan] = useState("")
-    const tambahmateri = () => {
-        global.add = 1
-        props.navigation.navigate("Tambahmateri")
-    }
-  
-    const ubahmateri = () => {
-        global.add = 0
-        props.navigation.navigate("Tambahmateri", { nama: "Ubah materi" })
-        toggleModal2()
-    }
-    const tindakankontrol = () => {
-        setisipesan("Pilih tindakan untuk materi ini")
-        toggleModal2()
-
-    }
-    const hapusmateri = () => {
-        toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus materi ini")
-        toggleModal3()
-
-    }
-    const detailmateri = () => {
-        props.navigation.navigate("Detailresumepulang",{nama:"Detail data kontrol"})
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
     };
+    const tindakankuis = () => {
+        setisipesan("Pilih tindakan untuk data ini")
+        toggleModal2()
+    }
+
+    const ubahkuis = () => {
+
+        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey",halaman:jumlah })
+        global.add = 0
+
+    }
+
+    const tambahkuis = () => {
+
+        props.navigation.navigate("Tambahsurvey",{halaman:jumlah})
+        global.add = 1
+
+    }
+
+
+    const hapuskuis = () => {
+        toggleModal2()
+        setisipesan("Apakah anda yakin untuk menghapus kuis ini")
+        toggleModal3()
+
+    }
     const [isModalVisible3, setModalVisible3] = useState(false);
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [jumlah, setjumlah] = useState("")
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -118,7 +121,7 @@ function Materiedukasi(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-              <Modal isVisible={isModalVisible3}
+            <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
                 <View style={style.content}>
@@ -155,12 +158,9 @@ function Materiedukasi(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapusmateri} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            <Button onPress={hapuskuis} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={ubahmateri} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
-                            </Button>
-                        </View>
+
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -168,42 +168,51 @@ function Materiedukasi(props) {
                     </View>
                 </View>
             </Modal>
+
             <View style={{ flex: 1 }}>
-                {global.status == 2 || global.status == 3 ? (<View>
-                    <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Materi Edukasi</Text>
-                    <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
-                </View>) : (null)}
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 2 || global.status == 3 ? (
-                        <Button title="+ Tambah Materi" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    ) : (null)}
-                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
-                        <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
-                        <Ionicons name={'search-outline'} size={24} color={colors.grey} />
+                 
+                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                        <View style={{ flex: 1, marginRight: 15 }}>
+                            <TextInput onChangeText={setjumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
+                        </View>
+
+                        <View style={{ flex: 1 }}>
+                            <Button title="+ Tambah Survey" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        </View>
+
                     </View>
+        
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onPress={() => props.navigation.navigate("Judulmateri")} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
-                                    <Image
-                                        source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 35, height: 35 }}
-                                        resizeMode="contain"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>Cara Memandikan Bayi</Text>
+                                <TouchableOpacity onLongPress={tindakankuis} onPress={ubahkuis} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+
+                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>Bagaimana memandikan bayi?</Text>
+                                    </View>
+                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                        <View style={{ marginRight: 15 }}>
+                                            <Ionicons name={'pencil'} size={24} color={colors.grey} />
+                                        </View>
+                                        <View style={{ marginRight: 15 }}>
+                                            <Ionicons name={'trash'} size={24} color={colors.grey} />
+                                        </View>
+
                                     </View>
                                 </TouchableOpacity>
-
 
                             </View>
                         </View>
                     </ScrollView>
                 </View>
+
+
             </View>
+
         </View>
     );
 };
 
-export default Materiedukasi;
+export default Kelolasurvey;

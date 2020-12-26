@@ -80,7 +80,7 @@ function Kategoriforum(props) {
         global.add = 1
         props.navigation.navigate("Tambahmateri")
     }
-  
+
     const ubahmateri = () => {
         global.add = 0
         props.navigation.navigate("Tambahmateri", { nama: "Ubah materi" })
@@ -98,7 +98,7 @@ function Kategoriforum(props) {
 
     }
     const detailmateri = () => {
-        props.navigation.navigate("Detailresumepulang",{nama:"Detail data kontrol"})
+        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -110,6 +110,9 @@ function Kategoriforum(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const klik = () => {
+        props.navigation.navigate("Forum")
+    }
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -118,7 +121,7 @@ function Kategoriforum(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-              <Modal isVisible={isModalVisible3}
+            <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
                 <View style={style.content}>
@@ -170,10 +173,9 @@ function Kategoriforum(props) {
             </Modal>
             <View style={{ flex: 1 }}>
                 {global.status == 2 || global.status == 3 ? (<View>
-                    <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Materi Edukasi</Text>
+                    <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Kategori Forum</Text>
                     <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 </View>) : (null)}
-
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
@@ -182,7 +184,7 @@ function Kategoriforum(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onPress={() => props.navigation.navigate("Forum")} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+                                <TouchableOpacity onPress={klik} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
                                     <Image
                                         source={require("../../../assets/image/empty.png")}
                                         style={{ width: 35, height: 35 }}

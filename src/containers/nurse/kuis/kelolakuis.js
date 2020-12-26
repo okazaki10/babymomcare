@@ -89,14 +89,14 @@ function Kelolakuis(props) {
 
     const ubahkuis = () => {
 
-        props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis" })
+        props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis",halaman:jumlah })
         global.add = 0
 
     }
 
     const tambahkuis = () => {
 
-        props.navigation.navigate("Tambahkuis")
+        props.navigation.navigate("Tambahkuis",{halaman:jumlah})
         global.add = 1
 
     }
@@ -183,32 +183,14 @@ function Kelolakuis(props) {
                         </View>
 
                     </View>
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",marginTop:15 }}>
-                        <View style={{ flex: 1, marginRight: 15 }}>
-                            <Button title="Lihat Chart" onPress={()=>{props.navigation.navigate("Chartkuis")}} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                        </View>
-
-                        <View style={[style.card, { elevation: 5, padding: 0, marginLeft: 15 }]}>
-                            <Picker
-                                selectedValue={materi}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    setmateri(itemValue)
-                                }
-                                mode="dropdown">
-                                <Picker.Item label="Semua materi" value="" />
-                                <Picker.Item label="Makanan" value="makananr" />
-                                <Picker.Item label="Susu" value="susu" />
-                            </Picker>
-                        </View>
-
-                    </View>
+        
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
                                 <TouchableOpacity onLongPress={tindakankuis} onPress={ubahkuis} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
 
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>1. Bagaimana memandikan bayi?</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>Bagaimana memandikan bayi?</Text>
                                     </View>
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <View style={{ marginRight: 15 }}>

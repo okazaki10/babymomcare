@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { color } from 'react-native-reanimated';
-function Kerjakankuis(props) {
+function Kerjakansurvey(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -316,4 +316,4 @@ function Kerjakankuis(props) {
     );
 };
 
-export default Kerjakankuis;
+export default Kerjakansurvey;

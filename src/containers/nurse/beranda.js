@@ -81,8 +81,15 @@ function Beranda(props) {
         if (global.status == 1) {
             global.mode = "tambahan"
             props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang" })
-        } else {
+        } else if (global.status == 2) {
             props.navigation.navigate("Resumepulang")
+        }
+    }
+    const datakontrol = () => {
+        if (global.status == 1) {
+            props.navigation.navigate("Datakontrol")
+        } else if (global.status == 2) {
+            props.navigation.navigate("Datakontrolpasien")
         }
     }
     return (
@@ -95,12 +102,12 @@ function Beranda(props) {
             />
 
             <View style={{ flex: 1 }}>
-                <View style={{ alignItems: "flex-end",padding:22 }}>
-                <TouchableOpacity onPress={()=>{props.navigation.navigate("Notifikasi")}}  style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
-                    <Ionicons name={'notifications-outline'} size={24} color="#92B1CD" />
-                </TouchableOpacity>
+                <View style={{ alignItems: "flex-end", padding: 22 }}>
+                    <TouchableOpacity onPress={() => { props.navigation.navigate("Anjuranpasien") }} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
+                        <Ionicons name={'notifications-outline'} size={24} color="#92B1CD" />
+                    </TouchableOpacity>
                 </View>
-              
+
                 <View style={{ width: "100%", justifyContent: "center", alignItems: 'center' }}>
                     <Image
                         source={require("../../assets/image/profilcewe.png")}
@@ -113,7 +120,7 @@ function Beranda(props) {
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1 }}>
                     <ScrollView>
-                        <View style={{ padding: 3 , padding: 20}}>
+                        <View style={{ padding: 3, padding: 20 }}>
                             <View>
                                 {global.status == 2 || global.status == 3 ? (
                                     <View>
@@ -137,7 +144,10 @@ function Beranda(props) {
                                                 <Text style={[style.poppinsbold, { fontSize: 15 }]}>Reminder Pasien</Text>
                                             </View>
                                         </TouchableOpacity>
-                                        <TouchableOpacity onPress={() => { props.navigation.navigate("Kelolakuis") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                        <TouchableOpacity onPress={() => {
+
+                                            props.navigation.navigate("Kategorikuis")
+                                        }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                             <Image
                                                 source={require("../../assets/image/resume.png")}
                                                 style={{ width: 55, height: 65 }}
@@ -161,7 +171,7 @@ function Beranda(props) {
                                             </View>
                                         </TouchableOpacity>
                                     </View>) : (null)}
-                                <TouchableOpacity onPress={() => { props.navigation.navigate("Daftarsurvey") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                <TouchableOpacity onPress={() => { props.navigation.navigate("Kelolasurvey") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../assets/image/resume.png")}
                                         style={{ width: 55, height: 65 }}
@@ -171,29 +181,88 @@ function Beranda(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Survey</Text>
                                     </View>
                                 </TouchableOpacity>
+                                {global.status == 3?(<View>
+                                    <TouchableOpacity onPress={() => {
+                                        global.status = 1
+                                        resumepulang()
+                                    }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                        <Image
+                                            source={require("../../assets/image/resume.png")}
+                                            style={{ width: 55, height: 65 }}
+                                            resizeMode="stretch"
+                                        />
+                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang (Pasien)</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => {
+                                        global.status = 2
+                                        resumepulang()
+                                    }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                        <Image
+                                            source={require("../../assets/image/resume.png")}
+                                            style={{ width: 55, height: 65 }}
+                                            resizeMode="stretch"
+                                        />
+                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang (Nurse)</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => {
+                                        global.status = 1
+                                        datakontrol()
+                                    }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                        <Image
+                                            source={require("../../assets/image/resume.png")}
+                                            style={{ width: 55, height: 65 }}
+                                            resizeMode="stretch"
+                                        />
+                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol (Pasien)</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => {
+                                        global.status = 2
+                                        datakontrol()
+                                    }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                        <Image
+                                            source={require("../../assets/image/resume.png")}
+                                            style={{ width: 55, height: 65 }}
+                                            resizeMode="stretch"
+                                        />
+                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol (Nurse)</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                ):( <View>
+                                    <TouchableOpacity onPress={resumepulang} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                        <Image
+                                            source={require("../../assets/image/resume.png")}
+                                            style={{ width: 55, height: 65 }}
+                                            resizeMode="stretch"
+                                        />
+                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang</Text>
+                                        </View>
+                                    </TouchableOpacity>
 
-                                <TouchableOpacity onPress={resumepulang} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../assets/image/resume.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang</Text>
-                                    </View>
-                                </TouchableOpacity>
+                                    <TouchableOpacity onPress={datakontrol} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                        <Image
+                                            source={require("../../assets/image/resume.png")}
+                                            style={{ width: 55, height: 65 }}
+                                            resizeMode="stretch"
+                                        />
+                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>)}
 
-                                <TouchableOpacity onPress={() => { props.navigation.navigate("Datakontrol") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../assets/image/resume.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { props.navigation.navigate("Kategoriforum") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                 <TouchableOpacity onPress={() => {
+
+                                    props.navigation.navigate("Kategoriforum")
+                                }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../assets/image/resume.png")}
                                         style={{ width: 55, height: 65 }}
@@ -203,6 +272,22 @@ function Beranda(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Forum</Text>
                                     </View>
                                 </TouchableOpacity>
+                                {global.status == 3?(
+                                    
+                                 <TouchableOpacity onPress={() => {
+
+                                    props.navigation.navigate("Chartkuis")
+                                }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                    <Image
+                                        source={require("../../assets/image/resume.png")}
+                                        style={{ width: 55, height: 65 }}
+                                        resizeMode="stretch"
+                                    />
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Chart</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                ):(null)}
 
                             </View>
                         </View>

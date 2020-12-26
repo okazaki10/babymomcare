@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -30,6 +30,7 @@ function Datapasien(props) {
             // saving error
         }
     }
+
 
     const login = () => {
         /*
@@ -90,7 +91,7 @@ function Datapasien(props) {
             global.add = 0
         }
     }
- 
+
     const addpasien = () => {
         props.navigation.navigate("Addforum", { nama: "Buat Forum" })
     }
@@ -167,7 +168,7 @@ function Datapasien(props) {
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                     </View>
 
-                                    <TouchableOpacity  onPress={() => { ubahpasien(0) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
+                                    <TouchableOpacity onPress={() => { ubahpasien(0) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Nama</Text>
                                             <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: Rafif iqbal saputra</Text>
@@ -197,7 +198,6 @@ function Datapasien(props) {
                                             <Text style={[style.nunitosans, style.datapasien2]}>: 2.5 kg</Text>
                                         </View>
 
-
                                     </TouchableOpacity>
                                 </View>) : (null)}
                                 {menuswitch == 1 ? (<View>
@@ -205,7 +205,7 @@ function Datapasien(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Data Ortu</Text>
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                     </View>
-                                    <TouchableOpacity  onPress={() => { ubahpasien(1) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
+                                    <TouchableOpacity onPress={() => { ubahpasien(1) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View>
                                             <Text style={[style.poppinsbold, { fontSize: 14, color: colors.grey, paddingRight: 50 }]}>Data Ibu</Text>
                                             <View style={{ flexDirection: "row" }}>
@@ -263,7 +263,7 @@ function Datapasien(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Data Akun</Text>
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                     </View>
-                                    <TouchableOpacity  onPress={() => { ubahpasien(2) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
+                                    <TouchableOpacity onPress={() => { ubahpasien(2) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Email</Text>
@@ -281,6 +281,11 @@ function Datapasien(props) {
                                                 <Text style={[style.nunitosans, style.datapasien]}>Password</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: *******</Text>
                                             </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Rekomendasi Materi</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: makanan</Text>
+                                            </View>
+                                    
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)}

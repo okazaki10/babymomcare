@@ -5,6 +5,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import {  faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Input, Text, Button } from 'react-native-elements';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../globalstyles';
@@ -53,7 +55,12 @@ function Menubaradmin() {
         options={{
           tabBarLabel: 'Chat',
           tabBarIcon: ({color, size}) => (
+            <View>
+            <View style={{ position: "absolute", top: -5, right: -3,zIndex:100,backgroundColor:"red",width:18,height:18,justifyContent:"center",alignItems:"center",borderRadius:50}}>
+              <Text style={{fontSize:12,color:"white"}}>1</Text>
+            </View>
             <FontAwesomeIcon icon={faComments} size={28} color={color}></FontAwesomeIcon>
+          </View>
           ),
         }}
       />

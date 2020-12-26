@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef, Fragment, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -16,8 +16,12 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
-
+import DropDownPicker from 'react-native-dropdown-picker';
 import { actions, defaultActions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
+import { Platform } from 'react-native';
+import SearchableDropdown from 'react-native-searchable-dropdown';
+
+
 function Addforum(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -37,7 +41,15 @@ function Addforum(props) {
             // saving error
         }
     }
-
+    var items = [
+        {
+            id: 1,
+            name: 'JavaScript',
+        },
+        {
+            id: 2,
+            name: 'Java',
+        },]
     const login = () => {
         props.navigation.navigate("Mainpage")
         /*
@@ -94,6 +106,8 @@ function Addforum(props) {
         setisipesan("Forum berhasil dibuat!")
         toggleModal()
     }
+    const [kategori, setkategori] = useState([{}])
+
     return (
         <View style={style.main}>
 
@@ -120,7 +134,7 @@ function Addforum(props) {
                         </View>
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
-                        <View style={{  marginTop:15,marginRight:30,marginLeft:30 }}>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
                             <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
@@ -138,6 +152,7 @@ function Addforum(props) {
                                 onChangeText={setpertanyaan}
                             />
                         </View>
+                
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pilih Topik</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -165,6 +180,7 @@ function Addforum(props) {
                             </Picker>
                         </View>
 
+
                     </View>
                 </ScrollView>
                 <RichToolbar
@@ -181,12 +197,12 @@ function Addforum(props) {
                     <View style={{ flex: 1, marginRight: 10 }}>
                         <Button title="Batal" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.button2, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                     </View>
-                    {global.add == 1 ? (  <View style={{ flex: 1, marginLeft: 10 }}>
+                    {global.add == 1 ? (<View style={{ flex: 1, marginLeft: 10 }}>
                         <Button title="Kirim" onPress={forumdibuat} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                    </View>):(<View style={{ flex: 1, marginLeft: 10 }}>
+                    </View>) : (<View style={{ flex: 1, marginLeft: 10 }}>
                         <Button title="Kirim" onPress={forumdiubah} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                     </View>)}
-                  
+
                 </View>
             </View>
 

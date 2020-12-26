@@ -43,6 +43,12 @@ import Judulmateri from './containers/nurse/materi/judulmateri';
 import Tabmateri from './containers/nurse/materi/tabmateri';
 import Tabreminder from './containers/pasien/tabreminder';
 import Kategoriforum from './containers/nurse/forum/kategoriforum';
+import Kategorikuis from './containers/nurse/kuis/kategorikuis';
+import Kerjakansurvey from './containers/pasien/survey/kerjakansurvey';
+import Kelolasurvey from './containers/pasien/survey/kelolasurvey';
+import Datakontrolpasien from './containers/nurse/resumepulang/datakontrolpasien';
+import Tambahrelasi from './containers/admin/nurse/tambahrelasi';
+import Logperawat from './containers/admin/nurse/logperawat';
 
 
 
@@ -238,8 +244,39 @@ function Navigation() {
          <Stack.Screen
           name="Kategoriforum"
           component={Kategoriforum}
-          options={{ headerTitle: "Kategori Forum" }}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Kategori Forum" })}
         />
+        <Stack.Screen
+          name="Kategorikuis"
+          component={Kategorikuis}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Kategori Kuis" })}
+        />
+         <Stack.Screen
+          name="Kerjakansurvey"
+          component={Kerjakansurvey}
+          options={{ headerTitle:"Kerjakan Survey"}}
+        />
+        <Stack.Screen
+          name="Kelolasurvey"
+          component={Kelolasurvey}
+          options={{ headerTitle:"Kelola Survey"}}
+        />
+           <Stack.Screen
+          name="Datakontrolpasien"
+          component={Datakontrolpasien}
+          options={{ headerTitle:"Pilih Pasien"}}
+        />
+        <Stack.Screen
+          name="Tambahrelasi"
+          component={Tambahrelasi}
+          options={{ headerTitle:"Tambah Relasi"}}
+        />
+           <Stack.Screen
+          name="Logperawat"
+          component={Logperawat}
+          options={{ headerTitle:"Log Perawat"}}
+        />
+         
       </Stack.Navigator>
     </NavigationContainer>
   );

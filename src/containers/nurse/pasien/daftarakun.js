@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -11,6 +11,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
+import MultiSelect from 'react-native-multiple-select';
 function Daftarakun(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -22,61 +23,43 @@ function Daftarakun(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
+    const items = [{
+        id: '92iijs7yta',
+        name: 'Ondo'
+    }, {
+        id: 'a0s0a8ssbsd',
+        name: 'Ogun'
+    }, {
+        id: '16hbajsabsd',
+        name: 'Calabar'
+    }, {
+        id: 'nahs75a5sg',
+        name: 'Lagos'
+    }, {
+        id: '667atsas',
+        name: 'Maiduguri'
+    }, {
+        id: 'hsyasajs',
+        name: 'Anambra'
+    }, {
+        id: 'djsjudksjd',
+        name: 'Benue'
+    }, {
+        id: 'sdhyaysdj',
+        name: 'Kaduna'
+    }, {
+        id: 'suudydjsjd',
+        name: 'Abuja'
     }
+    ];
 
-    const login = () => {
-        props.navigation.navigate("Mainpage")
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
+    const [selectedItems, setselectedItems] = useState([])
+
+    const onSelectedItemsChange = (selectedItems) => {
+        setselectedItems(selectedItems)
     };
+
+    const referensi = useRef()
     const [spinner, setspinner] = useState(false)
     const lanjut = () => {
         props.navigation.navigate("Daftarbayi")
@@ -139,25 +122,50 @@ function Daftarakun(props) {
                         <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
                         <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <View style={{marginTop:30}}>
+                            <MultiSelect
+                                hideTags
+                                items={items}
+                                uniqueKey="id"
+                                ref={referensi}
+                                onSelectedItemsChange={onSelectedItemsChange}
+                                selectedItems={selectedItems}
+                                selectText="Pilih Rekomendasi Materi"
+                                searchInputPlaceholderText="Pilih Materi..."
+                                onChangeInput={(text) => console.log(text)}
+                                altFontFamily="ProximaNova-Light"
+                                tagRemoveIconColor="#CCC"
+                                tagBorderColor="#CCC"
+                                tagTextColor="#CCC"
+                                selectedItemTextColor="#CCC"
+                                selectedItemIconColor="#CCC"
+                                itemTextColor="#000"
+                                displayKey="name"
+                                searchInputStyle={{ color: '#CCC' }}
+                                submitButtonColor="#CCC"
+                                submitButtonText="Submit"
+                            />
+                        </View>
+
                     </View>
                 </ScrollView>
-         
-                    {global.add == 1 ? (
-                        <View style={{ padding: 22, flexDirection: "row" }}>
-                            <View style={{ flex: 1, marginRight: 10 }}>
-                                <Button title="Batalkan" onPress={login} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                            </View>
-                            <View style={{ flex: 1, marginLeft: 10 }}>
-                                <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                            </View>
+
+                {global.add == 1 ? (
+                    <View style={{ padding: 22, flexDirection: "row" }}>
+                        <View style={{ flex: 1, marginRight: 10 }}>
+                            <Button title="Batalkan" buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
-                    ) : (
+                        <View style={{ flex: 1, marginLeft: 10 }}>
+                            <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        </View>
+                    </View>
+                ) : (
 
                         <View style={{ padding: 22 }}>
-                                <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                            </View>
-                        )}
-            
+                            <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        </View>
+                    )}
+
 
             </View>
 
