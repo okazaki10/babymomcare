@@ -128,7 +128,24 @@ function Kerjakankuis(props) {
         soal3: "sa312daa",
         soal4: "as1122da"
     }])
-
+    const [kuis2, setkuis2] = useState({
+        "question_id": 1,
+        "question": "fsadfsafaadasf",
+        "choice": [
+            {
+                "id": 1,
+                "answer": "dfafsafa"
+            },
+            {
+                "id": 2,
+                "answer": "fasdfafdsa"
+            },
+            {
+                "id": 3,
+                "answer": "fdafsa"
+            }
+        ]
+    })
     const pilih = (index, value) => {
         const s = [...jawaban]
         s[index] = value
@@ -222,14 +239,14 @@ function Kerjakankuis(props) {
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Pertanyaan 1</Text>
                                             <FontAwesomeIcon icon={faThumbsUp} size={22} color={"lightgreen"}></FontAwesomeIcon>
                                         </View>
-                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",marginTop:5 }}>
+                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 5 }}>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Pertanyaan 2</Text>
                                             <FontAwesomeIcon icon={faFrown} size={22} color={"red"}></FontAwesomeIcon>
                                         </View>
                                         <View style={[style.line, { marginTop: 5, marginBottom: 5 }]}></View>
                                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Total Benar</Text>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "right"}]}>1/2</Text>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "right" }]}>1/2</Text>
                                         </View>
                                     </View>
                                     <View style={{ marginTop: 20 }}>
