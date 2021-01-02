@@ -162,9 +162,39 @@ function Kerjakankuis(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     //setdata(json)
-                    setisipesan("Survey telah terisi!")
-                    toggleModal()
-              
+                    //setisipesan("Kuis telah terisi!")
+                    //toggleModal()
+                    selesaikuis()
+                  
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const selesaikuis = () => {
+        setspinner(true)
+        fetch(global.url + '/quiz/answer/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                quiz_id:data.quiz_id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setselesai(true)
                 }
                 setspinner(false)
             })
