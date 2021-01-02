@@ -33,10 +33,7 @@ function Tambahkuis(props) {
         setisipesan("Data kuis berhasil diubah!")
         toggleModal()
     }
-    const kuisdibuat = () => {
-        setisipesan("Data kuis berhasil dibuat!")
-        toggleModal()
-    }
+    
     const setjuduld = (index, value) => {
         const s = [...judul]
         s[index] = value
@@ -125,20 +122,43 @@ function Tambahkuis(props) {
         setModalVisible(!isModalVisible);
     };
 
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
+ 
+    const kuisdibuat = () => {
+        setspinner(true)
+        fetch(global.url + '/quiz/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                title: "kuisioner_1",
+                materi_id:props.route.params.id,
+                questions: judul,
+                choice1:opsi,
+                choice2:opsi2,
+                choice3:opsi3,
+                is_true:jawabanbenar
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data kuis berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
-
-
-    const login = () => {
-        props.navigation.navigate("Mainpage")
-
-    };
     return (
         <View style={style.main}>
 
@@ -185,8 +205,7 @@ function Tambahkuis(props) {
                         <TextInput onChangeText={(item) => { setopsi2d(nomor, item) }} value={opsi2[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Opsi 3</Text>
                         <TextInput onChangeText={(item) => { setopsi3d(nomor, item) }} value={opsi3[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Opsi 4</Text>
-                        <TextInput onChangeText={(item) => { setopsi4d(nomor, item) }} value={opsi4[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jawaban Benar</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -195,10 +214,9 @@ function Tambahkuis(props) {
                                     setjawabanbenar2d(nomor, itemValue)
                                 }
                                 mode="dropdown">
-                                <Picker.Item label="Opsi 1" value="opsi1" />
-                                <Picker.Item label="Opsi 2" value="opsi2" />
-                                <Picker.Item label="Opsi 3" value="opsi3" />
-                                <Picker.Item label="Opsi 4" value="opsi4" />
+                                <Picker.Item label="Opsi 1" value="choice1" />
+                                <Picker.Item label="Opsi 2" value="choice2" />
+                                <Picker.Item label="Opsi 3" value="choice3" />
                             </Picker>
                         </View>
                     </View>
@@ -221,6 +239,7 @@ function Tambahkuis(props) {
                                 <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                     </View>
                 </View>
+                {/*
                 <View style={{ padding: 22 }}>
                     {global.add == 1 ? (
                         <Button title="Simpan" onPress={kuisdibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
@@ -228,7 +247,7 @@ function Tambahkuis(props) {
                             <Button title="Simpan" onPress={kuisdiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         )}
                 </View>
-
+                    */}
 
             </View>
 

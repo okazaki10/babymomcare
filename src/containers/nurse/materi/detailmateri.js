@@ -72,9 +72,9 @@ function Detailmateri(props) {
             />
             <ScrollView>
                 <View style={{ flex: 1, padding: 23 }}>
-                    {global.status == 1 ? (
+                    {data.quiz ? (global.status == 1 ? (
                         selesai == true ?
-                            (<TouchableOpacity onPress={kerjakankuis} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
+                            (<TouchableOpacity onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id }) }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
                                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
                                     <View>
@@ -84,16 +84,17 @@ function Detailmateri(props) {
                                 </View>
                             </TouchableOpacity>
                             ) : (
-                                <Button title="Kerjakan Kuis" onPress={kerjakankuis} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
+                                <Button title="Kerjakan Kuis" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
 
-                    ) : (null)}
+                    ) : (null)) : (null)}
+
 
 
                     <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
                         <Text style={[style.poppinsbold, { fontSize: 17 }]}>{data.title}</Text>
                         <Text style={[style.nunitosans, { fontSize: 12 }]}>{data.date ? format(new Date(data.date), "iii', 'dd' 'MMM', 'yyyy'", { locale: id }) : ""}</Text>
                         <Image
-                            source={{ uri: data.image?data.image:"https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" }}
+                            source={{ uri: data.image ? data.image : "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" }}
                             style={{ width: "100%", height: 170, marginTop: 15 }}
                             resizeMode="cover"
                         />

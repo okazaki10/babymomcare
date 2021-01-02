@@ -29,7 +29,7 @@ function Kategorikuis(props) {
     }
 
     const login = () => {
-        
+
     };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
@@ -69,10 +69,38 @@ function Kategorikuis(props) {
         setModalVisible3(!isModalVisible3);
     };
     const klik = () => {
-     
-            props.navigation.navigate("Kelolakuis")
-   
+        props.navigation.navigate("Kelolakuis")
     }
+    const [data, setdata] = useState([{}])
+    const lihatkategori = () => {
+        setspinner(true)
+        fetch(global.url + '/materi/category', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatkategori()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -132,7 +160,7 @@ function Kategorikuis(props) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
-    
+
                 <View style={{ flex: 1, padding: 20 }}>
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
@@ -141,16 +169,17 @@ function Kategorikuis(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onPress={klik} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+
+                                {data.map((item) => (<TouchableOpacity onPress={() => { props.navigation.navigate("Kelolakuis", { id: item.id }) }} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
                                     <Image
                                         source={require("../../../assets/image/empty.png")}
                                         style={{ width: 35, height: 35 }}
                                         resizeMode="contain"
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>Cara Memandikan Bayi</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
                                     </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity>))}
 
 
                             </View>

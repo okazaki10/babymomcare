@@ -89,15 +89,14 @@ function Kelolakuis(props) {
 
     const ubahkuis = () => {
 
-        props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis",halaman:jumlah })
+        props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis", halaman: jumlah })
         global.add = 0
 
     }
 
     const tambahkuis = () => {
 
-        props.navigation.navigate("Tambahkuis",{halaman:jumlah})
-        global.add = 1
+     
 
     }
 
@@ -113,16 +112,19 @@ function Kelolakuis(props) {
         setModalVisible3(!isModalVisible3);
     };
     const [jumlah, setjumlah] = useState("")
-    const [data, setdata] = useState({})
-    const lihatsurvey = () => {
+    const [data, setdata] = useState([{}])
+    const lihatkategori = () => {
         setspinner(true)
-        fetch(global.url + '/kuis/index', {
-            method: 'GET',
+        fetch(global.url + '/materi/index', {
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + global.key,
-            }
+            },
+            body: JSON.stringify({
+                id: props.route.params.id
+            })
         })
             .then((response) => response.json())
             .then((json) => {
@@ -130,7 +132,7 @@ function Kelolakuis(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setdata(json)
+                    setdata(json.data)
                 }
                 setspinner(false)
             })
@@ -140,8 +142,9 @@ function Kelolakuis(props) {
                 setspinner(false)
             });
     }
+
     useState(() => {
-        lihatsurvey()
+        lihatkategori()
     })
     return (
         <View style={style.main}>
@@ -202,7 +205,7 @@ function Kelolakuis(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                 
+
                     <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                         <View style={{ flex: 1, marginRight: 15 }}>
                             <TextInput onChangeText={setjumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
@@ -213,14 +216,16 @@ function Kelolakuis(props) {
                         </View>
 
                     </View>
-        
+
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={tindakankuis} onPress={ubahkuis} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-
+                                {data.map((item) => (<TouchableOpacity onLongPress={tindakankuis} onPress={()=>{
+                                       props.navigation.navigate("Tambahkuis", { halaman: jumlah,id:item.id})
+                                       global.add = 1
+                                }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>Bagaimana memandikan bayi?</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.title}</Text>
                                     </View>
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <View style={{ marginRight: 15 }}>
@@ -229,9 +234,9 @@ function Kelolakuis(props) {
                                         <View style={{ marginRight: 15 }}>
                                             <Ionicons name={'trash'} size={24} color={colors.grey} />
                                         </View>
-
                                     </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity>))}
+
 
                             </View>
                         </View>

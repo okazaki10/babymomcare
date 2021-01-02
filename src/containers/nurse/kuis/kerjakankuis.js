@@ -22,60 +22,7 @@ function Kerjakankuis(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
-
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
+ 
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahkontrol = () => {
@@ -164,9 +111,73 @@ function Kerjakankuis(props) {
         setnomor(nomor - 1)
     }
     const [selesai, setselesai] = useState(false)
-    const kuisselesai = () => {
-        setselesai(true)
+   
+    const [data, setdata] = useState({})
+    const lihatkuis = () => {
+        setspinner(true)
+        fetch(global.url + '/quiz/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(JSON.stringify(json))
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
+    const kuisselesai = () => {
+        setspinner(true)
+        fetch(global.url + '/quiz/answer/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                answers:jawaban
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    //setdata(json)
+                    setisipesan("Survey telah terisi!")
+                    toggleModal()
+              
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatkuis()
+    })
+
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -257,54 +268,23 @@ function Kerjakankuis(props) {
                                     <View>
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Pertanyaan {nomor + 1}</Text>
                                         <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{kuis[nomor].judul}</Text>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{data.questions?data.questions[nomor].question:""}</Text>
                                         </View>
 
                                         <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                            {jawaban[nomor] == "a" ? (
-                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{kuis[nomor].soal1}</Text>
-                                                </TouchableOpacity>
-                                            ) : (
-                                                    <TouchableOpacity onPress={() => { pilih(nomor, "a") }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                        <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{kuis[nomor].soal1}</Text>
+                                             {data.questions?data.questions[nomor].choice.map((item) => (
+                                                jawaban[nomor] == item.id ? (
+                                                    <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                        <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
+                                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
                                                     </TouchableOpacity>
-                                                )}
-                                            {jawaban[nomor] == "b" ? (
-                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{kuis[nomor].soal2}</Text>
-                                                </TouchableOpacity>
-                                            ) : (
-                                                    <TouchableOpacity onPress={() => { pilih(nomor, "b") }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                        <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{kuis[nomor].soal2}</Text>
-                                                    </TouchableOpacity>
-                                                )}
-                                            {jawaban[nomor] == "c" ? (
-                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{kuis[nomor].soal3}</Text>
-                                                </TouchableOpacity>
-                                            ) : (
-                                                    <TouchableOpacity onPress={() => { pilih(nomor, "c") }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                        <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{kuis[nomor].soal3}</Text>
-                                                    </TouchableOpacity>
-                                                )}
-                                            {jawaban[nomor] == "d" ? (
-                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{kuis[nomor].soal4}</Text>
-                                                </TouchableOpacity>
-                                            ) : (
-                                                    <TouchableOpacity onPress={() => { pilih(nomor, "d") }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                        <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{kuis[nomor].soal4}</Text>
-                                                    </TouchableOpacity>
-                                                )}
+                                                ) : (
+                                                        <TouchableOpacity onPress={() => { pilih(nomor, item.id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                            <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
+                                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
+                                                        </TouchableOpacity>
+                                                    )
+                                            )):(null)}
 
                                         </View>
                                         <View style={{ flexDirection: "row", marginTop: 20 }}>
