@@ -84,6 +84,8 @@ function Tambahmateri(props) {
             });
             */
     };
+    const [gambar, setgambar] = useState("")
+    const [gambar2,setgambar2] = useState("")
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
     const forumdiubah = () => {
@@ -91,10 +93,40 @@ function Tambahmateri(props) {
         toggleModal()
     }
     const forumdibuat = () => {
-        setisipesan("Materi berhasil dibuat!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/materi/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                title: judul,
+                content: pertanyaan,
+                base64_img: gambar2,
+                category_id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Materi berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
     }
-    const [gambar, setgambar] = useState("")
+
     const [hide, sethide] = useState(true)
     const [options, setoptions] = useState({
         title: 'Pilih Foto',
@@ -119,6 +151,7 @@ function Tambahmateri(props) {
                 if (response.uri) {
                     sethide(false)
                     setgambar(response.uri)
+                    setgambar2(response.data)
                 }
 
                 // You can also display the image using data:
@@ -128,7 +161,13 @@ function Tambahmateri(props) {
         });
 
     }
-    
+    const nursedibuat = () => {
+
+    }
+    const kembali = () => {
+        props.navigation.goBack()
+        toggleModal()
+    }
     return (
         <View style={style.main}>
 
@@ -155,8 +194,8 @@ function Tambahmateri(props) {
                         </View>
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
-                        <View style={{  marginTop:15,marginRight:30,marginLeft:30 }}>
-                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
+                            <Button title="Ok" onPress={kembali} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -170,15 +209,15 @@ function Tambahmateri(props) {
                         <View style={[style.card]}>
                             <RichEditor
                                 ref={textref}
-                                onChangeText={setpertanyaan}
+                                onChange={setpertanyaan}
                             />
                         </View>
                         {hide ? (null) : (
-                        <View style={{marginTop:15}}><Image
-                            source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
-                            style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
-                            resizeMode="cover"
-                        ></Image></View>)}
+                            <View style={{ marginTop: 15 }}><Image
+                                source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
+                                style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
+                                resizeMode="cover"
+                            ></Image></View>)}
 
 
                         <View style={{ flexDirection: "row", marginTop: 15 }}>
@@ -200,18 +239,18 @@ function Tambahmateri(props) {
                         actions.insertBulletsList,
                         actions.insertOrderedList,
                     ]}
-
+                 
                 />
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1, marginRight: 10 }}>
                         <Button title="Batal" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.button2, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                     </View>
-                    {global.add == 1 ? (  <View style={{ flex: 1, marginLeft: 10 }}>
+                    {global.add == 1 ? (<View style={{ flex: 1, marginLeft: 10 }}>
                         <Button title="Kirim" onPress={forumdibuat} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                    </View>):(<View style={{ flex: 1, marginLeft: 10 }}>
+                    </View>) : (<View style={{ flex: 1, marginLeft: 10 }}>
                         <Button title="Kirim" onPress={forumdiubah} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                     </View>)}
-                  
+
                 </View>
             </View>
 

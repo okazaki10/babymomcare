@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
@@ -10,6 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 function Kategoriforum(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -113,6 +114,41 @@ function Kategoriforum(props) {
     const klik = () => {
         props.navigation.navigate("Forum")
     }
+    const [data,setdata] = useState([{}])
+    const lihatkategori = () => {
+        setspinner(true)
+        fetch(global.url + '/forum/topic', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatkategori()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -184,16 +220,16 @@ function Kategoriforum(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onPress={klik} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+                            {data.map((item) => (<TouchableOpacity onPress={() => {  props.navigation.navigate("Forum",{id:item.id}) }} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
                                     <Image
                                         source={require("../../../assets/image/empty.png")}
                                         style={{ width: 35, height: 35 }}
                                         resizeMode="contain"
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>Cara Memandikan Bayi</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
                                     </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity>))}
 
 
                             </View>

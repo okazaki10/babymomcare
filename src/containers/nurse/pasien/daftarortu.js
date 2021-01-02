@@ -22,13 +22,13 @@ function Daftarortu(props) {
     const [isipesan, setisipesan] = useState("")
     const [namaibu, setnamaibu] = useState("")
     const [agamaibu, setagamaibu] = useState("")
-    const [pendidikanibu, setpendidikanibu] = useState("")
+    const [pendidikanibu, setpendidikanibu] = useState("sarjana")
     const [pengalamanibu, setpengalamanibu] = useState("")
     const [pekerjaanibu, setpekerjaanibu] = useState("")
     const [paritas, setparitas] = useState("")
     const [namaayah, setnamaayah] = useState("")
     const [agamaayah, setagamaayah] = useState("")
-    const [pendidikanayah, setpendidikanayah] = useState("")
+    const [pendidikanayah, setpendidikanayah] = useState("sarjana")
     const [pengalamanayah, setpengalamanayah] = useState("")
     const [pekerjaanayah, setpekerjaanayah] = useState("")
     const [show, setShow] = useState(false);
@@ -122,7 +122,56 @@ function Daftarortu(props) {
         toggleModal()
     }
     const pasiendibuat = () => {
-        setisipesan("Data pasien berhasil dibuat!")
+        setspinner(true)
+        fetch(global.url + '/register', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                role: "patient",
+                username: props.route.params.username,
+                password: props.route.params.password,
+                baby_name: global.baby_name,
+                baby_birthday: global.baby_birthday,
+                born_weight: global.born_weight,
+                born_length: global.born_length,
+                baby_gender: global.baby_gender,
+                mother_name: namaibu,
+                mother_birthday: format(date, "yyyy-MM-dd HH:mm:ss"),
+                mother_religion: agamaibu,
+                mother_education: pendidikanibu,
+                mother_job: pekerjaanibu,
+                paritas: paritas,
+                father_name: namaayah,
+                father_birthday: format(date2, "yyyy-MM-dd HH:mm:ss"),
+                father_religion: agamaayah,
+                father_education: pendidikanayah,
+                father_job: pekerjaanayah,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data pasien berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
+    }
+    const kembali = () => {
+        props.navigation.navigate("Menubar")
         toggleModal()
     }
     return (
@@ -154,11 +203,11 @@ function Daftarortu(props) {
                 textStyle={{ color: '#FFF' }}
             />
             <Modal isVisible={isModalVisible}
-                onBackdropPress={toggleModal}
-                onBackButtonPress={toggleModal}>
+                onBackdropPress={kembali}
+                onBackButtonPress={kembali}>
                 <View style={style.content}>
                     <View>
-                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal}>
+                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={kembali}>
                             <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
@@ -171,7 +220,7 @@ function Daftarortu(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={kembali} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -209,13 +258,15 @@ function Daftarortu(props) {
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pekerjaan</Text>
                         <TextInput onChangeText={setpekerjaanibu} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                   
+
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
                                 selectedValue={pendidikanibu}
-                                onValueChange={(itemValue, itemIndex) =>
+                                onValueChange={(itemValue, itemIndex) =>{
                                     setpendidikanibu(itemValue)
+                                    console.log(itemValue)
+                                }
                                 }
                                 mode="dropdown">
                                 <Picker.Item label="Sarjana" value="sarjana" />
@@ -226,7 +277,7 @@ function Daftarortu(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
                         <TextInput onChangeText={setagamaibu} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Paritas</Text>
-                        <TextInput onChangeText={setagamaibu} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <TextInput onChangeText={setparitas} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ayah</Text>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5 }]}>Nama Ayah</Text>
                         <TextInput onChangeText={setnamaayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
@@ -246,15 +297,17 @@ function Daftarortu(props) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-           
+
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pekerjaan</Text>
                         <TextInput onChangeText={setpekerjaanayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
                                 selectedValue={pendidikanayah}
-                                onValueChange={(itemValue, itemIndex) =>
+                                onValueChange={(itemValue, itemIndex) => {
                                     setpendidikanayah(itemValue)
+                                    console.log(itemValue)
+                                }
                                 }
                                 mode="dropdown">
                                 <Picker.Item label="Sarjana" value="sarjana" />
@@ -266,20 +319,20 @@ function Daftarortu(props) {
                         <TextInput onChangeText={setagamaayah} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                     </View>
                 </ScrollView>
-        
-                    {global.add == 1 ? (
-                        <View style={{ padding: 22, flexDirection: "row" }}>
-                            <View style={{ flex: 1, marginRight: 10 }}>
-                                <Button title="Kembali" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                            </View>
-                            <View style={{ flex: 1, marginLeft: 10 }}>
-                                <Button title="Simpan" onPress={pasiendibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                            </View>
-                        </View>) : (
-                         <View style={{ padding: 22 }}>
-                                <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                            </View>)}
-               
+
+                {global.add == 1 ? (
+                    <View style={{ padding: 22, flexDirection: "row" }}>
+                        <View style={{ flex: 1, marginRight: 10 }}>
+                            <Button title="Kembali" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
+                        <View style={{ flex: 1, marginLeft: 10 }}>
+                            <Button title="Simpan" onPress={pasiendibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        </View>
+                    </View>) : (
+                        <View style={{ padding: 22 }}>
+                            <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        </View>)}
+
 
             </View>
 

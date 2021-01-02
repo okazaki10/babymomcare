@@ -22,7 +22,7 @@ function Pendaftarannurse(props) {
     const [isipesan, setisipesan] = useState("")
     const [nama, setnama] = useState("")
     const [username, setusername] = useState("")
-    const [pendidikanibu, setpendidikanibu] = useState("")
+    const [pendidikanibu, setpendidikanibu] = useState("sarjana")
     const [password, setpassword] = useState("")
     const [alamat, setalamat] = useState("")
     const [nomortelepon, setnomortelepon] = useState("")
@@ -42,42 +42,75 @@ function Pendaftarannurse(props) {
         }
     }
 
-    const login = () => {
-        props.navigation.navigate("Mainpage")
-        /*
+    const daftar = () => {
+
+
+
+    };
+    const [spinner, setspinner] = useState(false)
+    const [nilai, setnilai] = useState("")
+    const nursediubah = () => {
         setspinner(true)
-        fetch(global.url + '/login', {
+        fetch(global.url + '/register', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                email: email,
+                role: "nurse",
+                username: username,
                 password: password,
-                device_name: "xavier"
+                nurse_name: nama,
+                working_exp: lamabekerja,
+                education: pendidikanibu,
+                phone: nomortelepon,
+                hospital_id: 1
             })
         })
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
+                setisipesan("Data nurse berhasil diubah!")
+                toggleModal()
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
+    }
+    const nursedibuat = () => {
+        setspinner(true)
+        fetch(global.url + '/register', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                role: "nurse",
+                username: username,
+                password: password,
+                nurse_name: nama,
+                working_exp: lamabekerja,
+                education: pendidikanibu,
+                phone: nomortelepon,
+                hospital_id: 1
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
+                    setisipesan("Data nurse berhasil dibuat!")
                     toggleModal()
-                    setisipesan("Email atau password salah")
                 }
                 setspinner(false)
             })
@@ -86,16 +119,9 @@ function Pendaftarannurse(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-            */
-    };
-    const [spinner, setspinner] = useState(false)
-    const [nilai, setnilai] = useState("")
-    const nursediubah = () => {
-        setisipesan("Data nurse berhasil diubah!")
-        toggleModal()
     }
-    const nursedibuat = () => {
-        setisipesan("Data nurse berhasil dibuat!")
+    const kembali = () => {
+        props.navigation.goBack()
         toggleModal()
     }
     return (
@@ -108,11 +134,11 @@ function Pendaftarannurse(props) {
                 textStyle={{ color: '#FFF' }}
             />
             <Modal isVisible={isModalVisible}
-                onBackdropPress={toggleModal}
-                onBackButtonPress={toggleModal}>
+                onBackdropPress={kembali}
+                onBackButtonPress={kembali}>
                 <View style={style.content}>
                     <View>
-                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal}>
+                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={kembali}>
                             <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
@@ -125,7 +151,7 @@ function Pendaftarannurse(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={kembali} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -147,8 +173,11 @@ function Pendaftarannurse(props) {
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
                                 selectedValue={pendidikanibu}
-                                onValueChange={(itemValue, itemIndex) =>
+                                onValueChange={(itemValue, itemIndex) => {
                                     setpendidikanibu(itemValue)
+                                    console.log(itemValue)
+                                }
+
                                 }
                                 mode="dropdown">
                                 <Picker.Item label="Sarjana" value="sarjana" />
@@ -161,7 +190,7 @@ function Pendaftarannurse(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Rumah Sakit</Text>
                         <TextInput onChangeText={settempatrumahsakit} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lama Bekerja</Text>
-                        <TextInput onChangeText={setlamabekerja} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput onChangeText={setlamabekerja} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
 
 
 

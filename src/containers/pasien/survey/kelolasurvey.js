@@ -88,15 +88,13 @@ function Kelolasurvey(props) {
     }
 
     const ubahkuis = () => {
-
-        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey",halaman:jumlah })
+        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", halaman: jumlah })
         global.add = 0
-
     }
 
     const tambahkuis = () => {
 
-        props.navigation.navigate("Tambahsurvey",{halaman:jumlah})
+        props.navigation.navigate("Tambahsurvey", { halaman: jumlah })
         global.add = 1
 
     }
@@ -113,6 +111,36 @@ function Kelolasurvey(props) {
         setModalVisible3(!isModalVisible3);
     };
     const [jumlah, setjumlah] = useState("")
+    const [data, setdata] = useState({})
+    const lihatsurvey = () => {
+        setspinner(true)
+        fetch(global.url + '/survey/index', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatsurvey()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -172,35 +200,37 @@ function Kelolasurvey(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                 
-                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                        <View style={{ flex: 1, marginRight: 15 }}>
-                            <TextInput onChangeText={setjumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
+                    {global.status == 1 ? (null) : (
+                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ flex: 1, marginRight: 15 }}>
+                                <TextInput onChangeText={setjumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
+                            </View>
+                            <View style={{ flex: 1 }}>
+                                <Button title="+ Tambah Survey" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            </View>
                         </View>
-
-                        <View style={{ flex: 1 }}>
-                            <Button title="+ Tambah Survey" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                        </View>
-
-                    </View>
-        
+                    )}
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={tindakankuis} onPress={ubahkuis} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
 
+                                <TouchableOpacity onLongPress={tindakankuis} onPress={() => {
+                                    props.navigation.navigate("Kerjakansurvey", { id: data.title_1 })
+
+                                }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>Bagaimana memandikan bayi?</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{data.title_1}</Text>
                                     </View>
-                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                        <View style={{ marginRight: 15 }}>
-                                            <Ionicons name={'pencil'} size={24} color={colors.grey} />
+                                    {global.status == 1 ? (null) : (
+                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <View style={{ marginRight: 15 }}>
+                                                <Ionicons name={'pencil'} size={24} color={colors.grey} />
+                                            </View>
+                                            <View style={{ marginRight: 15 }}>
+                                                <Ionicons name={'trash'} size={24} color={colors.grey} />
+                                            </View>
                                         </View>
-                                        <View style={{ marginRight: 15 }}>
-                                            <Ionicons name={'trash'} size={24} color={colors.grey} />
-                                        </View>
-
-                                    </View>
+                                    )}
                                 </TouchableOpacity>
 
                             </View>
@@ -211,7 +241,7 @@ function Kelolasurvey(props) {
 
             </View>
 
-        </View>
+        </View >
     );
 };
 

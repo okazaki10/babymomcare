@@ -30,6 +30,7 @@ function Login(props) {
     }
 
     const login = () => {
+        /*
         if (username == "a") {
             props.navigation.navigate("Menubarpasien")
             global.status = 1
@@ -40,7 +41,7 @@ function Login(props) {
             props.navigation.navigate("Menubaradmin")
             global.status = 3
         }
-        /*
+     */
         setspinner(true)
         fetch(global.url + '/login', {
             method: 'POST',
@@ -49,7 +50,7 @@ function Login(props) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email: email,
+                username: username,
                 password: password,
                 device_name: "xavier"
             })
@@ -57,32 +58,48 @@ function Login(props) {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
+           
+                if (json.role == "patient") {
                     global.status = 1
                     storeData(json.token)
                     props.navigation.reset({
                         index: 0,
-                        routes: [{ name: 'Menu_bar' }],
+                        routes: [{ name: 'Menubarpasien' }],
+                    });
+                } else if (json.role == "nurse") {
+                    global.status = 2
+                    storeData(json.token)
+                    props.navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Menubar' }],
+                    });
+                } else if (json.role == "admin") {
+                    global.status = 3
+                    storeData(json.token)
+                    props.navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Menubaradmin' }],
+                    });
+                } else if (json.role == "super_admin") {
+                    global.status = 3
+                    storeData(json.token)
+                    props.navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'Menubaradmin' }],
                     });
                 } else {
                     toggleModal()
-                    setisipesan("Email atau password salah")
+                    setisipesan("Username atau password salah")
                 }
-                setspinner(false)
+            
+               setspinner(false)
             })
             .catch((error) => {
                 console.error(error)
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-            */
+           
     };
     const [spinner, setspinner] = useState(false)
     return (

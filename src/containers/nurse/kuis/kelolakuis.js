@@ -113,6 +113,36 @@ function Kelolakuis(props) {
         setModalVisible3(!isModalVisible3);
     };
     const [jumlah, setjumlah] = useState("")
+    const [data, setdata] = useState({})
+    const lihatsurvey = () => {
+        setspinner(true)
+        fetch(global.url + '/kuis/index', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatsurvey()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

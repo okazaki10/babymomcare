@@ -30,51 +30,8 @@ function Datakontrol(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
+
+
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahkontrol = () => {
@@ -99,9 +56,9 @@ function Datakontrol(props) {
         toggleModal3()
 
     }
-    const detailkontrol = () => {
+    const detailkontrol = (id) => {
         global.mode = "kontrol"
-        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
+        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol", id: id })
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -113,6 +70,36 @@ function Datakontrol(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [datakontrol, setdatakontrol] = useState([{}])
+    const lihatkontrol = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/index', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdatakontrol(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatkontrol()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -196,27 +183,25 @@ function Datakontrol(props) {
                                         {global.status == 1 ? (
                                             <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                         ) : (null)}
-                                        <TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={tindakankontrol} onPress={detailkontrol}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kontrol ke-1</Text>
+                                        {datakontrol.map((item) => (<TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={tindakankontrol} onPress={() => { detailkontrol(item.id) }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kontrol Ke-{item.order}</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal kontrol</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: 25/01/2016</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {item.date}</Text>
                                             </View>
-                                            {global.mode == "resume" ? (null) : (
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Text style={[style.nunitosans, style.datapasien]}>Catatan Tambahan</Text>
-                                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                                    <Text style={[style.nunitosans, style.datapasien2]}>Bayi harus diberikan asi</Text>
-                                                </View>)}
 
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Catatan Tambahan</Text>
+                                                <Text style={{ marginTop: 15 }}>: </Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>{item.note}</Text>
+                                            </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
                                                 <Text style={{ marginTop: 15 }}>: </Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>Bayi harus diberikan asi</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>{item.nurse_note}</Text>
                                             </View>
-
                                             <Text style={[style.nunitosans, style.datapasien, { textAlign: "right", textDecorationLine: "underline" }]}>Lihat Selengkapnya</Text>
-                                        </TouchableOpacity>
+                                        </TouchableOpacity>))}
 
                                     </View>)}
                         </View>

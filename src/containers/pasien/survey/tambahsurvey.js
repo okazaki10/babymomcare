@@ -21,26 +21,25 @@ function Tambahsurvey(props) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [materi, setmateri] = useState("")
-    const [halaman,sethalaman] = useState(props.route.params ? props.route.params.halaman : 5)
+    const [halaman, sethalaman] = useState(props.route.params ? props.route.params.halaman : 5)
     const [judul, setjudul] = useState([])
+    const [choice, setchoice] = useState([])
     const [opsi, setopsi] = useState([])
     const [opsi2, setopsi2] = useState([])
     const [opsi3, setopsi3] = useState([])
     const [opsi4, setopsi4] = useState([])
     const [jawabanbenar, setjawabanbenar] = useState([])
 
-    const kuisdiubah = () => {
-        setisipesan("Data kuis berhasil diubah!")
-        toggleModal()
-    }
-    const kuisdibuat = () => {
-        setisipesan("Data kuis berhasil dibuat!")
-        toggleModal()
-    }
+
     const setjuduld = (index, value) => {
         const s = [...judul]
         s[index] = value
         setjudul(s)
+    }
+    const setchoiced = (index, value) => {
+        const s = [...choice]
+        s[index] = value
+        setchoice(s)
     }
     const setopsid = (index, value) => {
         const s = [...opsi]
@@ -92,13 +91,15 @@ function Tambahsurvey(props) {
             var soal3 = []
             var soal4 = []
             var jawabanbenar = []
-            for (var i=0; i < kuis.length; i++) {
+            var choice = []
+            for (var i = 0; i < kuis.length; i++) {
                 judul[i] = kuis[i].judul
                 soal1[i] = kuis[i].soal1
                 soal2[i] = kuis[i].soal2
                 soal3[i] = kuis[i].soal3
                 soal4[i] = kuis[i].soal4
                 jawabanbenar[i] = kuis[i].jawabanbenar
+
             }
             setjudul(judul)
             setopsi(soal1)
@@ -106,6 +107,10 @@ function Tambahsurvey(props) {
             setopsi3(soal3)
             setopsi4(soal4)
             setjawabanbenar(jawabanbenar)
+            for (var i = 0; i < props.route.params.halaman; i++) {
+                choice[i] = "text"
+            }
+            setchoice(choice)
         }
     })
     const tambahnomor = () => {
@@ -139,9 +144,50 @@ function Tambahsurvey(props) {
         props.navigation.navigate("Mainpage")
 
     };
+    const kuisdiubah = () => {
+        setisipesan("Data kuis berhasil diubah!")
+        toggleModal()
+    }
+    const kuisdibuat = () => {
+        setspinner(true)
+        fetch(global.url + '/survey/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                title: "kuisioner_1",
+                questions: judul,
+                choice: choice
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data kuis berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
+    }
+    const resumedibuat = () => {
+
+
+    }
     return (
         <View style={style.main}>
-
+            <Text>{choice}</Text>
 
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
@@ -179,15 +225,20 @@ function Tambahsurvey(props) {
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>
                         <TextInput onChangeText={(item) => { setjuduld(nomor, item) }} value={judul[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Opsi 1</Text>
-                        <TextInput onChangeText={(item) => { setopsid(nomor, item) }} value={opsi[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Opsi 2</Text>
-                        <TextInput onChangeText={(item) => { setopsi2d(nomor, item) }} value={opsi2[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Opsi 3</Text>
-                        <TextInput onChangeText={(item) => { setopsi3d(nomor, item) }} value={opsi3[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Opsi 4</Text>
-                        <TextInput onChangeText={(item) => { setopsi4d(nomor, item) }} value={opsi4[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                     
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={choice[nomor]}
+                                onValueChange={(itemValue, itemIndex) =>
+                                    setchoiced(nomor, itemValue)
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Text" value="text" />
+                                <Picker.Item label="Angka" value="number" />
+
+                            </Picker>
+                        </View>
+
                     </View>
                 </ScrollView>
 

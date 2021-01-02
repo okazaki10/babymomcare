@@ -62,7 +62,9 @@ function Daftarakun(props) {
     const referensi = useRef()
     const [spinner, setspinner] = useState(false)
     const lanjut = () => {
-        props.navigation.navigate("Daftarbayi")
+        global.emaild = email
+        global.nohpd = nohp
+        props.navigation.navigate("Daftarbayi",{username:username,password:password})
     }
     const pasiendiubah = () => {
         setisipesan("Data pasien berhasil diubah!")

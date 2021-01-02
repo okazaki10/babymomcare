@@ -131,7 +131,37 @@ function Anjuranpasien(props) {
     useState(() => {
         tambahcollapse()
     })
+    const [data, setdata] = useState([{}])
+    const lihatanjuran = () => {
+        setspinner(true)
+        fetch(global.url + '/advice/index', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
 
+    useState(() => {
+        lihatanjuran()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -201,9 +231,9 @@ function Anjuranpasien(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {reminder.map((item, index) =>
+                                {data.map((item, index) =>
                                     <View><TouchableOpacity onLongPress={tindakananjuran} onPress={() => { setkolom(index) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15, flex: 1 }]}>{item.judul}</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15, flex: 1 }]}>{item.name}</Text>
                                         {global.status == 2 ? (
                                             <View style={{ flexDirection: "row", alignItems: "center" }}>
                                                 <View style={{ marginRight: 15 }}>
@@ -217,7 +247,7 @@ function Anjuranpasien(props) {
                                     </TouchableOpacity>
                                         {collapse[index] == true ? (null) : (
                                             <View style={[style.card, { marginTop: 5, padding: 17 }]}>
-                                                <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.deskripsi}</Text>
+                                                <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.description}</Text>
                                             </View>)}
 
                                     </View>

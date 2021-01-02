@@ -101,6 +101,7 @@ function Daftarsurvey(props) {
         props.navigation.navigate("Tambahsurvey")
         global.add = 1
     }
+    
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

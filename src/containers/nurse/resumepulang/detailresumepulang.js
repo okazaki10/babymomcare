@@ -7,7 +7,7 @@ import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlusSquare, faRoute, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
@@ -119,6 +119,71 @@ function Detailresumepulang(props) {
         setModalVisible2(!isModalVisible2);
     };
     const [anjuran, setanjuran] = useState("")
+    const [datakontrol, setdatakontrol] = useState("")
+    const lihatkontrol = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdatakontrol(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatresume = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/resume', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    if (json.data) {
+                        setdatakontrol(json.data)
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        if (mode == "kontrol") {
+            lihatkontrol()
+        } else if (mode == "resume") {
+            lihatresume()
+        }
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -150,73 +215,74 @@ function Detailresumepulang(props) {
 
                     <ScrollView>
                         <View style={{ padding: 3 }}>
+                            {datakontrol ? (
+                                <View>
 
-                            <View>
-
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Foto Bayi</Text>
-                                </View>
-                                <View style={{ marginTop: 15 }}>
-                                    <Image
-                                        source={{ uri: "https://www.thailandmedical.news/uploads/editor/files/Coronavirus-babies.jpg" }}
-                                        style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
-                                        resizeMode="cover"
-                                    ></Image>
-                                </View>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien, { marginTop: 15 }]}>Tanggal Kontrol Selanjutnya</Text>
-                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                    <Text style={[style.nunitosans, style.datapasien2, { marginTop: 15 }]}>25/01/2016</Text>
-                                </View>
-                                {global.mode == "resume" ? (<View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Tempat Kontrol</Text>
-                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>Poli Bayi</Text>
-                                </View>) : (null)}
-
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Berat Badan</Text>
-                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>63 kg</Text>
-                                </View>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Panjang Badan</Text>
-                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>50 cm</Text>
-                                </View>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Lingkar Kepala</Text>
-                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>50 cm</Text>
-                                </View>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Suhu</Text>
-                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>30 celcius</Text>
-                                </View>
-                                {global.mode == "tambahan" ? (null) : (
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Catatan Tambahan</Text>
-                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>Bayi harus diberikan asi</Text>
-                                </View>)}
-
-                                {global.status == 2 ? (<View>
-                                    <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan dari perawat</Text>
-                                    <View>
-                                        <TextInput onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                                    <View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Foto Bayi</Text>
                                     </View>
-                                    <View style={{ marginTop: 30 }}>
-                                        <Button title="Simpan" buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                    <View style={{ marginTop: 15 }}>
+                                        <Image
+                                            source={{ uri: datakontrol.image }}
+                                            style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
+                                            resizeMode="cover"
+                                        ></Image>
                                     </View>
-                                </View>) : (<View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
-                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>Bayi harus diberikan asi</Text>
-                                </View>)}
+                                    <View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.nunitosans, style.datapasien, { marginTop: 15 }]}>Tanggal Kontrol Selanjutnya</Text>
+                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                        <Text style={[style.nunitosans, style.datapasien2, { marginTop: 15 }]}>{datakontrol.date}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.nunitosans, style.datapasien]}>Tempat Kontrol</Text>
+                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.tempat_kontrol}</Text>
+                                    </View>
+
+                                    <View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.nunitosans, style.datapasien]}>Berat Badan</Text>
+                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.weight} kg</Text>
+                                    </View>
+                                    <View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.nunitosans, style.datapasien]}>Panjang Badan</Text>
+                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.length} cm</Text>
+                                    </View>
+                                    <View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.nunitosans, style.datapasien]}>Lingkar Kepala</Text>
+                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.lingkar_kepala} cm</Text>
+                                    </View>
+                                    <View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.nunitosans, style.datapasien]}>Suhu</Text>
+                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.temperature} celcius</Text>
+                                    </View>
+                                    {global.mode == "resume" ? (null) : (
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Catatan Tambahan</Text>
+                                            <Text style={{ marginTop: 15 }}>: </Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.note}</Text>
+                                        </View>)}
+
+                                    {global.status == 2 ? (<View>
+                                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan dari perawat</Text>
+                                        <View>
+                                            <TextInput onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                                        </View>
+                                        <View style={{ marginTop: 30 }}>
+                                            <Button title="Simpan" buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                        </View>
+                                    </View>) : (<View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
+                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.nurse_note}</Text>
+                                    </View>)}
 
 
-                            </View>
+                                </View>
+                            ) : (<Text>Tidak ada resume pulang</Text>)}
                         </View>
                     </ScrollView>
                 </View>

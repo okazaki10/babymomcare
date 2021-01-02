@@ -14,6 +14,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Picker } from '@react-native-picker/picker';
 function Daftarbayi(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -22,7 +23,7 @@ function Daftarbayi(props) {
     const [tgllahir, settgllahir] = useState("")
     const [gestasi, setgestasi] = useState("")
     const [anak, setanak] = useState("")
-    const [jenis_kelamin, setjenis_kelamin] = useState("")
+    const [jenis_kelamin, setjenis_kelamin] = useState("male")
     const [pjl, setpjl] = useState("")
     const [bbnow, setbbnow] = useState("")
     const [bblater, setbblater] = useState("")
@@ -106,6 +107,14 @@ function Daftarbayi(props) {
         setisipesan("Data bayi berhasil dibuat!")
         toggleModal()
     }
+    const lanjut = () => {
+        global.baby_name = nama
+        global.baby_birthday = format(date, "yyyy-MM-dd HH:mm:ss")
+        global.born_weight = bbnow
+        global.born_length = pjl
+        global.baby_gender = jenis_kelamin
+        props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password })
+    }
     return (
         <View style={style.main}>
             {show && (
@@ -181,7 +190,19 @@ function Daftarbayi(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Usia Gestasi</Text>
                         <TextInput onChangeText={setgestasi} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jenis Kelamin</Text>
-                        <TextInput onChangeText={setjenis_kelamin} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={jenis_kelamin}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setjenis_kelamin(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Laki Laki" value="male" />
+                                <Picker.Item label="Perempuanr" value="female" />
+                            </Picker>
+                        </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Panjang bayi lahir</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
                             <TextInput onChangeText={setpjl} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
@@ -206,20 +227,20 @@ function Daftarbayi(props) {
                         </View>
                     </View>
                 </ScrollView>
-             
-                    {global.add == 1 ? (
-                                 <View style={{ padding: 22, flexDirection: "row" }}>
+
+                {global.add == 1 ? (
+                    <View style={{ padding: 22, flexDirection: "row" }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
                             <Button title="Kembali" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                         <View style={{ flex: 1, marginLeft: 10 }}>
-                            <Button title="Selanjutnya" onPress={() => props.navigation.navigate("Daftarortu")} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         </View>
-                    </View>) : (   <View style={{ padding: 22 }}>
+                    </View>) : (<View style={{ padding: 22 }}>
                         <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     </View>)}
 
-              
+
             </View>
         </View>
     );

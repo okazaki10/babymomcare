@@ -17,69 +17,41 @@ function Beranda(props) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [cari, setcari] = useState("")
-
+    const [user, setuser] = useState({})
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
-
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
+    const authorize = (key) => {
+        fetch(global.url + "/user", {
+            method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + key,
             },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
+                console.log(json.data)
+                setuser(json.data)
             })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
+            .catch((error) => console.error(error));
     };
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('key')
+            if (value !== null) {
+                authorize(value)
+            }
+        } catch (e) {
+            // error reading value
+        }
+    }
+    
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const resumepulang = () => {
         if (global.status == 1) {
-            global.mode = "tambahan"
+            global.mode = "resume"
             props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang" })
         } else if (global.status == 2) {
             props.navigation.navigate("Resumepulang")
@@ -92,6 +64,9 @@ function Beranda(props) {
             props.navigation.navigate("Datakontrolpasien")
         }
     }
+    useState(() => {
+        getData()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -115,7 +90,7 @@ function Beranda(props) {
                         resizeMode="contain"
                     />
                 </View>
-                <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>Resma Andini</Text>
+                <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>{user.name}</Text>
                 <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Nurse" : ""}{global.status == 3 ? "Admin" : ""}</Text>
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1 }}>
@@ -181,7 +156,7 @@ function Beranda(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Survey</Text>
                                     </View>
                                 </TouchableOpacity>
-                                {global.status == 3?(<View>
+                                {global.status == 3 ? (<View>
                                     <TouchableOpacity onPress={() => {
                                         global.status = 1
                                         resumepulang()
@@ -197,6 +172,7 @@ function Beranda(props) {
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
                                         global.status = 2
+                                        global.mode = "resume"
                                         resumepulang()
                                     }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                         <Image
@@ -235,7 +211,7 @@ function Beranda(props) {
                                         </View>
                                     </TouchableOpacity>
                                 </View>
-                                ):( <View>
+                                ) : (<View>
                                     <TouchableOpacity onPress={resumepulang} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                         <Image
                                             source={require("../../assets/image/resume.png")}
@@ -259,7 +235,7 @@ function Beranda(props) {
                                     </TouchableOpacity>
                                 </View>)}
 
-                                 <TouchableOpacity onPress={() => {
+                                <TouchableOpacity onPress={() => {
 
                                     props.navigation.navigate("Kategoriforum")
                                 }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
@@ -272,22 +248,22 @@ function Beranda(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Forum</Text>
                                     </View>
                                 </TouchableOpacity>
-                                {global.status == 3?(
-                                    
-                                 <TouchableOpacity onPress={() => {
+                                {global.status == 3 ? (
 
-                                    props.navigation.navigate("Chartkuis")
-                                }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../assets/image/resume.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Chart</Text>
-                                    </View>
-                                </TouchableOpacity>
-                                ):(null)}
+                                    <TouchableOpacity onPress={() => {
+
+                                        props.navigation.navigate("Chartkuis")
+                                    }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                        <Image
+                                            source={require("../../assets/image/resume.png")}
+                                            style={{ width: 55, height: 65 }}
+                                            resizeMode="stretch"
+                                        />
+                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Chart</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                ) : (null)}
 
                             </View>
                         </View>

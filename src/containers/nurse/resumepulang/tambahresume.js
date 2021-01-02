@@ -5,7 +5,7 @@ import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faRoute, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
@@ -97,6 +97,7 @@ function Tambahresume(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [gambar, setgambar] = useState("")
+    const [gambar2,setgambar2] = useState("")
     const [hide, sethide] = useState(true)
     const [options, setoptions] = useState({
         title: 'Pilih Foto',
@@ -109,21 +110,97 @@ function Tambahresume(props) {
     const tambahanjuran = () => {
         setayd(index => [...index, ""])
     }
-    const [anjuran,setanjuran] = useState("")
+    const [anjuran, setanjuran] = useState("")
     const resumediubah = () => {
         setisipesan("Resume Pulang berhasil diubah!")
         toggleModal()
     }
     const resumedibuat = () => {
-        setisipesan("Resume Pulang berhasil dibuat!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/kontrol/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                title: "Data Resume",
+                date: format(date, "yyyy-MM-dd HH:mm:ss"),
+                tempat_kontrol: tempatkontrol,
+                weight: bb,
+                length: pb,
+                lingkar_kepala: lk,
+                temperature: suhu,
+                base64_img:gambar2,
+                note:anjuran,
+                mode:"resume",
+                patient_id:props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Resume Pulang berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
     }
     const kontroldiubah = () => {
         setisipesan("Data Kontrol berhasil diubah!")
         toggleModal()
     }
     const kontroldibuat = () => {
-        setisipesan("Data Kontrol berhasil dibuat!")
+        setspinner(true)
+        fetch(global.url + '/kontrol/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                title: "Data Kontrol",
+                date: format(date, "yyyy-MM-dd HH:mm:ss"),
+                tempat_kontrol: tempatkontrol,
+                weight: bb,
+                length: pb,
+                lingkar_kepala: lk,
+                temperature: suhu,
+                base64_img:gambar2,
+                note:anjuran,
+                mode:"kontrol"
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data Kontrol berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const kembali = () => {
+        props.navigation.goBack()
         toggleModal()
     }
     const gantiprofil = () => {
@@ -141,6 +218,7 @@ function Tambahresume(props) {
                 if (response.uri) {
                     sethide(false)
                     setgambar(response.uri)
+                    setgambar2(response.data)
                 }
 
                 // You can also display the image using data:
@@ -150,6 +228,7 @@ function Tambahresume(props) {
         });
 
     }
+
     return (
         <View style={style.main}>
             {show && (
@@ -187,7 +266,7 @@ function Tambahresume(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={kembali} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -212,11 +291,11 @@ function Tambahresume(props) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        {global.mode == "resume" ? (<View>
+                      
+                        <View>
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Kontrol</Text>
                             <TextInput onChangeText={settempatkontrol} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        </View>) : (null)}
-
+                        </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat Badan</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
                             <TextInput onChangeText={setbb} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
@@ -240,7 +319,7 @@ function Tambahresume(props) {
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>{global.status == 1 ? "Catatan Tambahan" : "Catatan dari perawat"}</Text>
                         <View>
-                        <TextInput onChangeText={setanjuran} style={[style.card, { elevation: 5, height: 200, textAlignVertical: "top", marginTop: 15 }]} multiline={true}></TextInput>
+                            <TextInput onChangeText={setanjuran} style={[style.card, { elevation: 5, height: 200, textAlignVertical: "top", marginTop: 15 }]} multiline={true}></TextInput>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Upload Foto Bayi</Text>
                         {hide ? (null) : (<Image

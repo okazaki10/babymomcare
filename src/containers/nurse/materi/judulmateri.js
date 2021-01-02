@@ -78,9 +78,9 @@ function Judulmateri(props) {
     const [isipesan, setisipesan] = useState("")
     const tambahmateri = () => {
         global.add = 1
-        props.navigation.navigate("Tambahmateri")
+        props.navigation.navigate("Tambahmateri", { id: props.route.params.id })
     }
-  
+
     const ubahmateri = () => {
         global.add = 0
         props.navigation.navigate("Tambahmateri", { nama: "Ubah materi" })
@@ -98,7 +98,7 @@ function Judulmateri(props) {
 
     }
     const detailmateri = () => {
-        props.navigation.navigate("Detailresumepulang",{nama:"Detail data kontrol"})
+        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -110,6 +110,40 @@ function Judulmateri(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [data, setdata] = useState([{}])
+    const lihatkategori = () => {
+        setspinner(true)
+        fetch(global.url + '/materi/index', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
+    useState(() => {
+        lihatkategori()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -118,7 +152,7 @@ function Judulmateri(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-              <Modal isVisible={isModalVisible3}
+            <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
                 <View style={style.content}>
@@ -169,10 +203,10 @@ function Judulmateri(props) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
-       
+
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 3 ? (
+                    {global.status == 2 || global.status == 3 ? (
                         <Button title="+ Tambah Materi" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     ) : (null)}
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
@@ -182,12 +216,11 @@ function Judulmateri(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15 }]} onPress={() => props.navigation.navigate("Detailmateri")}>
-                                  
+                                {data.map((item) => (<TouchableOpacity onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15 }]} onPress={() => props.navigation.navigate("Detailmateri",{id:item.id})}>
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 14 }]}>Pemantauan pertumbuhan dan perkembangan</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 14 }]}>{item.title}</Text>
                                     </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity>))}
 
 
                             </View>

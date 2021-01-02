@@ -34,41 +34,29 @@ function Forumdetail(props) {
     const timeelapsed = (time) => {
         return formatDistance(new Date(), time, { includeSeconds: true, locale: id })
     }
-    const login = () => {
-        /*
+    const [spinner, setspinner] = useState(false)
+    const [kosong, setkosong] = useState(false)
+    const [data, setdata] = useState({comments:[]})
+    const lihatforum = () => {
         setspinner(true)
-        fetch(global.url + '/login', {
+        fetch(global.url + '/forum/show', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
+                id: props.route.params.id
             })
         })
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
+                    setdata(json.data)
                 }
                 setspinner(false)
             })
@@ -77,12 +65,14 @@ function Forumdetail(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-            */
-    };
-    const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
+    }
+
+    useState(() => {
+        lihatforum()
+    })
     return (
         <View style={style.main}>
+
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -94,7 +84,7 @@ function Forumdetail(props) {
                     <View style={{ flex: 1, padding: 23 }}>
 
                         <View style={{ flexDirection: "row" }}>
-                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Bagaimana Mengatasi Berat Rendah?</Text>
+                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>{data.title}</Text>
                             <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                         </View>
 
@@ -108,7 +98,7 @@ function Forumdetail(props) {
                                 <View style={{ marginLeft: 15 }}>
                                     <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>Reza Artamevia</Text>
                                     <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>Anggota</Text>
-                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
+                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{data.question}</Text>
                                 </View>
                             </View>
 
@@ -118,20 +108,23 @@ function Forumdetail(props) {
                         </View>
 
                         <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
-               
-                            <View style={[{ flexDirection: "row" }]}>
-                                <Image
-                                    source={require("../../../assets/image/empty.png")}
-                                    style={{ width: 40, height: 40 }}
-                                    resizeMode="contain"
-                                />
-                                <View style={{ marginLeft: 15 }}>
-                                    <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>Ara Susanti</Text>
-                                    <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>Nurse</Text>
-                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
-                                </View>
-                            </View>
-                            <View style={[style.line, { marginBottom: 15 }]}></View>
+                            {data.comments.map((item) => (
+                                <View>
+                                    <View style={[{ flexDirection: "row" }]}>
+                                        <Image
+                                            source={require("../../../assets/image/empty.png")}
+                                            style={{ width: 40, height: 40 }}
+                                            resizeMode="contain"
+                                        />
+                                        <View style={{ marginLeft: 15 }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>Ara Susanti</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>Nurse</Text>
+                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
+                                        </View>
+                                    </View>
+                                    <View style={[style.line, { marginBottom: 15 }]}></View>
+                                </View>))}
+                            {/*
                             <View style={[{ flexDirection: "row" }]}>
                                 <Image
                                     source={require("../../../assets/image/empty.png")}
@@ -140,14 +133,16 @@ function Forumdetail(props) {
                                 />
                                 <View style={{ marginLeft: 15 }}>
                                     <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>Reza Artamevia</Text>
+                                   
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <Ionicons name={'time-outline'} size={18} color={colors.button} style={{ marginRight: 5 }} />
                                         <Text style={[style.poppinsbold, { fontSize: 11, color: colors.grey, paddingRight: 50 }]}>{timeelapsed(new Date())} yang lalu</Text>
                                     </View>
+                                   
                                     <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
                                 </View>
                             </View>
-                           
+ */}
                         </View>
                     </View>
 

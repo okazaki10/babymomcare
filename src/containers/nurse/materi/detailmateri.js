@@ -21,50 +21,34 @@ function Detailmateri(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
-    const login = () => {
-        /*
+    const [spinner, setspinner] = useState(false)
+    const [kosong, setkosong] = useState(false)
+    const kerjakankuis = () => {
+        props.navigation.navigate("Kerjakankuis")
+    }
+    const [selesai, setselesai] = useState(false)
+    const [data, setdata] = useState({})
+    const lihatdetailmateri = () => {
         setspinner(true)
-        fetch(global.url + '/login', {
+        fetch(global.url + '/materi/show', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
+                id: props.route.params.id
             })
         })
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
+                    setdata(json.data)
                 }
                 setspinner(false)
             })
@@ -73,14 +57,11 @@ function Detailmateri(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-            */
-    };
-    const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
-    const kerjakankuis = () => {
-        props.navigation.navigate("Kerjakankuis")
     }
-    const [selesai, setselesai] = useState(false)
+
+    useState(() => {
+        lihatdetailmateri()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -92,57 +73,50 @@ function Detailmateri(props) {
             <ScrollView>
                 <View style={{ flex: 1, padding: 23 }}>
                     {global.status == 1 ? (
-                        selesai == true?
-                        (      <TouchableOpacity onPress={kerjakankuis} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
-                            <View style={{ flexDirection: "row",justifyContent:"center",alignItems:"center" }}>
-                                <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
-                                <View>
-                                    <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>8/10</Text>
-                                    <Text style={[style.poppinsmedium, { fontSize: 12, textDecorationLine: "underline", color: colors.button }]}>Kerjakan Lagi</Text>
+                        selesai == true ?
+                            (<TouchableOpacity onPress={kerjakankuis} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
+                                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                    <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
+                                    <View>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>8/10</Text>
+                                        <Text style={[style.poppinsmedium, { fontSize: 12, textDecorationLine: "underline", color: colors.button }]}>Kerjakan Lagi</Text>
+                                    </View>
                                 </View>
-                            </View>
-                    </TouchableOpacity>
-                            ):( 
+                            </TouchableOpacity>
+                            ) : (
                                 <Button title="Kerjakan Kuis" onPress={kerjakankuis} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
-                       
+
                     ) : (null)}
-              
+
 
                     <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
-                        <Text style={[style.poppinsbold, { fontSize: 17 }]}>Pemantuan Pertumbuhan dan Perkembangan</Text>
-                        <Text style={[style.nunitosans, { fontSize: 12 }]}>{format(new Date(), "iii', 'dd' 'MMM', 'yyyy'", { locale: id })}</Text>
+                        <Text style={[style.poppinsbold, { fontSize: 17 }]}>{data.title}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 12 }]}>{data.date ? format(new Date(data.date), "iii', 'dd' 'MMM', 'yyyy'", { locale: id }) : ""}</Text>
                         <Image
-                            source={{ uri: "https://www.pathwaysforyou.org/sites/default/files/styles/1280x720/public/2018-11/ChildrensCareManagement.jpg?itok=v8Wkml5A" }}
+                            source={{ uri: data.image?data.image:"https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" }}
                             style={{ width: "100%", height: 170, marginTop: 15 }}
                             resizeMode="cover"
                         />
-                        <Text style={[style.nunitomateri, { fontSize: 14, marginTop: 15, flex: 1 }]}>Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan P Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantu Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantu Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan PemantuPemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuan Pertumbuhan dan Perkembangan Pemantuertumbuhan dan a a a  aa a  a aa  a</Text>
+                        <Text style={[style.nunitomateri, { fontSize: 14, marginTop: 15, flex: 1 }]}>{data.content}</Text>
                     </View>
                     <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Forum Terkait</Text>
                     <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
-                        <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Daftarakun") }}>
-                            <Image
-                                source={require("../../../assets/image/empty.png")}
-                                style={{ width: 40, height: 40 }}
-                                resizeMode="contain"
-                            />
-                            <View style={{ marginLeft: 15 }}>
-                                <Text style={[style.poppinsbold, { fontSize: 12 }]}>Mengapa anak saya kesulitan membaca?</Text>
-                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey }]}>Oleh: Raffi Ahmad</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={[style.line, { marginBottom: 15 }]}></View>
-                        <TouchableOpacity style={[{ flexDirection: "row" }]}>
-                            <Image
-                                source={require("../../../assets/image/empty.png")}
-                                style={{ width: 40, height: 40 }}
-                                resizeMode="contain"
-                            />
-                            <View style={{ marginLeft: 15 }}>
-                                <Text style={[style.poppinsbold, { fontSize: 12 }]}>Mengapa anak saya kesulitan membaca?</Text>
-                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey }]}>Oleh: Raffi Ahmad</Text>
-                            </View>
-                        </TouchableOpacity>
+                        {data.forum ? data.forum.map((item) => (<View>
+                            <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Daftarakun") }}>
+                                <Image
+                                    source={require("../../../assets/image/empty.png")}
+                                    style={{ width: 40, height: 40 }}
+                                    resizeMode="contain"
+                                />
+                                <View style={{ marginLeft: 15 }}>
+                                    <Text style={[style.poppinsbold, { fontSize: 12 }]}>Mengapa anak saya kesulitan membaca?</Text>
+                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey }]}>Oleh: Raffi Ahmad</Text>
+                                </View>
+                            </TouchableOpacity>
+                            <View style={[style.line, { marginBottom: 15 }]}></View>
+                        </View>)) : (null)}
+
+
                     </View>
                 </View>
             </ScrollView>

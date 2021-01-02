@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 import React, { useState } from 'react';
-import { StatusBar, View, Dimensions, Image,  ImageBackground, ToastAndroid } from 'react-native';
+import { StatusBar, View, Dimensions, Image, ImageBackground, ToastAndroid } from 'react-native';
 import Navigation from './src/navigation';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LogBox } from 'react-native';
@@ -18,7 +18,7 @@ LogBox.ignoreLogs([
   'VirtualizedList',
   'Looks like'
 ]);
-global.url = "https://backend.hmti-its.com/api";
+global.url = "http://192.168.1.6:10/api";
 global.initialroute = "Login"
 global.status = 0
 global.key = "";
@@ -28,7 +28,7 @@ global.add = 1;
 global.mode = "";
 function App() {
   const { width: DEVICE_WIDTH } = Dimensions.get('window');
-  const [sudah, setsudah] = useState(true);
+  const [sudah, setsudah] = useState(false);
   const authorize = (key) => {
     fetch(global.url + "/user", {
       method: 'GET',
@@ -40,18 +40,24 @@ function App() {
       .then((response) => response.json())
       .then((json) => {
         console.log(json)
-        if (json.role == "colleger") {
-          global.status = 0
-          global.initialroute = "Menu_bar"
-        } else if (json.role == "admin") {
-          global.status = 1
-          global.initialroute = "Menu_bar"
-        } else {
-          if (global.guide == "0") {
-            global.initialroute = "Login";
+        if (json.data) {
+          if (json.data.role == "patient") {
+            global.status = 1
+            global.initialroute = "Menubarpasien"
+          } else if (json.data.role == "nurse") {
+            global.status = 2
+            global.initialroute = "Menubar"
+          } else if (json.data.role == "admin") {
+            global.status = 3
+            global.initialroute = "Menubaradmin"
+          } else if (json.data.role == "super_admin") {
+            global.status = 3
+            global.initialroute = "Menubaradmin"
           } else {
-            global.initialroute = "Mainpage";
+            global.initialroute = "Login";
           }
+        } else {
+          global.initialroute = "Login";
         }
         setTimeout(() => {
           setsudah(true)
@@ -65,9 +71,6 @@ function App() {
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem('key')
-      const guide = await AsyncStorage.getItem('guide')
-      console.log(guide)
-      global.guide = guide
       if (value !== null) {
         authorize(value)
         global.key = value
@@ -80,7 +83,7 @@ function App() {
     }
   }
   useState(() => {
-    //getData()
+    getData()
   })
   return (
     <>

@@ -97,8 +97,36 @@ function Addforum(props) {
         toggleModal()
     }
     const forumdibuat = () => {
-        setisipesan("Forum berhasil dibuat!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/forum/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                title: judul,
+                question: pertanyaan,
+                topic_id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Forum berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
     const items = [
         //name key is must.It is to show the text in front
@@ -113,9 +141,14 @@ function Addforum(props) {
         { id: 9, name: 'gitlab' },
         { id: 10, name: 'instagram' },
     ];
+
+    const kembali = () => {
+        props.navigation.goBack()
+        toggleModal()
+    }
     return (
         <View style={style.main}>
-
+    
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -140,7 +173,7 @@ function Addforum(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={kembali} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -151,13 +184,16 @@ function Addforum(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul</Text>
                         <TextInput onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pertanyaan</Text>
+                        {/*
                         <View style={[style.card]}>
                             <RichEditor
                                 ref={textref}
-                                onChangeText={setpertanyaan}
+                                onChange={setpertanyaan}
                             />
                         </View>
-                        
+                         */}
+                        <TextInput onChangeText={setpertanyaan} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
+                        {/*
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pilih Topik</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -219,9 +255,10 @@ function Addforum(props) {
                                 />
                             </View>
                         </SafeAreaView>
-
+                                */}
                     </View>
                 </ScrollView>
+                {/*
                 <RichToolbar
                     editor={textref}
                     actions={[
@@ -230,8 +267,8 @@ function Addforum(props) {
                         actions.insertBulletsList,
                         actions.insertOrderedList,
                     ]}
-
                 />
+                */}
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1, marginRight: 10 }}>
                         <Button title="Batal" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.button2, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>

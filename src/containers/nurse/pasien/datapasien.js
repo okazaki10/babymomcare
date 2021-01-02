@@ -108,7 +108,7 @@ function Datapasien(props) {
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
     };
-
+ 
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
