@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -12,12 +12,55 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import messaging from '@react-native-firebase/messaging';
 function Beranda(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [cari, setcari] = useState("")
     const [user, setuser] = useState({})
+    useEffect(() => {
+
+        messaging()
+            .subscribeToTopic('event')
+            .then(() => console.log('Subscribed to topic!'));
+        // Assume a message-notification contains a "type" property in the data payload of the screen to open
+
+        messaging().onNotificationOpenedApp(remoteMessage => {
+            console.log(
+                'Notification caused app to open from background state:',
+                remoteMessage.notification,
+            );
+
+        });
+
+        // Check whether an initial notification is available
+        messaging()
+            .getInitialNotification()
+            .then(remoteMessage => {
+                if (remoteMessage) {
+                    console.log(
+                        'Notification caused app to open from quit state:',
+                        remoteMessage.notification,
+                    );
+
+                }
+
+            });
+    }, []);
+    useEffect(() => {
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+
+        })
+        return unsubscribe;
+    }, [])
+    useState(() => {
+        messaging()
+            .getToken()
+            .then(token => {
+                console.log(token)
+            });
+    })
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
