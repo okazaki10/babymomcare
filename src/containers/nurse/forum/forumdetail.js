@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -52,7 +52,7 @@ function Forumdetail(props) {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+                console.log(JSON.stringify(json))
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
@@ -96,18 +96,20 @@ function Forumdetail(props) {
                                     resizeMode="contain"
                                 />
                                 <View style={{ marginLeft: 15 }}>
-                                    <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>Reza Artamevia</Text>
-                                    <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>Anggota</Text>
+                                    <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{data.name}</Text>
+                                    <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>{data.role}</Text>
                                     <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{data.question}</Text>
                                 </View>
                             </View>
 
                         </View>
+                        <Button title="+ Tambah Komentar" onPress={()=>{props.navigation.navigate("Addcomment",{id:data.id})}} buttonStyle={[style.button, { marginTop: 20 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         <View style={{ flexDirection: "row", marginTop: 15 }}>
                             <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Komentar</Text>
                         </View>
 
                         <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
+                       
                             {data.comments.map((item) => (
                                 <View>
                                     <View style={[{ flexDirection: "row" }]}>
@@ -117,9 +119,9 @@ function Forumdetail(props) {
                                             resizeMode="contain"
                                         />
                                         <View style={{ marginLeft: 15 }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>Ara Susanti</Text>
-                                            <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>Nurse</Text>
-                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{item.user}</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>{item.role}</Text>
+                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
                                         </View>
                                     </View>
                                     <View style={[style.line, { marginBottom: 15 }]}></View>

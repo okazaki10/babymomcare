@@ -100,7 +100,7 @@ function Datakontrolpasien(props) {
 
     }
     const detailresume = () => {
-  
+
         props.navigation.navigate("Datakontrol")
     }
     const [title2, settitle2] = useState("")
@@ -113,6 +113,39 @@ function Datakontrolpasien(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [data, setdata] = useState([{}])
+    const lihatpasien = () => {
+        setspinner(true)
+        fetch(global.url + '/nurse/index', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                role: "nurse",
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    //setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatpasien()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -133,13 +166,13 @@ function Datakontrolpasien(props) {
                         </View>
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
-                       
-                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15,flexDirection:"row" }}>
-                            <View style={{ flex: 1,marginRight:15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red"  }]}></Button>
+
+                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
+                            <View style={{ flex: 1, marginRight: 15 }}>
+                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
-                            <View style={{ flex: 1,marginLeft:15}}>
-                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white"  }]}>
+                            <View style={{ flex: 1, marginLeft: 15 }}>
+                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
                                 </Button>
                             </View>
                         </View>
@@ -188,82 +221,36 @@ function Datakontrolpasien(props) {
                                     />
                                     <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki resume pulang</Text>
                                 </View>
-                             
+
                             </View>) : (
                                     <View>
                                         <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
                                             <Ionicons name={'search-outline'} size={24} color={colors.button} />
                                             <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                                         </View>
-                                      
-                                        <TouchableOpacity onPress={detailresume} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                            <Image
-                                                source={require("../../../assets/image/empty.png")}
-                                                style={{ width: 100, height: 100 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15 }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Ionicons name={'person'} size={17} color={colors.button} />
-                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
-                                                </View>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                            </View>
 
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                            <Image
-                                                source={require("../../../assets/image/empty.png")}
-                                                style={{ width: 100, height: 100 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15 }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Ionicons name={'person'} size={17} color={colors.button} />
-                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
+                                        {data.map((item) => (
+                                            <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
+                                                if (item.status == "home") {
+                                                    props.navigation.navigate("Datakontrol", { id: item.id })
+                                                }
+                                            }}>
+                                                <Image
+                                                    source={require("../../../assets/image/empty.png")}
+                                                    style={{ width: 100, height: 100 }}
+                                                    resizeMode="contain"
+                                                />
+                                                <View style={{ marginLeft: 15 }}>
+                                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
+                                                    <View style={{ flexDirection: "row" }}>
+                                                        <Ionicons name={'person'} size={17} color={colors.button} />
+                                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
+                                                    </View>
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Namsada Nurse : Resma</Text>
                                                 </View>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                            <Image
-                                                source={require("../../../assets/image/empty.png")}
-                                                style={{ width: 100, height: 100 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15 }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Ionicons name={'person'} size={17} color={colors.button} />
-                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
-                                                </View>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                            <Image
-                                                source={require("../../../assets/image/empty.png")}
-                                                style={{ width: 100, height: 100 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15 }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Ionicons name={'person'} size={17} color={colors.button} />
-                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
-                                                </View>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
+                                            </TouchableOpacity>
+                                        ))}
 
                                     </View>)}
                         </View>

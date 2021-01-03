@@ -91,7 +91,7 @@ function Tambahsurvey(props) {
             var soal3 = []
             var soal4 = []
             var jawabanbenar = []
-            var choice = []
+
             for (var i = 0; i < kuis.length; i++) {
                 judul[i] = kuis[i].judul
                 soal1[i] = kuis[i].soal1
@@ -107,6 +107,9 @@ function Tambahsurvey(props) {
             setopsi3(soal3)
             setopsi4(soal4)
             setjawabanbenar(jawabanbenar)
+
+        } else {
+            var choice = []
             for (var i = 0; i < props.route.params.halaman; i++) {
                 choice[i] = "text"
             }
@@ -158,7 +161,7 @@ function Tambahsurvey(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                title: "kuisioner_1",
+                title: props.route.params.kuis,
                 questions: judul,
                 choice: choice
             })
@@ -187,7 +190,7 @@ function Tambahsurvey(props) {
     }
     return (
         <View style={style.main}>
-            <Text>{choice}</Text>
+        
 
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
@@ -225,7 +228,7 @@ function Tambahsurvey(props) {
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>
                         <TextInput onChangeText={(item) => { setjuduld(nomor, item) }} value={judul[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Tipe Pertanyaan</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
                                 selectedValue={choice[nomor]}
@@ -259,13 +262,7 @@ function Tambahsurvey(props) {
                                 <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                     </View>
                 </View>
-                <View style={{ padding: 22 }}>
-                    {global.add == 1 ? (
-                        <Button title="Simpan" onPress={kuisdibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    ) : (
-                            <Button title="Simpan" onPress={kuisdiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                        )}
-                </View>
+               
 
 
             </View>

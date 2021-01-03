@@ -14,6 +14,7 @@ import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity,
 import { Input, Text, Button } from 'react-native-elements';
 import style from '../../../globalstyles';
 import Materiedukasi from './materiedukasi';
+import Rekomendasimateri from './rekomendasimateri';
 const Tab = createMaterialTopTabNavigator();
 
 function Tabmateri() {
@@ -39,7 +40,7 @@ function Tabmateri() {
           />
           <Tab.Screen
             name="Rekomendasi"
-            component={Materiedukasi}
+            component={Rekomendasimateri}
             options={{
               tabBarLabel: "Rekomendasi materi",
             }}

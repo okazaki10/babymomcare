@@ -30,41 +30,32 @@ function Chat(props) {
         }
     }
 
-    const login = () => {
-        /*
+    const [spinner, setspinner] = useState(false)
+    const [kosong, setkosong] = useState(false)
+    const [isi, setisi] = useState("")
+    const chat = () => {
         setspinner(true)
-        fetch(global.url + '/login', {
+        fetch(global.url + '/chat/send-message', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
+                sender_id: 5,
+                receiver_id: 6,
+                text: isi
             })
         })
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
+                    setisipesan("Reminder berhasil dibuat!")
                     toggleModal()
-                    setisipesan("Email atau password salah")
                 }
                 setspinner(false)
             })
@@ -73,10 +64,42 @@ function Chat(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-            */
-    };
-    const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
+    }
+
+    const show = () => {
+        setspinner(true)
+        fetch(global.url + '/chat/show-message', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                sender_id: 5,
+                receiver_id: 6
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
+    useState(() => {
+        show()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -110,9 +133,9 @@ function Chat(props) {
                 </ScrollView>
                 <View style={[{ justifyContent: "center", alignItems: "center", marginTop: 10, flex: 0, height: 75, backgroundColor: "white", elevation: 10, padding: 10, flexDirection: "row" }]} >
                     <View style={{ flex: 1 }}>
-                        <TextInput multiline={true} placeholder="Type your message..."></TextInput>
+                        <TextInput onChangeText={setisi} multiline={true} placeholder="Type your message..."></TextInput>
                     </View>
-                    <TouchableOpacity style={{ marginRight: 20 }}>
+                    <TouchableOpacity onPress={chat} style={{ marginRight: 20 }}>
                         <FontAwesomeIcon icon={faPaperPlane} size={22} color={colors.button}></FontAwesomeIcon>
                     </TouchableOpacity>
                 </View>

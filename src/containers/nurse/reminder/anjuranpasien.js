@@ -224,9 +224,9 @@ function Anjuranpasien(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 2 ?
+                    {global.status == 1 ? (null):
                         (<Button title="+ Buat Anjuran Pasien" onPress={tambahanjuran} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
-                        : (null)}
+                       }
 
                     <ScrollView>
                         <View style={{ padding: 3 }}>

@@ -58,12 +58,39 @@ function Beranda(props) {
         messaging()
             .getToken()
             .then(token => {
+                send_fcm(token)
                 console.log(token)
             });
     })
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+    
+    const send_fcm = (fcm_token) => {
+   
+        fetch(global.url + '/advice/send_fcm', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                fcm_token:fcm_token
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+           
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+              
+            });
+
+    }
     const authorize = (key) => {
         fetch(global.url + "/user", {
             method: 'GET',

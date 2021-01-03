@@ -38,54 +38,8 @@ function Tambahmateri(props) {
         }
     }
 
-    const login = () => {
-        props.navigation.navigate("Mainpage")
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [gambar, setgambar] = useState("")
-    const [gambar2,setgambar2] = useState("")
+    const [gambar2, setgambar2] = useState("")
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
     const forumdiubah = () => {
@@ -206,12 +160,15 @@ function Tambahmateri(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul Materi</Text>
                         <TextInput onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Deskripsi Materi</Text>
+                        <TextInput onChangeText={setpertanyaan} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
+                        {/*
                         <View style={[style.card]}>
                             <RichEditor
                                 ref={textref}
                                 onChange={setpertanyaan}
                             />
-                        </View>
+                            </View>
+                            */}
                         {hide ? (null) : (
                             <View style={{ marginTop: 15 }}><Image
                                 source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
@@ -231,6 +188,7 @@ function Tambahmateri(props) {
 
                     </View>
                 </ScrollView>
+                {/*
                 <RichToolbar
                     editor={textref}
                     actions={[
@@ -239,8 +197,8 @@ function Tambahmateri(props) {
                         actions.insertBulletsList,
                         actions.insertOrderedList,
                     ]}
-                 
                 />
+                */}
                 <View style={{ padding: 22, flexDirection: "row" }}>
                     <View style={{ flex: 1, marginRight: 10 }}>
                         <Button title="Batal" onPress={() => props.navigation.goBack()} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.button2, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>

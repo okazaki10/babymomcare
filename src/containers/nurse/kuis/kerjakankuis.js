@@ -22,7 +22,7 @@ function Kerjakankuis(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
- 
+
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahkontrol = () => {
@@ -111,7 +111,7 @@ function Kerjakankuis(props) {
         setnomor(nomor - 1)
     }
     const [selesai, setselesai] = useState(false)
-   
+
     const [data, setdata] = useState({})
     const lihatkuis = () => {
         setspinner(true)
@@ -142,6 +142,7 @@ function Kerjakankuis(props) {
                 setspinner(false)
             });
     }
+    const [data2, setdata2] = useState({})
     const kuisselesai = () => {
         setspinner(true)
         fetch(global.url + '/quiz/answer/store', {
@@ -152,7 +153,7 @@ function Kerjakankuis(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                answers:jawaban
+                answers: jawaban
             })
         })
             .then((response) => response.json())
@@ -161,11 +162,11 @@ function Kerjakankuis(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    //setdata(json)
+
                     //setisipesan("Kuis telah terisi!")
                     //toggleModal()
                     selesaikuis()
-                  
+
                 }
                 setspinner(false)
             })
@@ -185,7 +186,7 @@ function Kerjakankuis(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                quiz_id:data.quiz_id
+                quiz_id: data.quiz_id
             })
         })
             .then((response) => response.json())
@@ -194,6 +195,37 @@ function Kerjakankuis(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
+                    setdata2(json)
+                    setselesai(true)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const selesaikuis2 = () => {
+        setspinner(true)
+        fetch(global.url + '/quiz/answer/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                quiz_id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata2(json)
                     setselesai(true)
                 }
                 setspinner(false)
@@ -205,7 +237,11 @@ function Kerjakankuis(props) {
             });
     }
     useState(() => {
-        lihatkuis()
+        if (props.route.params.mode) {
+            selesaikuis2()
+        } else {
+            lihatkuis()
+        }
     })
 
     return (
@@ -276,18 +312,16 @@ function Kerjakankuis(props) {
                                 <View>
                                     <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Hasil</Text>
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Pertanyaan 1</Text>
-                                            <FontAwesomeIcon icon={faThumbsUp} size={22} color={"lightgreen"}></FontAwesomeIcon>
-                                        </View>
-                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 5 }}>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Pertanyaan 2</Text>
-                                            <FontAwesomeIcon icon={faFrown} size={22} color={"red"}></FontAwesomeIcon>
-                                        </View>
+                                        {data2.data.map((item) => (<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>{item.question}</Text>
+                                            {item.point == 1 ? (<FontAwesomeIcon icon={faThumbsUp} size={22} color={"lightgreen"}></FontAwesomeIcon>
+                                            ) : (
+                                                    <FontAwesomeIcon icon={faFrown} size={22} color={"red"}></FontAwesomeIcon>)}
+                                        </View>))}
                                         <View style={[style.line, { marginTop: 5, marginBottom: 5 }]}></View>
                                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Total Benar</Text>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "right" }]}>1/2</Text>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "right" }]}>{data2.total_point}/{data2.total_question}</Text>
                                         </View>
                                     </View>
                                     <View style={{ marginTop: 20 }}>
@@ -298,11 +332,11 @@ function Kerjakankuis(props) {
                                     <View>
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Pertanyaan {nomor + 1}</Text>
                                         <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{data.questions?data.questions[nomor].question:""}</Text>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{data.questions ? data.questions[nomor].question : ""}</Text>
                                         </View>
 
                                         <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                             {data.questions?data.questions[nomor].choice.map((item) => (
+                                            {data.questions ? data.questions[nomor].choice.map((item) => (
                                                 jawaban[nomor] == item.id ? (
                                                     <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                         <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
@@ -314,7 +348,7 @@ function Kerjakankuis(props) {
                                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
                                                         </TouchableOpacity>
                                                     )
-                                            )):(null)}
+                                            )) : (null)}
 
                                         </View>
                                         <View style={{ flexDirection: "row", marginTop: 20 }}>
@@ -324,7 +358,7 @@ function Kerjakankuis(props) {
                                                 ) : (null)}
                                             </View>
                                             <View style={{ flex: 1, marginLeft: 10 }}>
-                                                {nomor >= kuis.length - 1 ? (
+                                                {nomor >= kuis.length ? (
                                                     <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                                 ) : (
                                                         <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}

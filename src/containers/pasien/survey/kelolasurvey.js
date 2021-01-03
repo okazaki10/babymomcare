@@ -94,7 +94,7 @@ function Kelolasurvey(props) {
 
     const tambahkuis = () => {
 
-        props.navigation.navigate("Tambahsurvey", { halaman: jumlah })
+        props.navigation.navigate("Tambahsurvey", { halaman: jumlah, kuis: kuis })
         global.add = 1
 
     }
@@ -110,7 +110,7 @@ function Kelolasurvey(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-    const [jumlah, setjumlah] = useState("")
+    const [jumlah, setjumlah] = useState("5")
     const [data, setdata] = useState({})
     const lihatsurvey = () => {
         setspinner(true)
@@ -141,6 +141,7 @@ function Kelolasurvey(props) {
     useState(() => {
         lihatsurvey()
     })
+    const [kuis, setkuis] = useState("kuisioner_1")
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -201,12 +202,30 @@ function Kelolasurvey(props) {
 
                 <View style={{ flex: 1, padding: 20 }}>
                     {global.status == 1 ? (null) : (
-                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                            <View style={{ flex: 1, marginRight: 15 }}>
-                                <TextInput onChangeText={setjumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
+                        <View>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Kuisioner</Text>
+                            <View style={[style.card, { elevation: 5, padding: 0, flex: 0 }]}>
+                                <Picker
+                                    selectedValue={kuis}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        setkuis(itemValue)
+                                        console.log(itemValue)
+                                    }
+                                    }
+                                    mode="dropdown">
+                                    <Picker.Item label="kuisioner_1" value="kuisioner_1" />
+                                    <Picker.Item label="kuisioner_2" value="kuisioner_2" />
+                                </Picker>
                             </View>
-                            <View style={{ flex: 1 }}>
-                                <Button title="+ Tambah Survey" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Jumlah Halaman</Text>
+
+                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ flex: 1, marginRight: 15 }}>
+                                    <TextInput onChangeText={setjumlah} value={jumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
+                                </View>
+                                <View style={{ flex: 1 }}>
+                                    <Button title="+ Tambah Survey" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                </View>
                             </View>
                         </View>
                     )}
@@ -232,7 +251,24 @@ function Kelolasurvey(props) {
                                         </View>
                                     )}
                                 </TouchableOpacity>
+                                <TouchableOpacity onLongPress={tindakankuis} onPress={() => {
+                                    props.navigation.navigate("Kerjakansurvey", { id: data.title_2 })
 
+                                }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{data.title_2}</Text>
+                                    </View>
+                                    {global.status == 1 ? (null) : (
+                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <View style={{ marginRight: 15 }}>
+                                                <Ionicons name={'pencil'} size={24} color={colors.grey} />
+                                            </View>
+                                            <View style={{ marginRight: 15 }}>
+                                                <Ionicons name={'trash'} size={24} color={colors.grey} />
+                                            </View>
+                                        </View>
+                                    )}
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </ScrollView>

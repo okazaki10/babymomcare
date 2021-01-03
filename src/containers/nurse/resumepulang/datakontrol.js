@@ -97,8 +97,41 @@ function Datakontrol(props) {
                 setspinner(false)
             });
     }
+    const lihatkontrol2 = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/index', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id:props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdatakontrol(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     useState(() => {
+        if (global.status == 1){
         lihatkontrol()
+        }else{
+            lihatkontrol2()
+        }
     })
     return (
         <View style={style.main}>

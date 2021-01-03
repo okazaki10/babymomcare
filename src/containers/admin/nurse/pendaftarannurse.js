@@ -22,9 +22,9 @@ function Pendaftarannurse(props) {
     const [isipesan, setisipesan] = useState("")
     const [nama, setnama] = useState("")
     const [username, setusername] = useState("")
-    const [pendidikanibu, setpendidikanibu] = useState("sarjana")
+    const [pendidikanibu, setpendidikanibu] = useState("s1")
     const [password, setpassword] = useState("")
-    const [alamat, setalamat] = useState("")
+    const [alamat, setalamat] = useState("1")
     const [nomortelepon, setnomortelepon] = useState("")
     const [tempatrumahsakit, settempatrumahsakit] = useState("")
     const [lamabekerja, setlamabekerja] = useState("")
@@ -66,7 +66,7 @@ function Pendaftarannurse(props) {
                 working_exp: lamabekerja,
                 education: pendidikanibu,
                 phone: nomortelepon,
-                hospital_id: 1
+                hospital_id: alamat
             })
         })
             .then((response) => response.json())
@@ -168,7 +168,22 @@ function Pendaftarannurse(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
                         <TextInput onChangeText={setpassword} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} secureTextEntry={true}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Alamat Rumah Sakit</Text>
-                        <TextInput onChangeText={setalamat} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={alamat}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setalamat(itemValue)
+                                    console.log(itemValue)
+                                }
+
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="RSUD Kabupaten Tangerang" value="1" />
+                                <Picker.Item label="RSUD dr. Chasbullah Abdulmadjid Kota Bekasi" value="2" />
+
+                            </Picker>
+                        </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -180,15 +195,18 @@ function Pendaftarannurse(props) {
 
                                 }
                                 mode="dropdown">
-                                <Picker.Item label="Sarjana" value="sarjana" />
-                                <Picker.Item label="Magister" value="magister" />
-                                <Picker.Item label="Doktor" value="doktor" />
+                                <Picker.Item label="SMP sederajat" value="smp" />
+                                <Picker.Item label="SMA sederajat" value="sma" />
+                                <Picker.Item label="Diploma" value="diploma" />
+                                <Picker.Item label="Sarjana" value="s1" />
+                                <Picker.Item label="Magister" value="s2" />
+                                <Picker.Item label="Doktor" value="s3" />
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Nomor Telepon</Text>
                         <TextInput onChangeText={setnomortelepon} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Rumah Sakit</Text>
-                        <TextInput onChangeText={settempatrumahsakit} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        {/*<Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Rumah Sakit</Text>
+                        <TextInput onChangeText={settempatrumahsakit} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>*/}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lama Bekerja</Text>
                         <TextInput onChangeText={setlamabekerja} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
 

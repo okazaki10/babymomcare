@@ -69,52 +69,6 @@ function Daftarortu(props) {
         setMode2(tipe);
         setShow2(true);
     };
-    const login = () => {
-        props.navigation.navigate("Mainpage")
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
     const pasiendiubah = () => {
@@ -156,6 +110,47 @@ function Daftarortu(props) {
             .then((json) => {
                 console.log(json)
                 if (json.errors) {
+                    if (json.errors.username) {
+                        ToastAndroid.show(json.errors.username[0], ToastAndroid.SHORT)
+                    } else {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    }
+                } else {
+                    if (props.route.params.selectedItems) {
+                        assignmateri(json.id)
+                    } else {
+                        setisipesan("Data pasien berhasil dibuat!")
+                        toggleModal()
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
+    }
+
+    const assignmateri = (id_pasien) => {
+        setspinner(true)
+        fetch(global.url + '/register/materi', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id_pasien,
+                materis: props.route.params.selectedItems
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setisipesan("Data pasien berhasil dibuat!")
@@ -176,6 +171,7 @@ function Daftarortu(props) {
     }
     return (
         <View style={style.main}>
+           
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -203,11 +199,11 @@ function Daftarortu(props) {
                 textStyle={{ color: '#FFF' }}
             />
             <Modal isVisible={isModalVisible}
-                onBackdropPress={kembali}
-                onBackButtonPress={kembali}>
+                onBackdropPress={toggleModal}
+                onBackButtonPress={toggleModal}>
                 <View style={style.content}>
                     <View>
-                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={kembali}>
+                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal}>
                             <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
@@ -225,7 +221,7 @@ function Daftarortu(props) {
                     </View>
                 </View>
             </Modal>
-
+       
             <View style={{ flex: 1 }}>
 
                 <ScrollView>
@@ -263,7 +259,7 @@ function Daftarortu(props) {
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
                                 selectedValue={pendidikanibu}
-                                onValueChange={(itemValue, itemIndex) =>{
+                                onValueChange={(itemValue, itemIndex) => {
                                     setpendidikanibu(itemValue)
                                     console.log(itemValue)
                                 }

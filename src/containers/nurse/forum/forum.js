@@ -218,7 +218,7 @@ function Forum(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item) => (<TouchableOpacity onLongPress={tindakanforum} onPress={()=>{  props.navigation.navigate("Forumdetail",{id:item.id})}} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
+                                {data.map((item) => (<TouchableOpacity onLongPress={tindakanforum} onPress={()=>{  props.navigation.navigate("Forumdetail",{id:item.id,nama:item.user})}} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
                                     <Image
                                         source={require("../../../assets/image/empty.png")}
                                         style={{ width: 40, height: 40 }}
@@ -230,7 +230,7 @@ function Forum(props) {
                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.question}</Text>
                                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                                             <Ionicons name={'chatbox-outline'} size={24} color={colors.grey} style={{ marginRight: 5 }} />
-                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginRight: 5 }]}>16</Text>
+                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginRight: 5 }]}></Text>
                                             <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                         </View>
                                     </View>

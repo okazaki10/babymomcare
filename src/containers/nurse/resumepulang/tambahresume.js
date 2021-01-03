@@ -156,6 +156,47 @@ function Tambahresume(props) {
             });
 
     }
+    const resumedibuat2 = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                title: "Data Resume",
+                date: format(date, "yyyy-MM-dd HH:mm:ss"),
+                tempat_kontrol: tempatkontrol,
+                weight: bb,
+                length: pb,
+                lingkar_kepala: lk,
+                temperature: suhu,
+                base64_img:gambar2,
+                nurse_note:anjuran,
+                mode:"resume",
+                patient_id:props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Resume Pulang berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
+    }
     const kontroldiubah = () => {
         setisipesan("Data Kontrol berhasil diubah!")
         toggleModal()
@@ -178,7 +219,7 @@ function Tambahresume(props) {
                 lingkar_kepala: lk,
                 temperature: suhu,
                 base64_img:gambar2,
-                note:anjuran,
+                 note:anjuran,
                 mode:"kontrol"
             })
         })
@@ -199,6 +240,7 @@ function Tambahresume(props) {
                 setspinner(false)
             });
     }
+    
     const kembali = () => {
         props.navigation.goBack()
         toggleModal()
@@ -343,7 +385,13 @@ function Tambahresume(props) {
                     <View style={{ flex: 1 }}>
                         {global.mode == "resume" ? (<View>
                             {global.add == 1 ? (
-                                <Button title="Simpan" onPress={resumedibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
+                                <Button title="Simpan" onPress={()=>{
+                                    if (global.status == 1){
+                                    resumedibuat()
+                                    }else{
+                                    resumedibuat2()
+                                    }
+                                }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
                                     <Button title="Simpan" onPress={resumediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                         </View>) : (<View>
                             {global.add == 1 ? (

@@ -216,7 +216,7 @@ function Listpasien(props) {
                                             props.navigation.navigate("Daftarakun")
                                         }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                         {datapasien.map((item) => (
-                                            <TouchableOpacity onLongPress={tindakanpasien} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Datapasien") }}>
+                                            <TouchableOpacity onLongPress={tindakanpasien} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Datapasien",{id:item.id}) }}>
                                                 <Image
                                                     source={require("../../../assets/image/empty.png")}
                                                     style={{ width: 100, height: 100 }}
@@ -228,7 +228,7 @@ function Listpasien(props) {
                                                         <Ionicons name={'person'} size={17} color={colors.button} />
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
+                                                   
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Nama Nurse : Resma</Text>
                                                 </View>

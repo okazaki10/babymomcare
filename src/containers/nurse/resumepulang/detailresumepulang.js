@@ -120,6 +120,37 @@ function Detailresumepulang(props) {
     };
     const [anjuran, setanjuran] = useState("")
     const [datakontrol, setdatakontrol] = useState("")
+    const add_nurse_note = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/nurse_note', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id:props.route.params.id,
+                nurse_note:anjuran
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Catatan perawat berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     const lihatkontrol = () => {
         setspinner(true)
         fetch(global.url + '/kontrol/show', {
@@ -140,6 +171,7 @@ function Detailresumepulang(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setdatakontrol(json.data)
+                    setanjuran(json.data.nurse_note)
                 }
                 setspinner(false)
             })
@@ -167,6 +199,39 @@ function Detailresumepulang(props) {
                 } else {
                     if (json.data) {
                         setdatakontrol(json.data)
+                        setanjuran(json.data.nurse_note)
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatresume2 = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/resume', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    if (json.data) {
+                        setdatakontrol(json.data)
+                        setanjuran(json.data.nurse_note)
                     }
                 }
                 setspinner(false)
@@ -181,13 +246,40 @@ function Detailresumepulang(props) {
         if (mode == "kontrol") {
             lihatkontrol()
         } else if (mode == "resume") {
+            if (global.status == 1){
             lihatresume()
+            }else{
+                lihatresume2()
+            }
         }
     })
     return (
         <View style={style.main}>
+        
             <StatusBar backgroundColor={colors.primary} />
-
+     <Modal isVisible={isModalVisible}
+                onBackdropPress={toggleModal}
+                onBackButtonPress={toggleModal}>
+                <View style={style.content}>
+                    <View>
+                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal}>
+                            <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
+                        </TouchableOpacity>
+                        <View style={{ alignItems: "center" }}>
+                            <Image
+                                source={require("../../../assets/image/check.png")}
+                                style={{ width: 100, height: 100 }}
+                                resizeMode="contain"
+                            />
+                        </View>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
+                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <Modal isVisible={isModalVisible2}
                 onBackdropPress={toggleModal2}
                 onBackButtonPress={toggleModal2}>
@@ -269,17 +361,16 @@ function Detailresumepulang(props) {
                                     {global.status == 2 ? (<View>
                                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan dari perawat</Text>
                                         <View>
-                                            <TextInput onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                                            <TextInput onChangeText={setanjuran} value={anjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
                                         </View>
                                         <View style={{ marginTop: 30 }}>
-                                            <Button title="Simpan" buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                            <Button title="Simpan" onPress={add_nurse_note} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                         </View>
                                     </View>) : (<View style={{ flexDirection: "row" }}>
                                         <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
                                         <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.nurse_note}</Text>
                                     </View>)}
-
 
                                 </View>
                             ) : (<Text>Tidak ada resume pulang</Text>)}

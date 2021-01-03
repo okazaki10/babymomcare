@@ -23,7 +23,8 @@ function Daftarakun(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const items = [{
+    /*
+    const [items,setitems] = useState([{
         id: '92iijs7yta',
         name: 'Ondo'
     }, {
@@ -51,12 +52,14 @@ function Daftarakun(props) {
         id: 'suudydjsjd',
         name: 'Abuja'
     }
-    ];
-
+    ])
+    */
+   const [items,setitems] = useState([{}])
     const [selectedItems, setselectedItems] = useState([])
 
     const onSelectedItemsChange = (selectedItems) => {
         setselectedItems(selectedItems)
+        console.log(selectedItems)
     };
 
     const referensi = useRef()
@@ -64,7 +67,8 @@ function Daftarakun(props) {
     const lanjut = () => {
         global.emaild = email
         global.nohpd = nohp
-        props.navigation.navigate("Daftarbayi",{username:username,password:password})
+        global.rekomendasi = selectedItems
+        props.navigation.navigate("Daftarbayi",{username:username,password:password,selectedItems:selectedItems})
     }
     const pasiendiubah = () => {
         setisipesan("Data pasien berhasil diubah!")
@@ -74,8 +78,39 @@ function Daftarakun(props) {
         setisipesan("Data pasien berhasil dibuat!")
         toggleModal()
     }
+    const [data, setdata] = useState([{}])
+    const lihatmateri = () => {
+        setspinner(true)
+        fetch(global.url + '/register/list', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setitems(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatmateri()
+    })
     return (
         <View style={style.main}>
+
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -135,16 +170,6 @@ function Daftarakun(props) {
                                 selectText="Pilih Rekomendasi Materi"
                                 searchInputPlaceholderText="Pilih Materi..."
                                 onChangeInput={(text) => console.log(text)}
-                                altFontFamily="ProximaNova-Light"
-                                tagRemoveIconColor="#CCC"
-                                tagBorderColor="#CCC"
-                                tagTextColor="#CCC"
-                                selectedItemTextColor="#CCC"
-                                selectedItemIconColor="#CCC"
-                                itemTextColor="#000"
-                                displayKey="name"
-                                searchInputStyle={{ color: '#CCC' }}
-                                submitButtonColor="#CCC"
                                 submitButtonText="Submit"
                             />
                         </View>
@@ -162,12 +187,10 @@ function Daftarakun(props) {
                         </View>
                     </View>
                 ) : (
-
                         <View style={{ padding: 22 }}>
                             <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         </View>
                     )}
-
 
             </View>
 

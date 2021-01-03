@@ -229,7 +229,14 @@ function Resumepulang(props) {
                                             <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                                         </View>
                                         {datapasien.map((item) => (
-                                            <TouchableOpacity  style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={()=>{tambahresume(item.id)}}>
+                                            <TouchableOpacity  style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={()=>{
+                                                if (item.status == "hospital"){
+                                                tambahresume(item.id)
+                                                }else{
+                                                    global.mode = "resume"
+                                                    props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang",id:item.id })
+                                                }
+                                                }}>
                                                 <Image
                                                     source={require("../../../assets/image/empty.png")}
                                                     style={{ width: 100, height: 100 }}
@@ -241,9 +248,9 @@ function Resumepulang(props) {
                                                         <Ionicons name={'person'} size={17} color={colors.button} />
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Nama Nurse : Resma</Text>
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Status : {item.status}</Text>
                                                 </View>
                                             </TouchableOpacity>
                                         ))}

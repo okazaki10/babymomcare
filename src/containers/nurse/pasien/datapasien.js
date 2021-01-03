@@ -31,52 +31,6 @@ function Datapasien(props) {
         }
     }
 
-
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const ubahpasien = (index) => {
@@ -108,7 +62,39 @@ function Datapasien(props) {
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
     };
- 
+    const [data, setdata] = useState([{}])
+    const lihatpasien = () => {
+        setspinner(true)
+        fetch(global.url + '/nurse/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id:props.route.params.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatpasien()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -171,33 +157,25 @@ function Datapasien(props) {
                                     <TouchableOpacity onPress={() => { ubahpasien(0) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Nama</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: Rafif iqbal saputra</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data?data.baby_name:""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: 28/09/2019</Text>
-                                        </View>
-                                        <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>Usia Getas</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: -</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.baby_birthday:""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Jenis Kelamin</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: Laki-laki</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.baby_gender:""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Panjang bayi lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: 20 cm</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.born_length:""} cm</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>BB Lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: 2.2 kg</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.born_weight:""} kg</Text>
                                         </View>
-                                        <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>BB Sekarang</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: 2.5 kg</Text>
-                                        </View>
-
+                                 
                                     </TouchableOpacity>
                                 </View>) : (null)}
                                 {menuswitch == 1 ? (<View>
@@ -210,50 +188,50 @@ function Datapasien(props) {
                                             <Text style={[style.poppinsbold, { fontSize: 14, color: colors.grey, paddingRight: 50 }]}>Data Ibu</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Nama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Selina Maurizka</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_name:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: 28/09/2019</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_birthday:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Pekerjaan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Guru</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_job:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tingkat pendidikan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Sarjana</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_education:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Agama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Islam</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_religion:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Paritas</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: 1</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.paritas:""}</Text>
                                             </View>
 
                                             <Text style={[style.poppinsbold, { fontSize: 14, color: colors.grey, marginTop: 22, paddingRight: 50 }]}>Data Ayah</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Nama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Luthfi Ferdian</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_name:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: 28/09/2019</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_birthday:""}</Text>
                                             </View>
 
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Pekerjaan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Guru</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_job:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tingkat pendidikan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Sarjana</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_education:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Agama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: Islam</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_religion:""}</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
@@ -267,15 +245,15 @@ function Datapasien(props) {
                                         <View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Email</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: rafifshaputra25@gmail.com</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data?data.email:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>No Hp</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: 0821632713232</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.email:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Username</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: rafifsaputra</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.username:""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Password</Text>

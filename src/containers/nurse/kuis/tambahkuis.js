@@ -88,20 +88,26 @@ function Tambahkuis(props) {
             var soal2 = []
             var soal3 = []
             var soal4 = []
-            var jawabanbenar = []
+ 
             for (var i=0; i < kuis.length; i++) {
                 judul[i] = kuis[i].judul
                 soal1[i] = kuis[i].soal1
                 soal2[i] = kuis[i].soal2
                 soal3[i] = kuis[i].soal3
                 soal4[i] = kuis[i].soal4
-                jawabanbenar[i] = kuis[i].jawabanbenar
+                
             }
             setjudul(judul)
             setopsi(soal1)
             setopsi2(soal2)
             setopsi3(soal3)
             setopsi4(soal4)
+          
+        }else{
+            var jawabanbenar = []
+            for (var i = 0; i < props.route.params.halaman; i++) {
+                jawabanbenar[i] = "choice1"
+            }
             setjawabanbenar(jawabanbenar)
         }
     })
@@ -161,8 +167,6 @@ function Tambahkuis(props) {
     }
     return (
         <View style={style.main}>
-
-
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}

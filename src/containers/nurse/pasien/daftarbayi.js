@@ -113,10 +113,11 @@ function Daftarbayi(props) {
         global.born_weight = bbnow
         global.born_length = pjl
         global.baby_gender = jenis_kelamin
-        props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password })
+        props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password,selectedItems:props.route.params.selectedItems })
     }
     return (
         <View style={style.main}>
+    
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -187,8 +188,7 @@ function Daftarbayi(props) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Usia Gestasi</Text>
-                        <TextInput onChangeText={setgestasi} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jenis Kelamin</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -220,11 +220,7 @@ function Daftarbayi(props) {
                             <TextInput onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>Kg</Text>
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>BB Sekarang</Text>
-                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput onChangeText={setbblater} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
-                            <Text style={{ marginLeft: 5 }}>Kg</Text>
-                        </View>
+                     
                     </View>
                 </ScrollView>
 

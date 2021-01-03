@@ -49,6 +49,7 @@ import Kelolasurvey from './containers/pasien/survey/kelolasurvey';
 import Datakontrolpasien from './containers/nurse/resumepulang/datakontrolpasien';
 import Tambahrelasi from './containers/admin/nurse/tambahrelasi';
 import Logperawat from './containers/admin/nurse/logperawat';
+import Addcomment from './containers/nurse/forum/addcomment';
 
 
 
@@ -275,6 +276,11 @@ function Navigation() {
           name="Logperawat"
           component={Logperawat}
           options={{ headerTitle:"Log Perawat"}}
+        />
+         <Stack.Screen
+          name="Addcomment"
+          component={Addcomment}
+          options={{ headerTitle:"Tambah Komentar"}}
         />
          
       </Stack.Navigator>
