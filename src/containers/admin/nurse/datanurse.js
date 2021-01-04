@@ -107,7 +107,39 @@ function Datanurse(props) {
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
     };
-
+    const [data,setdata] = useState([{}])
+    const shownurse = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/nurse/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+               id:global.nurse_id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        shownurse()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -140,11 +172,11 @@ function Datanurse(props) {
 
                                 <View style={{ flexDirection: "row" }}>
                                     <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Nama</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: Nikmah salsabila</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data.name}</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
                                     <Text style={[style.nunitosans, style.datapasien]}>Username</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: nikmah</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: {data.username}</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
                                     <Text style={[style.nunitosans, style.datapasien]}>Password</Text>
@@ -152,25 +184,21 @@ function Datanurse(props) {
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
                                     <Text style={[style.nunitosans, style.datapasien]}>Alamat Rumah Sakit</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: Jalan radio raya</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: {data.hospital}</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
                                     <Text style={[style.nunitosans, style.datapasien]}>Tingkat Pendidikan</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: S1</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: {data.education}</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
                                     <Text style={[style.nunitosans, style.datapasien]}>Nomor Telepon</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: 087880992192</Text>
-                                </View>
-                                <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.nunitosans, style.datapasien]}>Tempat Rumah Sakit</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: sentra medika</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: {data.phone}</Text>
                                 </View>
                                 <View style={{ flexDirection: "row" }}>
                                     <Text style={[style.nunitosans, style.datapasien]}>Lama Bekerja</Text>
-                                    <Text style={[style.nunitosans, style.datapasien2]}>: 5 tahun</Text>
+                                    <Text style={[style.nunitosans, style.datapasien2]}>: {data.working_exp} tahun</Text>
                                 </View>
-                                <Button title="Lihat Log Nurse" onPress={()=>{props.navigation.navigate("Logperawat")}} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                <Button title="Lihat Log Nurse" onPress={() => { props.navigation.navigate("Logperawat") }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                             </View>
                         </View>
                     </ScrollView>

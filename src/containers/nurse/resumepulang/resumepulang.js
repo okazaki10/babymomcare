@@ -249,7 +249,7 @@ function Resumepulang(props) {
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Nama Nurse : Resma</Text>
+                                              
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Status : {item.status}</Text>
                                                 </View>
                                             </TouchableOpacity>

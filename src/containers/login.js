@@ -58,7 +58,7 @@ function Login(props) {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-                    global.username = json.username
+                global.username = json.username
                 if (json.role == "patient") {
                     global.status = 1
                     storeData(json.token)
@@ -91,15 +91,15 @@ function Login(props) {
                     toggleModal()
                     setisipesan("Username atau password salah")
                 }
-            
-               setspinner(false)
+
+                setspinner(false)
             })
             .catch((error) => {
                 console.error(error)
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-           
+
     };
     const [spinner, setspinner] = useState(false)
     return (

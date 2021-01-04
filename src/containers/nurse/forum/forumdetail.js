@@ -36,7 +36,7 @@ function Forumdetail(props) {
     }
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const [data, setdata] = useState({comments:[]})
+    const [data, setdata] = useState({ comments: [] })
     const lihatforum = () => {
         setspinner(true)
         fetch(global.url + '/forum/show', {
@@ -103,15 +103,17 @@ function Forumdetail(props) {
                             </View>
 
                         </View>
-                        <Button title="+ Tambah Komentar" onPress={()=>{props.navigation.navigate("Addcomment",{id:data.id})}} buttonStyle={[style.button, { marginTop: 20 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        <Button title="+ Tambah Komentar" onPress={() => { props.navigation.navigate("Addcomment", { id: data.id }) }} buttonStyle={[style.button, { marginTop: 20 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         <View style={{ flexDirection: "row", marginTop: 15 }}>
                             <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Komentar</Text>
                         </View>
 
                         <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
-                       
+                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>List Komentar</Text>
                             {data.comments.map((item) => (
                                 <View>
+
+                                    <View style={[style.line, { marginBottom: 15 }]}></View>
                                     <View style={[{ flexDirection: "row" }]}>
                                         <Image
                                             source={require("../../../assets/image/empty.png")}
@@ -124,7 +126,7 @@ function Forumdetail(props) {
                                             <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
                                         </View>
                                     </View>
-                                    <View style={[style.line, { marginBottom: 15 }]}></View>
+
                                 </View>))}
                             {/*
                             <View style={[{ flexDirection: "row" }]}>

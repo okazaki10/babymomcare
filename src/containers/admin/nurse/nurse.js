@@ -107,19 +107,16 @@ function Nurse(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-    const [datapasien, setdatapasien] = useState([{}])
+    const [data, setdata] = useState([{}])
     const lihatpasien = () => {
         setspinner(true)
-        fetch(global.url + '/nurse/index', {
-            method: 'POST',
+        fetch(global.url + '/admin/list/approved-nurse', {
+            method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                role: "nurse",
-            })
+            }
         })
             .then((response) => response.json())
             .then((json) => {
@@ -127,7 +124,7 @@ function Nurse(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setdatapasien(json.data)
+                    setdata(json.data)
                 }
                 setspinner(false)
             })
@@ -206,18 +203,20 @@ function Nurse(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onLongPress={tindakannurse} onPress={lihatnurse} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                {data.map((item) => (<TouchableOpacity onLongPress={tindakannurse} onPress={() => { 
+                                    global.nurse_id = item.id
+                                    props.navigation.navigate("Tabnurse", { nama: "Nurse"})
+                                     }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../../assets/image/addpeople.png")}
                                         style={{ width: 55, height: 65 }}
                                         resizeMode="stretch"
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Nikmah Salsabila</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
                                     </View>
+                                </TouchableOpacity>))}
 
-
-                                </TouchableOpacity>
 
 
                             </View>

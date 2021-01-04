@@ -123,43 +123,24 @@ function Chartkuis(props) {
         }
         console.log(event.nativeEvent)
     }
-    const data2 = [
-        {
-            name: "Seoul",
-            population: 21500000,
-            color: "rgba(131, 167, 234, 1)",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-        },
+    const [data2,setdata2] = useState([
+      
         {
             name: "Toronto",
-            population: 2800000,
-            color: "#F00",
+            count: 2,
+            color: "blue",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
         {
             name: "Beijing",
-            population: 527612,
+            count: 5,
             color: "red",
             legendFontColor: "#7F7F7F",
             legendFontSize: 15
         },
-        {
-            name: "New York",
-            population: 8538000,
-            color: "#ffffff",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-        },
-        {
-            name: "Moscow",
-            population: 11920000,
-            color: "rgb(0, 0, 255)",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-        }
-    ];
+      
+    ])
     const chartConfig = {
         backgroundGradientFrom: "#1E2923",
         backgroundGradientFromOpacity: 0,
@@ -170,6 +151,37 @@ function Chartkuis(props) {
         barPercentage: 0.5,
         useShadowColorFromDataset: false // optional
     };
+    const [data3, setdata3] = useState([{}])
+    const lihatforum = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/survey/chart', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata2(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
+    useState(() => {
+        lihatforum()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -185,6 +197,7 @@ function Chartkuis(props) {
 
                     <ScrollView>
                         <View style={{ padding: 3, flex: 1 }}>
+                            {/*
                             <View style={{ flex: 1 }}>
                                 <BarChart
                                     style={{
@@ -201,18 +214,17 @@ function Chartkuis(props) {
                                     highlights={highlights}
                                     marker={marker}
                                 />
-
                             </View>
+                                */}
                             <View>
                                 <PieChart
                                     data={data2}
                                     width={DEVICE_WIDTH * 0.8}
                                     height={200}
                                     chartConfig={chartConfig}
-                                    accessor={"population"}
+                                    accessor={"count"}
                                     backgroundColor={"transparent"}
                                     paddingLeft={"15"}
-
                                 />
                             </View>
                         </View>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -12,6 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MultiSelect from 'react-native-multiple-select';
 function Relasipasien(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -78,7 +79,7 @@ function Relasipasien(props) {
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahresume = () => {
-   
+
         props.navigation.navigate("Tambahrelasi")
     }
     const ubahresume = () => {
@@ -113,8 +114,134 @@ function Relasipasien(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [items, setitems] = useState([{}])
+    const [selectedItems, setselectedItems] = useState([])
+
+    const onSelectedItemsChange = (selectedItems) => {
+        setselectedItems(selectedItems)
+        console.log(selectedItems)
+    };
+
+    const referensi = useRef()
+    const [data,setdata] = useState([{}])
+    const lihatrelasi = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/nurse/relation', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: global.nurse_id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatpasien = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/list/patient-nurse2', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: global.nurse_id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setitems(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const tambahrelasi = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/add-relation', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                nurse_id: global.nurse_id,
+                patients:selectedItems
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Relasi telah dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatpasien()
+        lihatrelasi()
+    })
     return (
         <View style={style.main}>
+            <Modal isVisible={isModalVisible}
+                onBackdropPress={toggleModal}
+                onBackButtonPress={toggleModal}>
+                <View style={style.content}>
+                    <View>
+                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal}>
+                            <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
+                        </TouchableOpacity>
+                        <View style={{ alignItems: "center" }}>
+                            <Image
+                                source={require("../../../assets/image/check.png")}
+                                style={{ width: 100, height: 100 }}
+                                resizeMode="contain"
+                            />
+                        </View>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
+                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <StatusBar backgroundColor={colors.primary} />
             <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
@@ -133,13 +260,13 @@ function Relasipasien(props) {
                         </View>
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
-                       
-                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15,flexDirection:"row" }}>
-                            <View style={{ flex: 1,marginRight:15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red"  }]}></Button>
+
+                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
+                            <View style={{ flex: 1, marginRight: 15 }}>
+                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
-                            <View style={{ flex: 1,marginLeft:15}}>
-                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white"  }]}>
+                            <View style={{ flex: 1, marginLeft: 15 }}>
+                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
                                 </Button>
                             </View>
                         </View>
@@ -188,84 +315,43 @@ function Relasipasien(props) {
                                     />
                                     <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki resume pulang</Text>
                                 </View>
-                                <Button title="+ Tambah Relasi Pasien" onPress={tambahresume} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                <Button title="+ Tambah Relasi Pasien" onPress={() => { props.navigation.navigate("Tambahrelasi",{selectedItems:selectedItems}) }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                             </View>) : (
                                     <View>
-                                        <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
-                                            <Ionicons name={'search-outline'} size={24} color={colors.button} />
-                                            <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                                        <View>
+                                            <MultiSelect
+                                                hideTags
+                                                items={items}
+                                                uniqueKey="id"
+                                                ref={referensi}
+                                                onSelectedItemsChange={onSelectedItemsChange}
+                                                selectedItems={selectedItems}
+                                                selectText="Pilih Relasi Pasien"
+                                                searchInputPlaceholderText="Pilih Pasien..."
+                                                onChangeInput={(text) => console.log(text)}
+                                                submitButtonText="Submit"
+                                            />
                                         </View>
-                                        <Button title="+ Tambah Relasi Pasien" onPress={tambahresume} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                        <TouchableOpacity onLongPress={tindakanresume} onPress={detailresume} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                            <Image
-                                                source={require("../../../assets/image/empty.png")}
-                                                style={{ width: 100, height: 100 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15 }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Ionicons name={'person'} size={17} color={colors.button} />
-                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
-                                                </View>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                            <Image
-                                                source={require("../../../assets/image/empty.png")}
-                                                style={{ width: 100, height: 100 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15 }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Ionicons name={'person'} size={17} color={colors.button} />
-                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
-                                                </View>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                            <Image
-                                                source={require("../../../assets/image/empty.png")}
-                                                style={{ width: 100, height: 100 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15 }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Ionicons name={'person'} size={17} color={colors.button} />
-                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
-                                                </View>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
-                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                            <Image
-                                                source={require("../../../assets/image/empty.png")}
-                                                style={{ width: 100, height: 100 }}
-                                                resizeMode="contain"
-                                            />
-                                            <View style={{ marginLeft: 15 }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Rafif Iqbal Shaputra</Text>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Ionicons name={'person'} size={17} color={colors.button} />
-                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu Selina Maurizka</Text>
-                                                </View>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 2 }]}>Masalah : Risiko Hipotermia</Text>
-                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : 2,5 kg</Text>
-                                            </View>
-
-                                        </TouchableOpacity>
-
+                                        <Button title="+ Tambah Relasi Pasien" onPress={tambahrelasi} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                     </View>)}
+                                    {data.map((item) => (
+                                            <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                                <Image
+                                                    source={require("../../../assets/image/empty.png")}
+                                                    style={{ width: 100, height: 100 }}
+                                                    resizeMode="contain"
+                                                />
+                                                <View style={{ marginLeft: 15 }}>
+                                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
+                                                    <View style={{ flexDirection: "row" }}>
+                                                        <Ionicons name={'person'} size={17} color={colors.button} />
+                                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
+                                                    </View>
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
+                  
+                                                </View>
+                                            </TouchableOpacity>
+                                        ))}
                         </View>
                     </ScrollView>
                 </View>

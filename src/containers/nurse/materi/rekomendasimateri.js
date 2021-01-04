@@ -61,7 +61,7 @@ function Rekomendasimateri(props) {
     const [data, setdata] = useState([{}])
     const lihatkategori = () => {
         setspinner(true)
-        fetch(global.url + '/materi/category', {
+        fetch(global.url + '/materi/recommended', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -75,7 +75,7 @@ function Rekomendasimateri(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setdata(json)
+                    setdata(json.materi)
                 }
                 setspinner(false)
             })
@@ -167,14 +167,9 @@ function Rekomendasimateri(props) {
                         <View style={{ padding: 3 }}>
                             <View>
 
-                                {data.map((item) => (<TouchableOpacity onPress={() => { props.navigation.navigate("Judulmateri",{id:item.id}) }} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
-                                    <Image
-                                        source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 35, height: 35 }}
-                                        resizeMode="contain"
-                                    />
+                                {data.map((item) => (<TouchableOpacity style={[style.card, { marginBottom: 15 }]} onPress={() => props.navigation.navigate("Detailmateri", { id: item.id })}>
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 14 }]}>{item.title}</Text>
                                     </View>
                                 </TouchableOpacity>))}
 

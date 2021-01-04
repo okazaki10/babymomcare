@@ -97,6 +97,40 @@ function Kontakperawat(props) {
     const openMaps = (address) => {
         Linking.openURL('https://www.google.com/maps/search/?api=1&query=' + address);
     }
+ 
+    const [data,setdata] = useState([{}])
+    const shownurse = () => {
+        setspinner(true)
+        fetch(global.url + '/patient/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+               id:props.route.params.id_kontak
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        shownurse()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -116,7 +150,7 @@ function Kontakperawat(props) {
                             resizeMode="contain"
                         />
                     </View>
-                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>Resma Andini</Text>
+                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>{data.name}</Text>
                     <View style={{ marginRight: 15, marginLeft: 15, marginTop: 20 }}>
                         <TouchableOpacity onPress={()=>{props.navigation.navigate("Chat",{id:props.route.params.id})}} style={[style.button, { backgroundColor: "#92B1CD", alignItems: "center", justifyContent: "center", height: 40 }]}>
                             <View style={{ flexDirection: "row" }}>
@@ -129,17 +163,17 @@ function Kontakperawat(props) {
 
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onPress={() => { openWhatsApp("halo", "087880992192") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                <TouchableOpacity onPress={() => { openWhatsApp("", data.phone) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={{ uri: "https://logos-world.net/wp-content/uploads/2020/05/WhatsApp-Logo.png" }}
                                         style={{ width: 70, height: 65 }}
                                         resizeMode="contain"
                                     />
                                     <View style={{ marginLeft: 0, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>087880992192</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>{data.phone}</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { openemail("halo", "ari.susanti@gmail.com") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                <TouchableOpacity onPress={() => { openemail("", data.email) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <View style={{ width: 70, height: 65, justifyContent: "center", alignItems: "center" }}>
                                         <Image
                                             source={{ uri: "https://cdn4.iconfinder.com/data/icons/social-media-logos-6/512/112-gmail_email_mail-512.png" }}
@@ -148,10 +182,10 @@ function Kontakperawat(props) {
                                         />
                                     </View>
                                     <View style={{ marginLeft: 0, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>ari.susanti@gmail.com</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>{data.email}</Text>
                                     </View>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { openMaps("Rumah sakit universitas indonesia, pondok cina, beji, depok") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                <TouchableOpacity onPress={() => { openMaps(data.hospital) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <View style={{ width: 70, height: 65, justifyContent: "center", alignItems: "center" }}>
                                         <Image
                                             source={{ uri: "https://logos-download.com/wp-content/uploads/2016/05/Google_Maps_logo_icon.png" }}
@@ -160,7 +194,7 @@ function Kontakperawat(props) {
                                         />
                                     </View>
                                     <View style={{ marginLeft: 0, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15, marginRight: 50 }]}>Rumah sakit universitas indonesia, pondok cina, beji, depok</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15, marginRight: 50 }]}>{data.hospital}</Text>
                                     </View>
                                 </TouchableOpacity>
                                 <Text style={[style.poppinsmedium, { fontSize: 14, textAlign:"center",marginTop:25 }]}>Perawat tidak menjawab?</Text>

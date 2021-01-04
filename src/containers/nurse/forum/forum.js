@@ -22,7 +22,7 @@ function Forum(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    
+
     const storeData = async (key) => {
         try {
             await AsyncStorage.setItem('key', key)
@@ -186,7 +186,7 @@ function Forum(props) {
                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.question}</Text>
                                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                                             <Ionicons name={'chatbox-outline'} size={24} color={colors.grey} style={{ marginRight: 5 }} />
-                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginRight: 5 }]}></Text>
+                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginRight: 5 }]}>{item.total_comment}</Text>
                                             <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                         </View>
                                     </View>

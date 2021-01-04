@@ -135,12 +135,41 @@ function Daftarperawat(props) {
                 setspinner(false)
             });
     }
-
+    const lihatpasien = () => {
+        setspinner(true)
+        fetch(global.url + '/nurse/index', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
+            if (global.status == 1){
             lihatnurse()
+            }else{
+                lihatpasien()
+            }
         }
     }, [isFocused])
     return (
@@ -153,7 +182,7 @@ function Daftarperawat(props) {
             />
 
             <View style={{ flex: 1 }}>
-                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>{global.status == 2 ? "Daftar Pasien" : "Daftar Perawat"}</Text>
+                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>{global.status == 1 ? "Daftar Perawat" : "Daftar Pasien"}</Text>
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
 
@@ -162,19 +191,19 @@ function Daftarperawat(props) {
                             <View>
                                 {data.map((item)=>(
                                      <TouchableOpacity onPress={() => {
-                                        if (global.status == 2) {
-                                            props.navigation.navigate("Chat", { nama: "Chat Pasien",id:item.user_id })
+                                        if (global.status == 1) {
+                                            props.navigation.navigate("Kontakperawat",{id:item.user_id,id_kontak:item.id})
                                         } else {
-                                            props.navigation.navigate("Kontakperawat",{id:item.user_id})
+                                            props.navigation.navigate("Chat", { nama: "Chat Pasien",id:item.user_id})
                                         }
-                                    }} style={[style.card, { marginTop: 0, flexDirection: "row", padding: 0 }]}>
+                                    }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                         <Image
                                             source={require("../../../assets/image/addpeople.png")}
                                             style={{ width: 55, height: 65 }}
                                             resizeMode="stretch"
                                         />
                                         <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name?item.name:item.mother_name}</Text>
                                         </View>
     
                                     </TouchableOpacity>

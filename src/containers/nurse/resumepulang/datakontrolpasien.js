@@ -133,7 +133,7 @@ function Datakontrolpasien(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    //setdata(json.data)
+                    setdata(json.data)
                 }
                 setspinner(false)
             })
@@ -231,9 +231,9 @@ function Datakontrolpasien(props) {
 
                                         {data.map((item) => (
                                             <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
-                                                if (item.status == "home") {
+               
                                                     props.navigation.navigate("Datakontrol", { id: item.id })
-                                                }
+                                      
                                             }}>
                                                 <Image
                                                     source={require("../../../assets/image/empty.png")}
@@ -247,7 +247,7 @@ function Datakontrolpasien(props) {
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Namsada Nurse : Resma</Text>
+                                                  
                                                 </View>
                                             </TouchableOpacity>
                                         ))}
