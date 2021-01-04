@@ -58,7 +58,7 @@ function Login(props) {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-           
+                    global.username = json.username
                 if (json.role == "patient") {
                     global.status = 1
                     storeData(json.token)

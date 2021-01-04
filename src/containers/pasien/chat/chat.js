@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createRef, useEffect, useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -21,6 +21,7 @@ function Chat(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+
     const storeData = async (key) => {
         try {
             await AsyncStorage.setItem('key', key)
@@ -33,8 +34,10 @@ function Chat(props) {
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const [isi, setisi] = useState("")
+    const [data, setdata] = useState([{}])
     const chat = () => {
-        setspinner(true)
+        //setspinner(true)
+        setisi("")
         fetch(global.url + '/chat/send-message', {
             method: 'POST',
             headers: {
@@ -43,8 +46,7 @@ function Chat(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                sender_id: 5,
-                receiver_id: 6,
+                receiver_id: props.route.params.id,
                 text: isi
             })
         })
@@ -57,17 +59,17 @@ function Chat(props) {
                     setisipesan("Reminder berhasil dibuat!")
                     toggleModal()
                 }
-                setspinner(false)
+                //setspinner(false)
             })
             .catch((error) => {
                 console.error(error)
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
+                //setspinner(false)
             });
     }
 
     const show = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/chat/show-message', {
             method: 'POST',
             headers: {
@@ -76,8 +78,7 @@ function Chat(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                sender_id: 5,
-                receiver_id: 6
+                receiver_id: props.route.params.id
             })
         })
             .then((response) => response.json())
@@ -86,20 +87,39 @@ function Chat(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-
+                    setdata(json.data)
                 }
-                setspinner(false)
+                //setspinner(false)
             })
             .catch((error) => {
                 console.error(error)
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
+                //setspinner(false)
             });
     }
 
     useState(() => {
         show()
     })
+
+    const [time3, settime3] = useState(0)
+    useEffect(() => {
+        const timeout3 = setTimeout(() => {
+            settime3(time3 + 1)
+            settime3(time3 - 1)
+            show()
+        }, 500);
+
+        return () => {
+            clearTimeout(timeout3);
+        };
+    }, [time3]);
+    const scrollViewRef = useRef()
+    const handleScrollTo = (w, h) => {
+        if (scrollViewRef.current) {
+            scrollViewRef.current.scrollTo({ x: 0, y: h })
+        }
+    };
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -110,30 +130,51 @@ function Chat(props) {
             />
 
             <View style={{ flex: 1 }}>
-                <ScrollView>
+                <ScrollView
+                    ref={scrollViewRef}
+                    onContentSizeChange={handleScrollTo}
+                >
+
                     <View style={{ padding: 3 }}>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row", marginRight: 50, marginLeft: 50 }}>
-                            <Image
-                                source={require("../../../assets/image/profilcewe.png")}
-                                style={{ width: 50, height: 50, marginRight: 10 }}
-                                resizeMode="contain"
-                            />
-                            <View>
-                                <Text style={[style.nunitosans, { fontSize: 14, marginLeft: 20 }]}>Ara susanti</Text>
-                                <View style={{ backgroundColor: "#EFF3F7", padding: 20, borderRadius: 25, marginTop: 10 }}>
-                                    <Text style={[style.poppinsmedium, { fontSize: 14 }]}>halo apakah ada yang bisa saya bantu? halo apakah ada yang bisa saya bantu? halo apakah ada yang bisa saya bantu?halo apakah ada yang bisa saya bantu? halo apakah ada yang bisa saya bantu?</Text>
+                        {data.map((item) => (<View>
+                            {item.sender_username == global.username ? (
+                                <View style={{ alignItems: "flex-end", marginRight: 15, marginLeft: 15 }}>
+                                    <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row" }}>
+                                        <View>
+                                            <View style={{ backgroundColor: colors.primary, padding: 20, borderRadius: 25, marginTop: 10 }}>
+                                                <Text style={[style.poppinsmedium, { fontSize: 14 }]}>{item.text}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
                                 </View>
-                            </View>
-                        </View>
-                        <View style={{ flex: 0, backgroundColor: colors.primary, padding: 20, borderRadius: 25, marginTop: 15, marginRight: 22, marginLeft: 50 }}>
-                            <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: "right" }]}>halo apakah ada yang apakah ada</Text>
-                        </View>
+                            ) : (
+                                    <View style={{ alignItems: "flex-start", marginRight: 15, marginLeft: 15 }}>
+                                        <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row" }}>
+                                            <Image
+                                                source={require("../../../assets/image/profilcewe.png")}
+                                                style={{ width: 50, height: 50, marginRight: 10 }}
+                                                resizeMode="contain"
+                                            />
+                                            <View>
+                                                <Text style={[style.nunitosans, { fontSize: 14, marginLeft: 20 }]}>{item.sender_name}</Text>
+                                                <View style={{ backgroundColor: "#EFF3F7", padding: 20, borderRadius: 25, marginTop: 10 }}>
+                                                    <Text style={[style.poppinsmedium, { fontSize: 14 }]}>{item.text}</Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    </View>
+                                )}
+
+
+
+                        </View>))}
+
                     </View>
 
                 </ScrollView>
                 <View style={[{ justifyContent: "center", alignItems: "center", marginTop: 10, flex: 0, height: 75, backgroundColor: "white", elevation: 10, padding: 10, flexDirection: "row" }]} >
                     <View style={{ flex: 1 }}>
-                        <TextInput onChangeText={setisi} multiline={true} placeholder="Type your message..."></TextInput>
+                        <TextInput onChangeText={setisi} value={isi} multiline={true} placeholder="Type your message..."></TextInput>
                     </View>
                     <TouchableOpacity onPress={chat} style={{ marginRight: 20 }}>
                         <FontAwesomeIcon icon={faPaperPlane} size={22} color={colors.button}></FontAwesomeIcon>

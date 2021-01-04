@@ -118,7 +118,7 @@ function Kontakperawat(props) {
                     </View>
                     <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>Resma Andini</Text>
                     <View style={{ marginRight: 15, marginLeft: 15, marginTop: 20 }}>
-                        <TouchableOpacity onPress={()=>{props.navigation.navigate("Chat")}} style={[style.button, { backgroundColor: "#92B1CD", alignItems: "center", justifyContent: "center", height: 40 }]}>
+                        <TouchableOpacity onPress={()=>{props.navigation.navigate("Chat",{id:props.route.params.id})}} style={[style.button, { backgroundColor: "#92B1CD", alignItems: "center", justifyContent: "center", height: 40 }]}>
                             <View style={{ flexDirection: "row" }}>
                                 <FontAwesomeIcon icon={faComments} size={18} color={"white"}></FontAwesomeIcon>
                                 <Text style={[style.poppinsbutton, { color: "white", fontSize: 15, marginLeft: 5 }]}>Chat Perawat</Text>

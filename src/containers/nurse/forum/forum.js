@@ -22,6 +22,7 @@ function Forum(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+    
     const storeData = async (key) => {
         try {
             await AsyncStorage.setItem('key', key)
@@ -31,51 +32,6 @@ function Forum(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
 

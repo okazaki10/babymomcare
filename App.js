@@ -41,6 +41,7 @@ function App() {
       .then((json) => {
         console.log(json)
         if (json.data) {
+          global.username = json.data.username
           if (json.data.role == "patient") {
             global.status = 1
             global.initialroute = "Menubarpasien"

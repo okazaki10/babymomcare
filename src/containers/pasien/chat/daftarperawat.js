@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -12,6 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 function Daftarperawat(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -82,7 +83,7 @@ function Daftarperawat(props) {
     }
     const kontakperawat = () => {
         if (global.status == 2) {
-            props.navigation.navigate("Chat",{nama:"Chat Pasien"})
+            props.navigation.navigate("Chat", { nama: "Chat Pasien" })
         } else {
             props.navigation.navigate("Kontakperawat")
         }
@@ -107,6 +108,41 @@ function Daftarperawat(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [data, setdata] = useState([{}])
+    const lihatnurse = () => {
+        setspinner(true)
+        fetch(global.url + '/patient/related-nurse', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatnurse()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -117,35 +153,34 @@ function Daftarperawat(props) {
             />
 
             <View style={{ flex: 1 }}>
-                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>{global.status == 2 ? "Daftar Pasien":"Daftar Perawat" }</Text>
+                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>{global.status == 2 ? "Daftar Pasien" : "Daftar Perawat"}</Text>
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
 
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <TouchableOpacity onPress={kontakperawat} style={[style.card, { marginTop: 0, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../../assets/image/addpeople.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Ari Susanti</Text>
-                                    </View>
+                                {data.map((item)=>(
+                                     <TouchableOpacity onPress={() => {
+                                        if (global.status == 2) {
+                                            props.navigation.navigate("Chat", { nama: "Chat Pasien",id:item.user_id })
+                                        } else {
+                                            props.navigation.navigate("Kontakperawat",{id:item.user_id})
+                                        }
+                                    }} style={[style.card, { marginTop: 0, flexDirection: "row", padding: 0 }]}>
+                                        <Image
+                                            source={require("../../../assets/image/addpeople.png")}
+                                            style={{ width: 55, height: 65 }}
+                                            resizeMode="stretch"
+                                        />
+                                        <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
+                                        </View>
+    
+                                    </TouchableOpacity>
+                                ))}
+                               
 
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => { props.navigation.navigate("Tambahanjuran") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
-                                    <Image
-                                        source={require("../../../assets/image/addpeople.png")}
-                                        style={{ width: 55, height: 65 }}
-                                        resizeMode="stretch"
-                                    />
-                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Selina Maurizka</Text>
-                                    </View>
-
-                                </TouchableOpacity>
 
                             </View>
                         </View>
