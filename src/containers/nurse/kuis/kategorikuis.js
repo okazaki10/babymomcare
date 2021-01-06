@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
@@ -10,6 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 function Kategorikuis(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -73,7 +74,7 @@ function Kategorikuis(props) {
     }
     const [data, setdata] = useState([{}])
     const lihatkategori = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/materi/category', {
             method: 'GET',
             headers: {
@@ -98,9 +99,14 @@ function Kategorikuis(props) {
                 setspinner(false)
             });
     }
-    useState(() => {
-        lihatkategori()
-    })
+ 
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatkategori()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

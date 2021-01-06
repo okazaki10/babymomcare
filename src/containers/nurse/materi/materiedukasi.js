@@ -60,7 +60,7 @@ function Materiedukasi(props) {
     };
     const [data, setdata] = useState([{}])
     const lihatkategori = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/materi/category', {
             method: 'GET',
             headers: {
@@ -153,7 +153,7 @@ function Materiedukasi(props) {
             </Modal>
             <View style={{ flex: 1 }}>
                 {global.status == 2 || global.status == 3 ? (<View>
-                    <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Materi Edukasi</Text>
+                    <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Kategori Materi</Text>
                     <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 </View>) : (null)}
 

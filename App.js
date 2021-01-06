@@ -18,7 +18,8 @@ LogBox.ignoreLogs([
   'VirtualizedList',
   'Looks like'
 ]);
-global.url = "http://192.168.1.6:10/api";
+//global.url = "http://192.168.1.5:10/api";
+global.url = "https://mobile.temanbunda.com/api";
 global.initialroute = "Login"
 global.status = 0
 global.key = "";
@@ -91,19 +92,15 @@ function App() {
       <StatusBar barStyle="dark-content" />
       {sudah ? (<Navigation />) : (
         <View>
-          <ImageBackground
-            source={require("./src/assets/image/splash.png")}
-            style={{ width: "100%", height: "100%" }}
-            resizeMode="stretch"
-          >
+       
             <View style={{ justifyContent: "center", alignItems: "center", width: "100%", height: "100%" }}>
               <Image
                 source={require("./src/assets/image/splash.png")}
-                style={{ width: 300, height: 200 }}
+                style={{ width: 300, height: 300 }}
                 resizeMode="contain"
               ></Image>
             </View>
-          </ImageBackground>
+      
 
         </View>)}
     </>

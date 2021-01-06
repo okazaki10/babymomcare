@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -12,6 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 function Datakontrol(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -72,7 +73,7 @@ function Datakontrol(props) {
     };
     const [datakontrol, setdatakontrol] = useState([{}])
     const lihatkontrol = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/kontrol/index', {
             method: 'POST',
             headers: {
@@ -98,7 +99,7 @@ function Datakontrol(props) {
             });
     }
     const lihatkontrol2 = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/kontrol/index', {
             method: 'POST',
             headers: {
@@ -107,7 +108,7 @@ function Datakontrol(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id:props.route.params.id
+                id: props.route.params.id
             })
         })
             .then((response) => response.json())
@@ -126,13 +127,18 @@ function Datakontrol(props) {
                 setspinner(false)
             });
     }
-    useState(() => {
-        if (global.status == 1){
-        lihatkontrol()
-        }else{
-            lihatkontrol2()
+
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            if (global.status == 1) {
+                lihatkontrol()
+            } else {
+                lihatkontrol2()
+            }
         }
-    })
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

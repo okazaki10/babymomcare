@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MultiSelect from 'react-native-multiple-select';
+import { useIsFocused } from '@react-navigation/native';
 function Relasipasien(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -125,7 +126,7 @@ function Relasipasien(props) {
     const referensi = useRef()
     const [data,setdata] = useState([{}])
     const lihatrelasi = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/admin/nurse/relation', {
             method: 'POST',
             headers: {
@@ -154,7 +155,7 @@ function Relasipasien(props) {
             });
     }
     const lihatpasien = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/admin/list/patient-nurse2', {
             method: 'POST',
             headers: {
@@ -213,10 +214,15 @@ function Relasipasien(props) {
                 setspinner(false)
             });
     }
-    useState(() => {
-        lihatpasien()
-        lihatrelasi()
-    })
+
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatpasien()
+            lihatrelasi()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <Modal isVisible={isModalVisible}

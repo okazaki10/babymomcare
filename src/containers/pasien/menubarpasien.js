@@ -52,9 +52,11 @@ function Menubarpasien() {
           tabBarLabel: 'Chat',
           tabBarIcon: ({color, size}) => (
             <View>
-            <View style={{ position: "absolute", top: -5, right: -3,zIndex:100,backgroundColor:"red",width:18,height:18,justifyContent:"center",alignItems:"center",borderRadius:50}}>
-              <Text style={{fontSize:12,color:"white"}}>1</Text>
-            </View>
+              {/*
+              <View style={{ position: "absolute", top: -5, right: -3,zIndex:100,backgroundColor:"red",width:18,height:18,justifyContent:"center",alignItems:"center",borderRadius:50}}>
+                <Text style={{fontSize:12,color:"white"}}>1</Text>
+              </View>
+              */}
             <FontAwesomeIcon icon={faComments} size={28} color={color}></FontAwesomeIcon>
           </View>
           ),

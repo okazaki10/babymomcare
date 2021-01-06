@@ -153,7 +153,7 @@ function Chartkuis(props) {
     };
     const [data3, setdata3] = useState([{}])
     const lihatforum = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/admin/survey/chart', {
             method: 'GET',
             headers: {
@@ -217,6 +217,10 @@ function Chartkuis(props) {
                             </View>
                                 */}
                             <View>
+                                <View style={{flexDirection:"row"}}>
+                            <Text style={[style.poppinsmedium, { fontSize: 14,flex:1 }]}>Chart kuisioner_2</Text>
+                            <Text style={[style.poppinsmedium, { fontSize: 14,flex:1 }]}>Rasio Skala</Text>
+                            </View>
                                 <PieChart
                                     data={data2}
                                     width={DEVICE_WIDTH * 0.8}
@@ -225,6 +229,7 @@ function Chartkuis(props) {
                                     accessor={"count"}
                                     backgroundColor={"transparent"}
                                     paddingLeft={"15"}
+                                    
                                 />
                             </View>
                         </View>

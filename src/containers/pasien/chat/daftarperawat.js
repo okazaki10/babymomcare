@@ -110,7 +110,7 @@ function Daftarperawat(props) {
     };
     const [data, setdata] = useState([{}])
     const lihatnurse = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/patient/related-nurse', {
             method: 'GET',
             headers: {
@@ -136,7 +136,7 @@ function Daftarperawat(props) {
             });
     }
     const lihatpasien = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/nurse/index', {
             method: 'POST',
             headers: {

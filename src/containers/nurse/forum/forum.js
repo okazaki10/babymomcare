@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Forumdetail from './forumdetail';
+import { useIsFocused } from '@react-navigation/native';
 function Forum(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -68,7 +69,7 @@ function Forum(props) {
     };
     const [data, setdata] = useState([{}])
     const lihatforum = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/forum/index', {
             method: 'POST',
             headers: {
@@ -97,9 +98,13 @@ function Forum(props) {
             });
     }
 
-    useState(() => {
-        lihatforum()
-    })
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatforum()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

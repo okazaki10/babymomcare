@@ -80,7 +80,7 @@ function Daftarakun(props) {
     }
     const [data, setdata] = useState([{}])
     const lihatmateri = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/register/list', {
             method: 'GET',
             headers: {

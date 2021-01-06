@@ -60,7 +60,7 @@ function Rekomendasimateri(props) {
     };
     const [data, setdata] = useState([{}])
     const lihatkategori = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/materi/recommended', {
             method: 'GET',
             headers: {

@@ -65,9 +65,9 @@ function Beranda(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    
+
     const send_fcm = (fcm_token) => {
-   
+
         fetch(global.url + '/advice/send_fcm', {
             method: 'POST',
             headers: {
@@ -76,18 +76,18 @@ function Beranda(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                fcm_token:fcm_token
+                fcm_token: fcm_token
             })
         })
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-           
+
             })
             .catch((error) => {
                 console.error(error)
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-              
+
             });
 
     }
@@ -116,7 +116,7 @@ function Beranda(props) {
             // error reading value
         }
     }
-    
+
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const resumepulang = () => {
@@ -228,8 +228,8 @@ function Beranda(props) {
                                 </TouchableOpacity>
                                 {global.status == 3 ? (<View>
                                     <TouchableOpacity onPress={() => {
-                                        global.status = 1
-                                        resumepulang()
+                                        global.mode = "resume"
+                                        props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang" })
                                     }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                         <Image
                                             source={require("../../assets/image/resume.png")}
@@ -241,9 +241,8 @@ function Beranda(props) {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
-                                        global.status = 2
                                         global.mode = "resume"
-                                        resumepulang()
+                                        props.navigation.navigate("Resumepulang")
                                     }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                         <Image
                                             source={require("../../assets/image/resume.png")}
@@ -255,8 +254,7 @@ function Beranda(props) {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
-                                        global.status = 1
-                                        datakontrol()
+                                        props.navigation.navigate("Datakontrolpasien")
                                     }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                         <Image
                                             source={require("../../assets/image/resume.png")}
@@ -268,8 +266,7 @@ function Beranda(props) {
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {
-                                        global.status = 2
-                                        datakontrol()
+                                        props.navigation.navigate("Datakontrol")
                                     }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                         <Image
                                             source={require("../../assets/image/resume.png")}

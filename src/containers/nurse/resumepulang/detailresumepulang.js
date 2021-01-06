@@ -130,8 +130,8 @@ function Detailresumepulang(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id:props.route.params.id,
-                nurse_note:anjuran
+                id: props.route.params.id,
+                nurse_note: anjuran
             })
         })
             .then((response) => response.json())
@@ -152,7 +152,7 @@ function Detailresumepulang(props) {
             });
     }
     const lihatkontrol = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/kontrol/show', {
             method: 'POST',
             headers: {
@@ -182,7 +182,7 @@ function Detailresumepulang(props) {
             });
     }
     const lihatresume = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/kontrol/resume', {
             method: 'POST',
             headers: {
@@ -211,7 +211,7 @@ function Detailresumepulang(props) {
             });
     }
     const lihatresume2 = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/kontrol/resume', {
             method: 'POST',
             headers: {
@@ -246,18 +246,18 @@ function Detailresumepulang(props) {
         if (mode == "kontrol") {
             lihatkontrol()
         } else if (mode == "resume") {
-            if (global.status == 1){
-            lihatresume()
-            }else{
+            if (global.status == 1) {
+                lihatresume()
+            } else {
                 lihatresume2()
             }
         }
     })
     return (
         <View style={style.main}>
-        
+
             <StatusBar backgroundColor={colors.primary} />
-     <Modal isVisible={isModalVisible}
+            <Modal isVisible={isModalVisible}
                 onBackdropPress={toggleModal}
                 onBackButtonPress={toggleModal}>
                 <View style={style.content}>

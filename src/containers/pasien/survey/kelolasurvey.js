@@ -113,7 +113,7 @@ function Kelolasurvey(props) {
     const [jumlah, setjumlah] = useState("5")
     const [data, setdata] = useState({})
     const lihatsurvey = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/survey/index', {
             method: 'GET',
             headers: {

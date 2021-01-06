@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -12,6 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 
 function Datanurse(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
@@ -109,7 +110,7 @@ function Datanurse(props) {
     };
     const [data,setdata] = useState([{}])
     const shownurse = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/admin/nurse/show', {
             method: 'POST',
             headers: {
@@ -137,9 +138,14 @@ function Datanurse(props) {
                 setspinner(false)
             });
     }
-    useState(() => {
-        shownurse()
-    })
+
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            shownurse()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

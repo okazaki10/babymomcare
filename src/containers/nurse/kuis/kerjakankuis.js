@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { color } from 'react-native-reanimated';
+import { useIsFocused } from '@react-navigation/native';
 function Kerjakankuis(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -114,7 +115,7 @@ function Kerjakankuis(props) {
 
     const [data, setdata] = useState({})
     const lihatkuis = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/quiz/show', {
             method: 'POST',
             headers: {
@@ -207,7 +208,7 @@ function Kerjakankuis(props) {
             });
     }
     const selesaikuis2 = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/quiz/answer/show', {
             method: 'POST',
             headers: {
@@ -236,14 +237,18 @@ function Kerjakankuis(props) {
                 setspinner(false)
             });
     }
-    useState(() => {
-        if (props.route.params.mode) {
-            selesaikuis2()
-        } else {
-            lihatkuis()
-        }
-    })
 
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            if (props.route.params.mode) {
+                selesaikuis2()
+            } else {
+                lihatkuis()
+            }
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

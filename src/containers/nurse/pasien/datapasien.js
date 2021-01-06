@@ -64,7 +64,7 @@ function Datapasien(props) {
     };
     const [data, setdata] = useState([{}])
     const lihatpasien = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/nurse/show', {
             method: 'POST',
             headers: {
@@ -95,6 +95,7 @@ function Datapasien(props) {
     useState(() => {
         lihatpasien()
     })
+    
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

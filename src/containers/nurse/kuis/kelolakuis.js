@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
+import { useIsFocused } from '@react-navigation/native';
 function Kelolakuis(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -114,7 +115,7 @@ function Kelolakuis(props) {
     const [jumlah, setjumlah] = useState("5")
     const [data, setdata] = useState([{}])
     const lihatkategori = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/materi/index', {
             method: 'POST',
             headers: {
@@ -143,9 +144,13 @@ function Kelolakuis(props) {
             });
     }
 
-    useState(() => {
-        lihatkategori()
-    })
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatkategori()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

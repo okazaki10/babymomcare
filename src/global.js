@@ -16,3 +16,4 @@ var baby_gender = "";
 var rekomendasi = [];
 var username = "";
 var nurse_id = 0;
+var admin = 0;

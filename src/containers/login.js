@@ -104,9 +104,8 @@ function Login(props) {
     const [spinner, setspinner] = useState(false)
     return (
         <View style={style.main}>
-            <Text>usename = pasien</Text>
-            <Text>usename = nurse</Text>
             <Text>usename = admin</Text>
+            <Text>password = password</Text>
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}

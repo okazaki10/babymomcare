@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -14,6 +14,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { formatDistance } from 'date-fns';
 import { id } from 'date-fns/locale';
+import { useIsFocused } from '@react-navigation/native';
 function Forumdetail(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -38,7 +39,7 @@ function Forumdetail(props) {
     const [kosong, setkosong] = useState(false)
     const [data, setdata] = useState({ comments: [] })
     const lihatforum = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/forum/show', {
             method: 'POST',
             headers: {
@@ -67,9 +68,15 @@ function Forumdetail(props) {
             });
     }
 
-    useState(() => {
-        lihatforum()
-    })
+
+    
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatforum()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
 

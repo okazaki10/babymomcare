@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
@@ -13,6 +13,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import HyperLink from 'react-native-hyperlink';
+import { useIsFocused } from '@react-navigation/native';
 function Detailmateri(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -31,7 +32,7 @@ function Detailmateri(props) {
     const [selesai, setselesai] = useState(false)
     const [data, setdata] = useState({})
     const lihatdetailmateri = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/materi/show', {
             method: 'POST',
             headers: {
@@ -61,7 +62,7 @@ function Detailmateri(props) {
     }
     const [data2, setdata2] = useState()
     const showquiz = () => {
-        setspinner(true)
+        //setspinner(true)
         fetch(global.url + '/quiz/status', {
             method: 'POST',
             headers: {
@@ -92,10 +93,15 @@ function Detailmateri(props) {
                 setspinner(false)
             });
     }
-    useState(() => {
-        lihatdetailmateri()
-        showquiz()
-    })
+
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatdetailmateri()
+            showquiz()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
