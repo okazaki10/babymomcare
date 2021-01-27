@@ -29,68 +29,24 @@ function Kategoriforum(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const [isipesan, setisipesan] = useState("")
     const tambahmateri = () => {
         global.add = 1
-        props.navigation.navigate("Tambahmateri")
+        props.navigation.navigate("Tambahtopik")
     }
 
     const ubahmateri = () => {
         global.add = 0
-        props.navigation.navigate("Tambahmateri", { nama: "Ubah materi" })
+        props.navigation.navigate("Tambahtopik", { nama: "Ubah kategori", id: id_kategori, judul: judul, gambar: gambar })
         toggleModal2()
     }
     const tindakankontrol = () => {
-        setisipesan("Pilih tindakan untuk materi ini")
-        toggleModal2()
-
+        if (global.status != 1) {
+            setisipesan("Pilih tindakan untuk materi ini")
+            toggleModal2()
+        }
     }
     const hapusmateri = () => {
         toggleModal2()
@@ -114,7 +70,7 @@ function Kategoriforum(props) {
     const klik = () => {
         props.navigation.navigate("Forum")
     }
-    const [data,setdata] = useState([{}])
+    const [data, setdata] = useState([{}])
     const lihatkategori = () => {
         //setspinner(true)
         fetch(global.url + '/forum/topic', {
@@ -141,7 +97,37 @@ function Kategoriforum(props) {
                 setspinner(false)
             });
     }
-
+    const [id, setid] = useState("")
+    const hapus2 = () => {
+        setspinner(true)
+        fetch(global.url + '/forum/topic/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatkategori()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -177,7 +163,7 @@ function Kategoriforum(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -197,10 +183,6 @@ function Kategoriforum(props) {
                             <Button onPress={hapusmateri} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={ubahmateri} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
-                            </Button>
-                        </View>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
                         </View>
@@ -208,28 +190,33 @@ function Kategoriforum(props) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
+
                 {global.status == 2 ? (<View>
                     <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Topik Forum</Text>
                     <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 </View>) : (null)}
                 <View style={{ flex: 1, padding: 20 }}>
+                    {global.status == 1 ? (null) : (<Button title="+ Tambah Forum" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>
+
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                            {data.map((item) => (<TouchableOpacity onPress={() => {  props.navigation.navigate("Forum",{id:item.id}) }} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
-                                    <Image
-                                        source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 35, height: 35 }}
-                                        resizeMode="contain"
-                                    />
+                                {data.map((item) => item.id ? (<TouchableOpacity onPress={() => { props.navigation.navigate("Forum", { id: item.id }) }}
+                                    onLongPress={() => {
+                                        setid(item.id)
+                                        tindakankontrol()
+                                    }
+                                    } style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+                                    
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
                                     </View>
-                                </TouchableOpacity>))}
+                                </TouchableOpacity>) : (null))}
 
 
                             </View>

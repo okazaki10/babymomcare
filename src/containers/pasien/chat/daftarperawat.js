@@ -189,7 +189,7 @@ function Daftarperawat(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item)=>(
+                                {data.map((item)=> item.id?(
                                      <TouchableOpacity onPress={() => {
                                         if (global.status == 1) {
                                             props.navigation.navigate("Kontakperawat",{id:item.user_id,id_kontak:item.id})
@@ -207,7 +207,7 @@ function Daftarperawat(props) {
                                         </View>
     
                                     </TouchableOpacity>
-                                ))}
+                                ):(null))}
                                
 
 

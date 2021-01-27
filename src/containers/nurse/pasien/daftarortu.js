@@ -23,7 +23,7 @@ function Daftarortu(props) {
     const [namaibu, setnamaibu] = useState("")
     const [agamaibu, setagamaibu] = useState("")
     const [pendidikanibu, setpendidikanibu] = useState("sarjana")
-    const [pengalamanibu, setpengalamanibu] = useState("")
+    const [pengalamanibu, setpengalamanibu] = useState("1")
     const [pekerjaanibu, setpekerjaanibu] = useState("")
     const [paritas, setparitas] = useState("")
     const [namaayah, setnamaayah] = useState("")
@@ -31,6 +31,9 @@ function Daftarortu(props) {
     const [pendidikanayah, setpendidikanayah] = useState("sarjana")
     const [pengalamanayah, setpengalamanayah] = useState("")
     const [pekerjaanayah, setpekerjaanayah] = useState("")
+    const [jumlah_anak, setjumlah_anak] = useState("kds2")
+    const [pendapatan, setpendapatan] = useState("kd3")
+    const [suami, setsuami] = useState("1")
     const [show, setShow] = useState(false);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
@@ -71,10 +74,109 @@ function Daftarortu(props) {
     };
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
-    const pasiendiubah = () => {
-        setisipesan("Data ortu berhasil diubah!")
-        toggleModal()
+    const lihatpasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/nurse/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    //setdata(json.data)
+                    setnamaibu(json.data.mother_name)
+
+                    setagamaibu(json.data.mother_religion)
+                    setpendidikanibu(json.data.mother_education)
+                    setpekerjaanibu(json.data.mother_job)
+                    setparitas(json.data.paritas)
+                    setnamaayah(json.data.father_name)
+
+                    setagamaayah(json.data.father_religion)
+                    setpendidikanayah(json.data.father_job)
+                    setpekerjaanayah(json.data.father_job)
+                    setjumlah_anak(json.data.jumlah_anak)
+                    setpendapatan(json.data.pendapatan_keluarga)
+                    setpengalamanibu(json.data.pengalaman_merawat)
+                    setsuami(json.data.tinggal_dengan_suami)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
+    const pasiendiubah = () => {
+        setspinner(true)
+        fetch(global.url + '/patient/data/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id:props.route.params.id,
+                role: "patient",
+                mother_name: namaibu,
+                mother_birthday: format(date, "yyyy-MM-dd HH:mm:ss"),
+                mother_religion: agamaibu,
+                mother_education: pendidikanibu,
+                mother_job: pekerjaanibu,
+                paritas: paritas,
+                father_name: namaayah,
+                father_birthday: format(date2, "yyyy-MM-dd HH:mm:ss"),
+                father_religion: agamaayah,
+                father_education: pendidikanayah,
+                father_job: pekerjaanayah,
+                jumlah_anak: jumlah_anak,
+                pendapatan_keluarga: pendapatan,
+                pengalaman_merawat: pengalamanibu,
+                tinggal_dengan_suami: suami
+
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    if (json.errors.username) {
+                        ToastAndroid.show(json.errors.username[0], ToastAndroid.SHORT)
+                    } else {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    }
+                } else {
+                    if (props.route.params.selectedItems) {
+                        assignmateri(json.id)
+                    } else {
+                        setisipesan("Data ortu berhasil diubah!")
+                        toggleModal()
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
+    }
+    useState(() => {
+        lihatpasien()
+    })
     const pasiendibuat = () => {
         setspinner(true)
         fetch(global.url + '/register', {
@@ -86,6 +188,8 @@ function Daftarortu(props) {
             },
             body: JSON.stringify({
                 role: "patient",
+                email: global.emaild,
+                phone: global.nohpd,
                 username: props.route.params.username,
                 password: props.route.params.password,
                 baby_name: global.baby_name,
@@ -104,6 +208,14 @@ function Daftarortu(props) {
                 father_religion: agamaayah,
                 father_education: pendidikanayah,
                 father_job: pekerjaanayah,
+                usia_gestas: global.gestas,
+                harapan_orangtua: global.diharapkan,
+                lingkar_kepala: global.lk,
+                jumlah_anak: jumlah_anak,
+                pendapatan_keluarga: pendapatan,
+                pengalaman_merawat: pengalamanibu,
+                tinggal_dengan_suami: suami
+
             })
         })
             .then((response) => response.json())
@@ -166,12 +278,12 @@ function Daftarortu(props) {
 
     }
     const kembali = () => {
-        props.navigation.navigate("Menubar")
+        props.navigation.goBack()
         toggleModal()
     }
     return (
         <View style={style.main}>
-           
+
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -221,7 +333,7 @@ function Daftarortu(props) {
                     </View>
                 </View>
             </Modal>
-       
+
             <View style={{ flex: 1 }}>
 
                 <ScrollView>
@@ -233,9 +345,24 @@ function Daftarortu(props) {
                                 resizeMode="stretch"
                             />
                         </View>) : (null)}
+                        <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Keluarga</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pendapatan Keluarga</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={pendapatan}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setpendapatan(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="<= 3 juta rupiah" value="kds3" />
+                                <Picker.Item label="> 3 juta rupiah" value="lds3" />
+                            </Picker>
+                        </View>
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ibu</Text>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5 }]}>Nama Ibu</Text>
-                        <TextInput onChangeText={setnamaibu} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={namaibu} onChangeText={setnamaibu} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Tanggal lahir ibu</Text>
                         <View style={{ flexDirection: "row" }} >
                             <TouchableOpacity onPress={() => showDatepicker('date')} style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
@@ -253,7 +380,7 @@ function Daftarortu(props) {
                             </View>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pekerjaan</Text>
-                        <TextInput onChangeText={setpekerjaanibu} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={pekerjaanibu} onChangeText={setpekerjaanibu} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
@@ -271,12 +398,12 @@ function Daftarortu(props) {
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
-                        <TextInput onChangeText={setagamaibu} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={agamaibu} onChangeText={setagamaibu} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Paritas</Text>
-                        <TextInput onChangeText={setparitas} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <TextInput value={paritas} onChangeText={setparitas} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ayah</Text>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5 }]}>Nama Ayah</Text>
-                        <TextInput onChangeText={setnamaayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={namaayah} onChangeText={setnamaayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Tanggal lahir ayah</Text>
                         <View style={{ flexDirection: "row" }} >
                             <TouchableOpacity onPress={() => showDatepicker2('date')} style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
@@ -295,7 +422,7 @@ function Daftarortu(props) {
                         </View>
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pekerjaan</Text>
-                        <TextInput onChangeText={setpekerjaanayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={pekerjaanayah} onChangeText={setpekerjaanayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -312,7 +439,50 @@ function Daftarortu(props) {
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
-                        <TextInput onChangeText={setagamaayah} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={agamaayah} onChangeText={setagamaayah} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jumlah Anak</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={jumlah_anak}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setjumlah_anak(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="<= 2" value="kds2" />
+                                <Picker.Item label="> 2" value="ld2" />
+                            </Picker>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pengalaman Merawat Bayi</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={pengalamanibu}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setpendidikanibu(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Pernah" value="1" />
+                                <Picker.Item label="Belum Pernah" value="0" />
+                            </Picker>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Apakah Tinggal Dengan Suami?</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={suami}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setsuami(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Iya" value="1" />
+                                <Picker.Item label="Tidak" value="0" />
+                            </Picker>
+                        </View>
+
                     </View>
                 </ScrollView>
 

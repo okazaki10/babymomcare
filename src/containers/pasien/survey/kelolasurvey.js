@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -13,6 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
+import { useIsFocused } from '@react-navigation/native';
 function Kelolasurvey(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -31,51 +32,6 @@ function Kelolasurvey(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const [isModalVisible2, setModalVisible2] = useState(false);
@@ -83,20 +39,29 @@ function Kelolasurvey(props) {
         setModalVisible2(!isModalVisible2);
     };
     const tindakankuis = () => {
-        setisipesan("Pilih tindakan untuk data ini")
-        toggleModal2()
+        if (global.status != 1) {
+            setisipesan("Pilih tindakan untuk data ini")
+            toggleModal2()
+        }
     }
-
+    const [id_survey, setid_survey] = useState("")
     const ubahkuis = () => {
-        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", halaman: jumlah })
+        if (kuis == ""){
+            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
+        }else{
+        toggleModal2()
+        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice })
         global.add = 0
+        }
     }
 
     const tambahkuis = () => {
-
-        props.navigation.navigate("Tambahsurvey", { halaman: jumlah, kuis: kuis })
+        if (kuis == ""){
+            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
+        }else{
+        props.navigation.navigate("Tambahsurvey", { halaman: jumlah, kuis: kuis, choice_type: choice })
         global.add = 1
-
+        }
     }
 
 
@@ -106,12 +71,43 @@ function Kelolasurvey(props) {
         toggleModal3()
 
     }
+
+    const hapus2 = () => {
+        setspinner(true)
+        fetch(global.url + '/survey/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id_survey,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatsurvey()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     const [isModalVisible3, setModalVisible3] = useState(false);
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
     const [jumlah, setjumlah] = useState("5")
-    const [data, setdata] = useState({})
+    const [data, setdata] = useState([{}])
     const lihatsurvey = () => {
         //setspinner(true)
         fetch(global.url + '/survey/index', {
@@ -138,10 +134,15 @@ function Kelolasurvey(props) {
                 setspinner(false)
             });
     }
-    useState(() => {
-        lihatsurvey()
-    })
-    const [kuis, setkuis] = useState("kuisioner_1")
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatsurvey()
+        }
+    }, [isFocused])
+    const [kuis, setkuis] = useState("")
+    const [choice, setchoice] = useState("text")
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -170,8 +171,9 @@ function Kelolasurvey(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
+
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
                                 </Button>
@@ -189,7 +191,10 @@ function Kelolasurvey(props) {
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={hapuskuis} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={ubahkuis} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -204,17 +209,18 @@ function Kelolasurvey(props) {
                     {global.status == 1 ? (null) : (
                         <View>
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Kuisioner</Text>
-                            <View style={[style.card, { elevation: 5, padding: 0, flex: 0 }]}>
+                            <TextInput onChangeText={setkuis} style={[style.card, { elevation: 5, marginTop: 10, flex: 0 }]}></TextInput>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Tipe Pertanyaan</Text>
+                            <View style={[style.card, { elevation: 5, padding: 0, flex: 0, marginTop: 15 }]}>
                                 <Picker
-                                    selectedValue={kuis}
-                                    onValueChange={(itemValue, itemIndex) => {
-                                        setkuis(itemValue)
-                                        console.log(itemValue)
-                                    }
+                                    selectedValue={choice}
+                                    onValueChange={(itemValue, itemIndex) =>
+                                        setchoice(itemValue)
                                     }
                                     mode="dropdown">
-                                    <Picker.Item label="kuisioner_1" value="kuisioner_1" />
-                                    <Picker.Item label="kuisioner_2" value="kuisioner_2" />
+                                    <Picker.Item label="Text" value="text" />
+                                    <Picker.Item label="Angka" value="number" />
+
                                 </Picker>
                             </View>
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Jumlah Halaman</Text>
@@ -232,13 +238,15 @@ function Kelolasurvey(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-
-                                <TouchableOpacity onLongPress={tindakankuis} onPress={() => {
-                                    props.navigation.navigate("Kerjakansurvey", { id: data.title_1 })
+                                {data.map(item => item.id ? (<TouchableOpacity onLongPress={() => {
+                                    setid_survey(item.id)
+                                    tindakankuis()
+                                }} onPress={() => {
+                                    props.navigation.navigate("Kerjakansurvey", { id: item.id, choice_type: item.choice_type })
 
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{data.title_1}</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.title}</Text>
                                     </View>
                                     {global.status == 1 ? (null) : (
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -250,25 +258,9 @@ function Kelolasurvey(props) {
                                             </View>
                                         </View>
                                     )}
-                                </TouchableOpacity>
-                                <TouchableOpacity onLongPress={tindakankuis} onPress={() => {
-                                    props.navigation.navigate("Kerjakansurvey", { id: data.title_2 })
+                                </TouchableOpacity>) : (null))}
 
-                                }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
-                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{data.title_2}</Text>
-                                    </View>
-                                    {global.status == 1 ? (null) : (
-                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                            <View style={{ marginRight: 15 }}>
-                                                <Ionicons name={'pencil'} size={24} color={colors.grey} />
-                                            </View>
-                                            <View style={{ marginRight: 15 }}>
-                                                <Ionicons name={'trash'} size={24} color={colors.grey} />
-                                            </View>
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
+
                             </View>
                         </View>
                     </ScrollView>

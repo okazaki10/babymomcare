@@ -24,7 +24,10 @@ function Daftarbayi(props) {
     const [gestasi, setgestasi] = useState("")
     const [anak, setanak] = useState("")
     const [jenis_kelamin, setjenis_kelamin] = useState("male")
+    const [diharapkan, setdiharapkan] = useState("1")
     const [pjl, setpjl] = useState("")
+    const [lk, setlk] = useState("")
+    const [gestas, setgestas] = useState("")
     const [bbnow, setbbnow] = useState("")
     const [bblater, setbblater] = useState("")
     const [show, setShow] = useState(false);
@@ -52,57 +55,10 @@ function Daftarbayi(props) {
         setMode(tipe);
         setShow(true);
     };
-    const login = () => {
-        props.navigation.navigate("Mainpage")
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
+
     const [spinner, setspinner] = useState(false)
-    const pasiendiubah = () => {
-        setisipesan("Data bayi berhasil diubah!")
-        toggleModal()
-    }
+    
+  
     const pasiendibuat = () => {
         setisipesan("Data bayi berhasil dibuat!")
         toggleModal()
@@ -113,11 +69,104 @@ function Daftarbayi(props) {
         global.born_weight = bbnow
         global.born_length = pjl
         global.baby_gender = jenis_kelamin
-        props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password,selectedItems:props.route.params.selectedItems })
+        global.diharapkan = diharapkan
+        global.gestas = gestas
+        global.lk = lk
+        props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password, selectedItems: props.route.params.selectedItems })
     }
+    const lihatpasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/nurse/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    //setdata(json.data)
+                    setnama(json.data.baby_name)
+                   
+                    setbbnow(json.data.born_weight.toString())
+                    setpjl(json.data.born_length.toString())
+                    setjenis_kelamin(json.data.baby_gender)
+                    setdiharapkan(json.data.harapan_orangtua.toString())
+                    setgestas(json.data.usia_gestas.toString())
+                    setlk(json.data.lingkar_kepala_lahir.toString())
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const pasiendiubah = () => {
+        setspinner(true)
+        fetch(global.url + '/patient/data/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                role: "patient",
+                id:props.route.params.id,
+                baby_name: nama,
+                baby_birthday: format(date, "yyyy-MM-dd HH:mm:ss"),
+                born_weight: bbnow,
+                born_length: pjl,
+                baby_gender: jenis_kelamin,
+                usia_gestas:gestas,
+                lingkar_kepala:lk,
+                harapan_orangtua:diharapkan
+               
+
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    if (json.errors.username) {
+                        ToastAndroid.show(json.errors.username[0], ToastAndroid.SHORT)
+                    } else {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    }
+                } else {
+                    if (props.route.params.selectedItems) {
+                        assignmateri(json.id)
+                    } else {
+                        setisipesan("Data bayi berhasil diubah!")
+                        toggleModal()
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
+    }
+    useState(() => {
+        lihatpasien()
+    })
     return (
         <View style={style.main}>
-    
+
             {show && (
                 <DateTimePicker
                     testID="dateTimePicker"
@@ -153,7 +202,10 @@ function Daftarbayi(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={()=>{
+                                toggleModal()
+                                props.navigation.goBack()
+                                }} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -171,7 +223,7 @@ function Daftarbayi(props) {
                         </View>) : (null)}
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Nama</Text>
-                        <TextInput onChangeText={setnama} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={nama} onChangeText={setnama} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tanggal Lahir</Text>
                         <View style={{ flexDirection: "row" }} >
                             <TouchableOpacity onPress={() => showDatepicker('date')} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
@@ -188,7 +240,7 @@ function Daftarbayi(props) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        
+
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jenis Kelamin</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -200,27 +252,52 @@ function Daftarbayi(props) {
                                 }
                                 mode="dropdown">
                                 <Picker.Item label="Laki Laki" value="male" />
-                                <Picker.Item label="Perempuanr" value="female" />
+                                <Picker.Item label="Perempuan" value="female" />
+                            </Picker>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Apakah diharapkan orang tua?</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={diharapkan}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setdiharapkan(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Ya" value="1" />
+                                <Picker.Item label="Tidak" value="0" />
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Panjang bayi lahir</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput onChangeText={setpjl} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={pjl} onChangeText={setpjl} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>Cm</Text>
                         </View>
+                        {/*
                         {global.status != 3 ? (
                             <View>
                                 <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Anak Ke</Text>
                                 <TextInput onChangeText={setanak} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
                             </View>
                         ) : (null)}
-
+                        */}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>BB Lahir</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
-                            <Text style={{ marginLeft: 5 }}>Kg</Text>
+                            <TextInput value={bbnow} onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <Text style={{ marginLeft: 5 }}>gram</Text>
                         </View>
-                     
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Usia gestasi (dalam minggu)</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                            <TextInput value={gestas} onChangeText={setgestas} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <Text style={{ marginLeft: 5 }}>Minggu</Text>
+                        </View>
+
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lingkar Kepala</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <Text style={{ marginLeft: 5 }}>Cm</Text>
+                        </View>
                     </View>
                 </ScrollView>
 

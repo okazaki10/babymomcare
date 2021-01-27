@@ -334,7 +334,7 @@ function Detailresumepulang(props) {
                                     <View style={{ flexDirection: "row" }}>
                                         <Text style={[style.nunitosans, style.datapasien]}>Berat Badan</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
-                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.weight} kg</Text>
+                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.weight} gram</Text>
                                     </View>
                                     <View style={{ flexDirection: "row" }}>
                                         <Text style={[style.nunitosans, style.datapasien]}>Panjang Badan</Text>
@@ -358,19 +358,20 @@ function Detailresumepulang(props) {
                                             <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.note}</Text>
                                         </View>)}
 
-                                    {global.status == 2 ? (<View>
-                                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan dari perawat</Text>
-                                        <View>
-                                            <TextInput onChangeText={setanjuran} value={anjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
-                                        </View>
-                                        <View style={{ marginTop: 30 }}>
-                                            <Button title="Simpan" onPress={add_nurse_note} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                        </View>
-                                    </View>) : (<View style={{ flexDirection: "row" }}>
-                                        <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
-                                        <Text style={{ marginTop: 15 }}>: </Text>
-                                        <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.nurse_note}</Text>
-                                    </View>)}
+                                    {global.status == 1 || global.mode == "resume"? (
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
+                                            <Text style={{ marginTop: 15 }}>: </Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.nurse_note}</Text>
+                                        </View>) : (<View>
+                                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan dari perawat</Text>
+                                            <View>
+                                                <TextInput onChangeText={setanjuran} value={anjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                                            </View>
+                                            <View style={{ marginTop: 30 }}>
+                                                <Button title="Simpan" onPress={add_nurse_note} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                            </View>
+                                        </View>)}
 
                                 </View>
                             ) : (<Text>Tidak ada resume pulang</Text>)}

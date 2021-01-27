@@ -50,6 +50,8 @@ import Datakontrolpasien from './containers/nurse/resumepulang/datakontrolpasien
 import Tambahrelasi from './containers/admin/nurse/tambahrelasi';
 import Logperawat from './containers/admin/nurse/logperawat';
 import Addcomment from './containers/nurse/forum/addcomment';
+import Tambahkategori from './containers/nurse/materi/tambahkategori';
+import Tambahtopik from './containers/nurse/forum/tambahtopik';
 
 
 
@@ -282,7 +284,16 @@ function Navigation() {
           component={Addcomment}
           options={{ headerTitle:"Tambah Komentar"}}
         />
-         
+             <Stack.Screen
+          name="Tambahkategori"
+          component={Tambahkategori}
+          options={{ headerTitle:"Tambah Kategori"}}
+        />
+        <Stack.Screen
+          name="Tambahtopik"
+          component={Tambahtopik}
+          options={{ headerTitle:"Tambah Topik"}}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

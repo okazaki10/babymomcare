@@ -166,7 +166,7 @@ function Kerjakansurvey(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                title: props.route.params.id,
+                id: props.route.params.id,
             })
         })
             .then((response) => response.json())
@@ -222,6 +222,7 @@ function Kerjakansurvey(props) {
         lihatsurvey()
     })
     const kembali = () => {
+        toggleModal()
         props.navigation.goBack()
     }
     return (
@@ -295,7 +296,7 @@ function Kerjakansurvey(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={()=>{props.navigation.goBack()}} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={kembali} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -322,12 +323,12 @@ function Kerjakansurvey(props) {
                                         jawaban[nomor] == item ? (
                                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                 <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{data[nomor].choice_type == "number"?item:listjawaban2[index]}</Text>
+                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number"?item:listjawaban2[index]}</Text>
                                             </TouchableOpacity>
                                         ) : (
                                                 <TouchableOpacity onPress={() => { pilih(nomor, item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                     <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{data[nomor].choice_type == "number"?item:listjawaban2[index]}</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number"?item:listjawaban2[index]}</Text>
                                                 </TouchableOpacity>
                                             )
                                     ))}

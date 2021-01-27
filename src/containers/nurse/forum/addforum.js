@@ -93,8 +93,38 @@ function Addforum(props) {
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
     const forumdiubah = () => {
-        setisipesan("Forum berhasil diubah!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/forum/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id_forum,
+                title: judul,
+                question: pertanyaan,
+                topic_id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Forum berhasil diubah!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
     }
     const forumdibuat = () => {
         setspinner(true)
@@ -146,9 +176,47 @@ function Addforum(props) {
         props.navigation.goBack()
         toggleModal()
     }
+    const lihatforum = () => {
+        //setspinner(true)
+        fetch(global.url + '/forum/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id_forum
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(JSON.stringify(json))
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setjudul(json.data.title)
+                    setpertanyaan(json.data.question)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
+    useState(() => {
+        if (props.route.params) {
+            if (props.route.params.id_forum) {
+                lihatforum()
+            }
+        }
+    })
     return (
         <View style={style.main}>
-    
+
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -182,7 +250,7 @@ function Addforum(props) {
                 <ScrollView keyboardShouldPersistTaps="handled">
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul</Text>
-                        <TextInput onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={judul} onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pertanyaan</Text>
                         {/*
                         <View style={[style.card]}>
@@ -192,7 +260,7 @@ function Addforum(props) {
                             />
                         </View>
                          */}
-                        <TextInput onChangeText={setpertanyaan} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
+                        <TextInput value={pertanyaan} onChangeText={setpertanyaan} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
                         {/*
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Pilih Topik</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>

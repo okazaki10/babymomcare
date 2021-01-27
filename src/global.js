@@ -17,3 +17,7 @@ var rekomendasi = [];
 var username = "";
 var nurse_id = 0;
 var admin = 0;
+var diharapkan = "";
+var gestas = "";
+var lk = "";
+var kuis = 1;

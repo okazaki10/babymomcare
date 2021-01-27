@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useIsFocused } from '@react-navigation/native'
+import Tambahkategori from './tambahkategori';
 function Materiedukasi(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -26,24 +27,59 @@ function Materiedukasi(props) {
     const [isipesan, setisipesan] = useState("")
     const tambahmateri = () => {
         global.add = 1
-        props.navigation.navigate("Tambahmateri")
+        props.navigation.navigate("Tambahkategori")
     }
-
+    const [judul, setjudul] = useState("")
+    const [gambar, setgambar] = useState("")
     const ubahmateri = () => {
         global.add = 0
-        props.navigation.navigate("Tambahmateri", { nama: "Ubah materi" })
+        props.navigation.navigate("Tambahkategori", { nama: "Ubah kategori", id: id_kategori, judul: judul, gambar: gambar })
         toggleModal2()
     }
-    const tindakankontrol = () => {
-        setisipesan("Pilih tindakan untuk materi ini")
-        toggleModal2()
 
+    const tindakankontrol = () => {
+        if (global.status != 1) {
+            setisipesan("Pilih tindakan untuk materi ini")
+            toggleModal2()
+        }
     }
+
     const hapusmateri = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus materi ini")
         toggleModal3()
 
+    }
+    const [id_kategori, setid_kategori] = useState()
+    const hapus2 = () => {
+        setspinner(true)
+        fetch(global.url + '/materi/category/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id_kategori,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatkategori()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
     const detailmateri = () => {
         props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
@@ -121,7 +157,7 @@ function Materiedukasi(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -158,6 +194,7 @@ function Materiedukasi(props) {
                 </View>) : (null)}
 
                 <View style={{ flex: 1, padding: 20 }}>
+                    {global.status == 1 ? (null) : (<Button title="+ Tambah Kategori" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
 
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
@@ -167,16 +204,23 @@ function Materiedukasi(props) {
                         <View style={{ padding: 3 }}>
                             <View>
 
-                                {data.map((item) => (<TouchableOpacity onPress={() => { props.navigation.navigate("Judulmateri",{id:item.id}) }} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+                                {data.map((item) => item.id ? (<TouchableOpacity onPress={() => { props.navigation.navigate("Judulmateri", { id: item.id }) }}
+                                    onLongPress={() => {
+                                        setid_kategori(item.id)
+                                        setjudul(item.name)
+                                        setgambar(item.image)
+                                        tindakankontrol()
+                                    }}
+                                    style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
                                     <Image
-                                        source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 35, height: 35 }}
-                                        resizeMode="contain"
+                                        source={{ uri: item.image ? item.image : "https://nameproscdn.com/a/2018/05/106343_82907bfea9fe97e84861e2ee7c5b4f5b.png" }}
+                                        style={{ width: 35, height: 35, borderRadius: 50 }}
+                                        resizeMode="cover"
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
                                     </View>
-                                </TouchableOpacity>))}
+                                </TouchableOpacity>) : (null))}
 
                             </View>
                         </View>

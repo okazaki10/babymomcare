@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -16,6 +16,7 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
+import { useIsFocused } from '@react-navigation/native';
 function Tambahsurvey(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -67,21 +68,7 @@ function Tambahsurvey(props) {
         setjawabanbenar(s)
     }
     const [nomor, setnomor] = useState(0)
-    const [kuis, setkuis] = useState([{
-        judul: "bagaimana cara memandikan bayi yang benar",
-        soal1: "aasd",
-        soal2: "asa",
-        soal3: "sadaa",
-        soal4: "asda",
-        jawabanbenar: "opsi2"
-    }, {
-        judul: "bagaimaasd asd asandikan bayi yang benar",
-        soal1: "s12aa",
-        soal2: "aa21sasa",
-        soal3: "sa312daa",
-        soal4: "as1122da",
-        jawabanbenar: "opsi1"
-    }])
+    const [kuis, setkuis] = useState([{}])
     useState(() => {
         if (global.add == 0) {
             sethalaman(kuis.length)
@@ -148,8 +135,38 @@ function Tambahsurvey(props) {
 
     };
     const kuisdiubah = () => {
-        setisipesan("Data kuis berhasil diubah!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/survey/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id_survey,
+                title: props.route.params.kuis,
+                questions: judul,
+                choice_type: props.route.params.choice_type
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data survey berhasil diubah!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
     }
     const kuisdibuat = () => {
         setspinner(true)
@@ -163,7 +180,7 @@ function Tambahsurvey(props) {
             body: JSON.stringify({
                 title: props.route.params.kuis,
                 questions: judul,
-                choice: choice
+                choice_type: props.route.params.choice_type
             })
         })
             .then((response) => response.json())
@@ -184,13 +201,61 @@ function Tambahsurvey(props) {
             });
 
     }
-    const resumedibuat = () => {
+    const [id, setid] = useState("")
+    const lihatkuis = () => {
+        //setspinner(true)
+        fetch(global.url + '/survey/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id_survey,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(JSON.stringify(json))
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    sethalaman(json.length)
+              
+                    var judul = []
+                    for (var i = 0; i < json.length; i++) {
+                        judul[i] = json[i].question
+                    }
+                    setjudul(judul)
 
-
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
+    const kembali = () => {
+        toggleModal()
+        props.navigation.goBack()
+    }
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            if (props.route.params) {
+                if (props.route.params.id_survey) {
+                    lihatkuis()
+                }
+            }
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
-        
+
 
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
@@ -216,7 +281,7 @@ function Tambahsurvey(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={()=>{props.navigation.goBack()}} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={kembali} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -228,19 +293,7 @@ function Tambahsurvey(props) {
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>
                         <TextInput onChangeText={(item) => { setjuduld(nomor, item) }} value={judul[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Tipe Pertanyaan</Text>
-                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
-                            <Picker
-                                selectedValue={choice[nomor]}
-                                onValueChange={(itemValue, itemIndex) =>
-                                    setchoiced(nomor, itemValue)
-                                }
-                                mode="dropdown">
-                                <Picker.Item label="Text" value="text" />
-                                <Picker.Item label="Angka" value="number" />
 
-                            </Picker>
-                        </View>
 
                     </View>
                 </ScrollView>
@@ -262,7 +315,7 @@ function Tambahsurvey(props) {
                                 <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                     </View>
                 </View>
-               
+
 
 
             </View>

@@ -31,62 +31,19 @@ function Resumepulang(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahresume = (id) => {
         global.mode = "resume"
-        props.navigation.navigate("Tambahresume",{id:id})
+        global.add = 1
+        props.navigation.navigate("Tambahresume", { id: id })
     }
     const ubahresume = () => {
+        toggleModal2()
         global.mode = "resume"
         global.add = 0
-        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang" })
-        toggleModal2()
+        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang",id:id})
+  
     }
     const tindakanresume = () => {
 
@@ -103,6 +60,38 @@ function Resumepulang(props) {
     const detailresume = () => {
         global.mode = "resume"
         props.navigation.navigate("Detailresumepulang")
+    }
+    const [id,setid] = useState("")
+    const hapus2 = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id,
+                mode:"resume"
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatpasien()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -144,7 +133,7 @@ function Resumepulang(props) {
                 setspinner(false)
             });
     }
-  
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -175,7 +164,7 @@ function Resumepulang(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -191,9 +180,11 @@ function Resumepulang(props) {
                 <View style={style.content}>
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
+                     
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={hapusresume} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
+                   
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={ubahresume} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -227,22 +218,30 @@ function Resumepulang(props) {
                                     />
                                     <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki resume pulang</Text>
                                 </View>
-                                
+
                             </View>) : (
                                     <View>
                                         <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
                                             <Ionicons name={'search-outline'} size={24} color={colors.button} />
                                             <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                                         </View>
-                                        {datapasien.map((item) => (
-                                            <TouchableOpacity  style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={()=>{
-                                                if (item.status == "hospital"){
-                                                tambahresume(item.id)
-                                                }else{
+                                        {datapasien.map((item) => item.id ? (
+                                            <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
+                                                if (item.status == "hospital") {
+                                                    tambahresume(item.id)
+                                                } else {
                                                     global.mode = "resume"
-                                                    props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang",id:item.id })
+                                                    props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang", id: item.id })
                                                 }
-                                                }}>
+                                            }}
+                                                onLongPress={() => {
+                                                    if (item.status != "hospital") {
+                                                        setid(item.id)
+                                                        setisipesan("Pilih tindakan untuk resume ini")
+                                                        toggleModal2()
+                                                    }
+                                                }}
+                                            >
                                                 <Image
                                                     source={require("../../../assets/image/empty.png")}
                                                     style={{ width: 100, height: 100 }}
@@ -254,12 +253,12 @@ function Resumepulang(props) {
                                                         <Ionicons name={'person'} size={17} color={colors.button} />
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
-                                              
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
+
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Status : {item.status}</Text>
                                                 </View>
                                             </TouchableOpacity>
-                                        ))}
+                                        ) : (null))}
 
                                     </View>)}
                         </View>

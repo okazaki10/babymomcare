@@ -31,51 +31,6 @@ function Anjuranpasien(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahanjuran = () => {
@@ -85,19 +40,54 @@ function Anjuranpasien(props) {
         props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder" })
         global.add = 0
     }
+    const [tindakan, settindakan] = useState({})
     const ubahanjuran2 = () => {
-        props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder" })
+        props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder", isinya: tindakan })
         global.add = 0
         toggleModal2()
     }
+
     const tindakananjuran = () => {
-        setisipesan("Pilih tindakan untuk reminder ini")
-        toggleModal2()
+        if (global.status != 1) {
+            setisipesan("Pilih tindakan untuk reminder ini")
+            toggleModal2()
+        }
     }
     const hapusanjuran = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus reminder ini")
         toggleModal3()
+    }
+    const [idhapus,setidhapus] = useState()
+    const hapusanjuran2 = () => {
+        setspinner(true)
+        fetch(global.url + '/advice/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: idhapus,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatanjuran()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -197,7 +187,7 @@ function Anjuranpasien(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapusanjuran2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -230,15 +220,19 @@ function Anjuranpasien(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 1 ? (null):
+                    {global.status == 1 ? (null) :
                         (<Button title="+ Buat Anjuran Pasien" onPress={tambahanjuran} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
-                       }
+                    }
 
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item, index) =>
-                                    <View><TouchableOpacity onLongPress={tindakananjuran} onPress={() => { setkolom(index) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
+                                {data.map((item, index) => item.id ? (
+                                    <View><TouchableOpacity onLongPress={() => {
+                                        setidhapus(item.id)
+                                        settindakan({ id: item.id, name: item.name, description: item.description, frequency: item.frequency })
+                                        tindakananjuran()
+                                    }} onPress={() => { setkolom(index) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
                                         <Text style={[style.poppinsbold, { fontSize: 15, flex: 1 }]}>{item.name}</Text>
                                         {global.status == 2 ? (
                                             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -251,13 +245,15 @@ function Anjuranpasien(props) {
 
                                             </View>) : (null)}
                                     </TouchableOpacity>
-                                        {collapse[index] == true ? (null) : (
-                                            <View style={[style.card, { marginTop: 5, padding: 17 }]}>
-                                                <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.description}</Text>
-                                            </View>)}
+                                        {
+                                            collapse[index] == true ? (null) : (
+                                                <View style={[style.card, { marginTop: 5, padding: 17 }]}>
+                                                    <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.description}</Text>
+                                                </View>)
+                                        }
 
                                     </View>
-                                )}
+                                ) : (null))}
 
 
 
@@ -270,7 +266,7 @@ function Anjuranpasien(props) {
 
             </View>
 
-        </View>
+        </View >
     );
 };
 

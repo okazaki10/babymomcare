@@ -20,9 +20,9 @@ function Tambahanjuran(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [judul, setjudul] = useState("")
-    const [deskripsi, setdeskripsi] = useState("")
-    const [frekuensi, setfrekuensi] = useState("")
+    const [judul, setjudul] = useState(props.route.params ? props.route.params.isinya.name : "")
+    const [deskripsi, setdeskripsi] = useState(props.route.params ? props.route.params.isinya.description : "")
+    const [frekuensi, setfrekuensi] = useState(props.route.params ? props.route.params.isinya.frequency.toString() : "")
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -30,8 +30,38 @@ function Tambahanjuran(props) {
 
     const [spinner, setspinner] = useState(false)
     const ubahanjuran = () => {
-        setisipesan("Reminder berhasil diubah!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/advice/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id:props.route.params?props.route.params.isinya.id:0,
+                name: judul,
+                frequency: frekuensi,
+                description: deskripsi,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Reminder berhasil diubah!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
     }
     const tambahnajuran = () => {
         setspinner(true)
@@ -65,9 +95,9 @@ function Tambahanjuran(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-
     }
-    const kembali = () =>{
+    const kembali = () => {
+        toggleModal()
         props.navigation.goBack()
     }
     return (
@@ -107,11 +137,11 @@ function Tambahanjuran(props) {
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Reminder</Text>
-                        <TextInput onChangeText={setjudul} style={[style.card, { elevation: 5,  marginTop: 15 }]}></TextInput>
+                        <TextInput value={judul} onChangeText={setjudul} style={[style.card, { elevation: 5, marginTop: 15 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Deskripsi</Text>
-                        <TextInput onChangeText={setdeskripsi} style={[style.card, { elevation: 5,  marginTop: 15 }]} multiline={true}></TextInput>
+                        <TextInput value={deskripsi} onChangeText={setdeskripsi} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Frekuensi (berapa hari sekali)</Text>
-                        <TextInput onChangeText={setfrekuensi} style={[style.card, { elevation: 5,  marginTop: 15 }]} keyboardType={"numeric"}></TextInput>
+                        <TextInput value={frekuensi} onChangeText={setfrekuensi} style={[style.card, { elevation: 5, marginTop: 15 }]} keyboardType={"numeric"}></TextInput>
                     </View>
                 </ScrollView>
                 <View style={{ padding: 22, flexDirection: "row" }}>
@@ -119,7 +149,7 @@ function Tambahanjuran(props) {
                         {global.add == 1 ? (
                             <Button title="Simpan" onPress={tambahnajuran} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         ) : (
-                            <Button title="Simpan" onPress={ubahanjuran} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                                <Button title="Simpan" onPress={ubahanjuran} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
 
                     </View>
                 </View>

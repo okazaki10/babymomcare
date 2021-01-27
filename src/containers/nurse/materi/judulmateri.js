@@ -84,19 +84,51 @@ function Judulmateri(props) {
 
     const ubahmateri = () => {
         global.add = 0
-        props.navigation.navigate("Tambahmateri", { nama: "Ubah materi" })
+        props.navigation.navigate("Tambahmateri", { nama: "Ubah materi",id_materi:id_materi })
         toggleModal2()
     }
     const tindakankontrol = () => {
-        setisipesan("Pilih tindakan untuk materi ini")
-        toggleModal2()
-
+        if (global.status != 1) {
+            setisipesan("Pilih tindakan untuk materi ini")
+            toggleModal2()
+        }
     }
     const hapusmateri = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus materi ini")
         toggleModal3()
 
+    }
+    const [id_materi, setid_materi] = useState()
+    const hapus2 = () => {
+        setspinner(true)
+        fetch(global.url + '/materi/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id_materi,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatkategori()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
     const detailmateri = () => {
         props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
@@ -143,7 +175,7 @@ function Judulmateri(props) {
     }
 
 
-  
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -179,7 +211,7 @@ function Judulmateri(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -223,11 +255,14 @@ function Judulmateri(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item) => (<TouchableOpacity onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15 }]} onPress={() => props.navigation.navigate("Detailmateri",{id:item.id})}>
+                                {data.map((item) => item.id ? (<TouchableOpacity onLongPress={()=>{
+                                    setid_materi(item.id)
+                                    tindakankontrol()
+                                }} style={[style.card, { marginBottom: 15 }]} onPress={() => props.navigation.navigate("Detailmateri", { id: item.id })}>
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 14 }]}>{item.title}</Text>
                                     </View>
-                                </TouchableOpacity>))}
+                                </TouchableOpacity>) : (null))}
 
 
                             </View>

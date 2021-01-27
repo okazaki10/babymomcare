@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -12,6 +12,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 
 function Datapasien(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
@@ -35,15 +36,16 @@ function Datapasien(props) {
     const [kosong, setkosong] = useState(false)
     const ubahpasien = (index) => {
         if (index == 0) {
-            props.navigation.navigate("Daftarbayi", { nama: "Edit Data Bayi" })
+            props.navigation.navigate("Daftarbayi", { nama: "Edit Data Bayi",id:props.route.params.id })
             global.add = 0
         } else if (index == 1) {
-            props.navigation.navigate("Daftarortu", { nama: "Ubah Ortu" })
-            global.add = 0
-        } else if (index == 2) {
-            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun" })
+            props.navigation.navigate("Daftarortu", { nama: "Ubah Ortu",id:props.route.params.id })
             global.add = 0
         }
+        /* else if (index == 2) {
+            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun",id:props.route.params.id })
+            global.add = 0
+        }*/
     }
 
     const addpasien = () => {
@@ -92,10 +94,14 @@ function Datapasien(props) {
                 setspinner(false)
             });
     }
-    useState(() => {
-        lihatpasien()
-    })
-    
+
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            lihatpasien()
+        }
+    }, [isFocused])
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -173,8 +179,24 @@ function Datapasien(props) {
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.born_length:""} cm</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Lingkar kepala lahir</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.lingkar_kepala_lahir:""} cm</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Lingkar kepala sekarang</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.lingkar_kepala_sekarang:""} cm</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>BB Lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.born_weight:""} kg</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.born_weight:""} gram</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Usia gestas</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.usia_gestas:""} Minggu</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Apakah diharapkan orang tua?</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.harapan_orangtua == 1?"Iya":"Tidak":""}</Text>
                                         </View>
                                  
                                     </TouchableOpacity>
@@ -210,6 +232,22 @@ function Datapasien(props) {
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Paritas</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.paritas:""}</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Jumlah anak</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.jumlah_anak == "kds2"?"Kurang dari sama dengan 2":"Lebih dari sama dengan 2":""}</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Pendapatan keluaraga</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.pendapatan_keluarga == "kd3"?"Kurang dari 3 jt":"Lebih dari sama dengan 3 jt":""}</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Pengalaman merawat bayi</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.pengalaman_merawat == "1"?"Pernah":"Tidak pernah":""}</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Apakah ibu tinggal dengan suami?</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.tinggal_dengan_suami=="1"?"Iya":"Tidak":""}</Text>
                                             </View>
 
                                             <Text style={[style.poppinsbold, { fontSize: 14, color: colors.grey, marginTop: 22, paddingRight: 50 }]}>Data Ayah</Text>

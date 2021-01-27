@@ -235,7 +235,7 @@ function Datakontrolpasien(props) {
                                             <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                                         </View>
 
-                                        {data.map((item) => (
+                                        {data.map((item) => item.id?(
                                             <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
                
                                                     props.navigation.navigate("Datakontrol", { id: item.id })
@@ -252,11 +252,11 @@ function Datakontrolpasien(props) {
                                                         <Ionicons name={'person'} size={17} color={colors.button} />
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
                                                   
                                                 </View>
                                             </TouchableOpacity>
-                                        ))}
+                                        ):(null))}
 
                                     </View>)}
                         </View>

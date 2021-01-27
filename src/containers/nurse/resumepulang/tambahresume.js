@@ -49,55 +49,10 @@ function Tambahresume(props) {
         setMode(tipe);
         setShow(true);
     };
-    const login = () => {
-        props.navigation.navigate("Mainpage")
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
+    
     const [spinner, setspinner] = useState(false)
     const [gambar, setgambar] = useState("")
-    const [gambar2,setgambar2] = useState("")
+    const [gambar2, setgambar2] = useState("")
     const [hide, sethide] = useState(true)
     const [options, setoptions] = useState({
         title: 'Pilih Foto',
@@ -111,9 +66,48 @@ function Tambahresume(props) {
         setayd(index => [...index, ""])
     }
     const [anjuran, setanjuran] = useState("")
+    const [id_resume,setid_resume] = useState("")
     const resumediubah = () => {
-        setisipesan("Resume Pulang berhasil diubah!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/kontrol/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id:id_resume,
+                title: "Data Resume",
+                date: format(date, "yyyy-MM-dd HH:mm:ss"),
+                tempat_kontrol: tempatkontrol,
+                weight: bb,
+                length: pb,
+                lingkar_kepala: lk,
+                temperature: suhu,
+                base64_img: gambar2,
+                note: anjuran,
+                mode: "resume",
+                patient_id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Resume Pulang berhasil diubah!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
     }
     const resumedibuat = () => {
         setspinner(true)
@@ -132,10 +126,10 @@ function Tambahresume(props) {
                 length: pb,
                 lingkar_kepala: lk,
                 temperature: suhu,
-                base64_img:gambar2,
-                note:anjuran,
-                mode:"resume",
-                patient_id:props.route.params.id
+                base64_img: gambar2,
+                note: anjuran,
+                mode: "resume",
+                patient_id: props.route.params.id
             })
         })
             .then((response) => response.json())
@@ -173,10 +167,10 @@ function Tambahresume(props) {
                 length: pb,
                 lingkar_kepala: lk,
                 temperature: suhu,
-                base64_img:gambar2,
-                nurse_note:anjuran,
-                mode:"resume",
-                patient_id:props.route.params.id
+                base64_img: gambar2,
+                nurse_note: anjuran,
+                mode: "resume",
+                patient_id: props.route.params.id
             })
         })
             .then((response) => response.json())
@@ -198,8 +192,44 @@ function Tambahresume(props) {
 
     }
     const kontroldiubah = () => {
-        setisipesan("Data Kontrol berhasil diubah!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/kontrol/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id:props.route.params.id,
+                order: 1,
+                date: format(date, "yyyy-MM-dd HH:mm:ss"),
+                tempat_kontrol: tempatkontrol,
+                weight: bb,
+                length: pb,
+                lingkar_kepala: lk,
+                temperature: suhu,
+                base64_img: gambar2,
+                note: anjuran,
+                mode: "kontrol"
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data Kontrol berhasil diubah!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
     const kontroldibuat = () => {
         setspinner(true)
@@ -218,9 +248,9 @@ function Tambahresume(props) {
                 length: pb,
                 lingkar_kepala: lk,
                 temperature: suhu,
-                base64_img:gambar2,
-                 note:anjuran,
-                mode:"kontrol"
+                base64_img: gambar2,
+                note: anjuran,
+                mode: "kontrol"
             })
         })
             .then((response) => response.json())
@@ -240,7 +270,7 @@ function Tambahresume(props) {
                 setspinner(false)
             });
     }
-    
+
     const kembali = () => {
         props.navigation.goBack()
         toggleModal()
@@ -270,6 +300,131 @@ function Tambahresume(props) {
         });
 
     }
+    const lihatkontrol = () => {
+        //setspinner(true)
+        fetch(global.url + '/kontrol/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    sethide(false)
+                    setid_resume(json.data.id)
+                    settempatkontrol(json.data.tempat_kontrol)
+                    setbb(json.data.weight.toString())
+                    setlk(json.data.lingkar_kepala.toString())
+                    setpb(json.data.length.toString())
+                    setsuhu(json.data.temperature.toString())
+                    //setgambar(json.data.image)
+                    setanjuran(json.data.nurse_note)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatresume = () => {
+        //setspinner(true)
+        fetch(global.url + '/kontrol/resume', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    if (json.data) {
+                        sethide(false)
+                        setid_resume(json.data.id)
+                        settempatkontrol(json.data.tempat_kontrol)
+                        setbb(json.data.weight.toString())
+                        setlk(json.data.lingkar_kepala.toString())
+                        setpb(json.data.length.toString())
+                        setsuhu(json.data.temperature.toString())
+                        //setgambar(json.data.image)
+                        setanjuran(json.data.nurse_note)
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatresume2 = () => {
+        //setspinner(true)
+        fetch(global.url + '/kontrol/resume', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    if (json.data) {
+                        sethide(false)
+                        setid_resume(json.data.id)
+                        settempatkontrol(json.data.tempat_kontrol)
+                        setbb(json.data.weight.toString())
+                        setlk(json.data.lingkar_kepala.toString())
+                        setpb(json.data.length.toString())
+                        setsuhu(json.data.temperature.toString())
+                        //setgambar(json.data.image)
+                        setanjuran(json.data.nurse_note)
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        if (global.add == 0) {
+            if (global.mode == "kontrol") {
+                lihatkontrol()
+            } else if (global.mode == "resume") {
+                if (global.status == 1) {
+                    lihatresume()
+                } else {
+                    lihatresume2()
+                }
+            }
+        }
+    })
 
     return (
         <View style={style.main}>
@@ -333,42 +488,42 @@ function Tambahresume(props) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                      
+
                         <View>
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Kontrol</Text>
-                            <TextInput onChangeText={settempatkontrol} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                            <TextInput value={tempatkontrol} onChangeText={settempatkontrol} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat Badan</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput onChangeText={setbb} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
-                            <Text style={{ marginLeft: 5 }}>Kg</Text>
+                            <TextInput value={bb} onChangeText={setbb} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <Text style={{ marginLeft: 5 }}>gram</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Panjang Badan</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput onChangeText={setpb} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={pb} onChangeText={setpb} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>cm</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lingkar Kepala</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput onChangeText={setlk} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>cm</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Suhu</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput onChangeText={setsuhu} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={suhu} onChangeText={setsuhu} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>celcius</Text>
                         </View>
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>{global.status == 1 ? "Catatan Tambahan" : "Catatan dari perawat"}</Text>
                         <View>
-                            <TextInput onChangeText={setanjuran} style={[style.card, { elevation: 5, height: 200, textAlignVertical: "top", marginTop: 15 }]} multiline={true}></TextInput>
+                            <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, height: 200, textAlignVertical: "top", marginTop: 15 }]} multiline={true}></TextInput>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Upload Foto Bayi</Text>
-                        {hide ? (null) : (<Image
+                        {gambar ? (<Image
                             source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
                             style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
                             resizeMode="cover"
-                        ></Image>)}
+                        ></Image>):(null)}
 
 
                         <View style={{ flexDirection: "row", marginTop: 15 }}>
@@ -385,11 +540,11 @@ function Tambahresume(props) {
                     <View style={{ flex: 1 }}>
                         {global.mode == "resume" ? (<View>
                             {global.add == 1 ? (
-                                <Button title="Simpan" onPress={()=>{
-                                    if (global.status == 1){
-                                    resumedibuat()
-                                    }else{
-                                    resumedibuat2()
+                                <Button title="Simpan" onPress={() => {
+                                    if (global.status == 1) {
+                                        resumedibuat()
+                                    } else {
+                                        resumedibuat2()
                                     }
                                 }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
                                     <Button title="Simpan" onPress={resumediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}

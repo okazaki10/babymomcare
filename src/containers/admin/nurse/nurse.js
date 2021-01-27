@@ -31,51 +31,7 @@ function Nurse(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
+ 
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahnurse = () => {
@@ -208,10 +164,14 @@ function Nurse(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item) => (<TouchableOpacity onLongPress={tindakannurse} onPress={() => { 
-                                    global.nurse_id = item.id
-                                    props.navigation.navigate("Tabnurse", { nama: "Nurse"})
-                                     }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                {data.map((item) => item.id ? (<TouchableOpacity onLongPress={tindakannurse} onPress={() => {
+                                    if (props.route.params) {
+                                        props.navigation.navigate("Listpasien", { idls: item.id })
+                                    } else {
+                                        global.nurse_id = item.id
+                                        props.navigation.navigate("Tabnurse", { nama: "Nurse" })
+                                    }
+                                }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../../assets/image/addpeople.png")}
                                         style={{ width: 55, height: 65 }}
@@ -220,7 +180,7 @@ function Nurse(props) {
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
                                     </View>
-                                </TouchableOpacity>))}
+                                </TouchableOpacity>) : (null))}
 
 
 

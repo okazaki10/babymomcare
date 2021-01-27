@@ -104,14 +104,14 @@ function Chat(props) {
 
     const [time3, settime3] = useState(0)
     useEffect(() => {
-        const timeout3 = setTimeout(() => {
+        const timeout3 = () => setTimeout(() => {
             settime3(time3 + 1)
             settime3(time3 - 1)
             show()
         }, 500);
-
+        const timeout4 = timeout3()
         return () => {
-            clearTimeout(timeout3);
+            clearTimeout(timeout4);
         };
     }, [time3]);
     const scrollViewRef = useRef()
@@ -136,7 +136,7 @@ function Chat(props) {
                 >
 
                     <View style={{ padding: 3 }}>
-                        {data.map((item) => (<View>
+                        {data.map((item) => item.text ? (<View>
                             {item.sender_username == global.username ? (
                                 <View style={{ alignItems: "flex-end", marginRight: 15, marginLeft: 15 }}>
                                     <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row" }}>
@@ -167,7 +167,7 @@ function Chat(props) {
 
 
 
-                        </View>))}
+                        </View>) : (null))}
 
                     </View>
 

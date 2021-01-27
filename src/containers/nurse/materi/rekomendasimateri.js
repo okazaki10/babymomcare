@@ -167,11 +167,11 @@ function Rekomendasimateri(props) {
                         <View style={{ padding: 3 }}>
                             <View>
 
-                                {data.map((item) => (<TouchableOpacity style={[style.card, { marginBottom: 15 }]} onPress={() => props.navigation.navigate("Detailmateri", { id: item.id })}>
+                                {data.map((item) => item.id?(<TouchableOpacity style={[style.card, { marginBottom: 15 }]} onPress={() => props.navigation.navigate("Detailmateri", { id: item.id })}>
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 14 }]}>{item.title}</Text>
                                     </View>
-                                </TouchableOpacity>))}
+                                </TouchableOpacity>):(null))}
 
                             </View>
                         </View>

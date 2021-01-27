@@ -37,17 +37,18 @@ function Datakontrol(props) {
     const [kosong, setkosong] = useState(false)
     const tambahkontrol = () => {
         global.mode = "kontrol"
+        global.add = 1
         props.navigation.navigate("Tambahresume", { nama: "Tambah data kontrol" })
     }
     const ubahkontrol = () => {
         global.mode = "kontrol"
         global.add = 0
-        props.navigation.navigate("Tambahresume", { nama: "Ubah data kontrol" })
+        props.navigation.navigate("Tambahresume", { nama: "Ubah data kontrol", id: idd })
         toggleModal2()
     }
-    const tindakankontrol = () => {
 
-        setisipesan("Pilih tindakan untuk resume ini")
+    const tindakankontrol = () => {
+        setisipesan("Pilih tindakan")
         toggleModal2()
 
     }
@@ -127,7 +128,41 @@ function Datakontrol(props) {
                 setspinner(false)
             });
     }
-
+    const [idd, setidd] = useState()
+    const hapus = () => {
+        setspinner(true)
+        fetch(global.url + '/kontrol/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: idd
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    if (global.status == 1) {
+                        lihatkontrol()
+                    } else {
+                        lihatkontrol2()
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -162,8 +197,9 @@ function Datakontrol(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapus} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
+
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
                                 </Button>
@@ -178,9 +214,11 @@ function Datakontrol(props) {
                 <View style={style.content}>
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapuskontrol} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
-                        </View>
+                        {global.status == 1 ? (null) : (
+                            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                                <Button onPress={hapuskontrol} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            </View>
+                        )}
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={ubahkontrol} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -222,7 +260,12 @@ function Datakontrol(props) {
                                         {global.status == 1 ? (
                                             <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                         ) : (null)}
-                                        {datakontrol.map((item) => (<TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={tindakankontrol} onPress={() => { detailkontrol(item.id) }}>
+                                        {datakontrol.map((item) => item.id ? (<TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={() => {
+                                            if (global.status != 1) {
+                                                setidd(item.id)
+                                                tindakankontrol()
+                                            }
+                                        }} onPress={() => { detailkontrol(item.id) }}>
                                             <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kontrol Ke-{item.order}</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal kontrol</Text>
@@ -240,7 +283,7 @@ function Datakontrol(props) {
                                                 <Text style={[style.nunitosans, style.datapasien2]}>{item.nurse_note}</Text>
                                             </View>
                                             <Text style={[style.nunitosans, style.datapasien, { textAlign: "right", textDecorationLine: "underline" }]}>Lihat Selengkapnya</Text>
-                                        </TouchableOpacity>))}
+                                        </TouchableOpacity>) : (null))}
 
                                     </View>)}
                         </View>

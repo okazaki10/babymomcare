@@ -31,51 +31,6 @@ function Listpasien(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tindakanpasien = () => {
@@ -99,7 +54,34 @@ function Listpasien(props) {
 
     }
     const [datapasien, setdatapasien] = useState([{}])
+
     const lihatpasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/nurse/index', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdatapasien(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatpasien2 = () => {
         //setspinner(true)
         fetch(global.url + '/nurse/index', {
             method: 'POST',
@@ -109,7 +91,7 @@ function Listpasien(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                role: "nurse",
+                id: props.route.params.idls
             })
         })
             .then((response) => response.json())
@@ -128,12 +110,51 @@ function Listpasien(props) {
                 setspinner(false)
             });
     }
- 
+    const [idpasien, setidpasien] = useState()
+    const hapuspasien2 = () => {
+        setspinner(true)
+        fetch(global.url + '/nurse/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: idpasien,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatpasien()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
-            lihatpasien()
+            if (props.route.params) {
+                if (props.route.params.idls) {
+                    lihatpasien2()
+                } else {
+                    lihatpasien()
+                }
+            } else {
+                lihatpasien()
+            }
         }
     }, [isFocused])
     return (
@@ -164,7 +185,7 @@ function Listpasien(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapuspasien2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -221,8 +242,21 @@ function Listpasien(props) {
                                             global.add = 1
                                             props.navigation.navigate("Daftarakun")
                                         }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                        {datapasien.map((item) => (
-                                            <TouchableOpacity onLongPress={tindakanpasien} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Datapasien",{id:item.id}) }}>
+                                        {datapasien.map((item) => item.id ? (
+                                            <TouchableOpacity onLongPress={() => {
+                                                setidpasien(item.id)
+                                                tindakanpasien()
+                                            }} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
+                                                if (props.route.params) {
+                                                    if (props.route.params.idls) {
+                                                        props.navigation.navigate("Datakontrol", { id: item.id })
+                                                    } else {
+                                                        props.navigation.navigate("Datapasien", { id: item.id })
+                                                    }
+                                                } else {
+                                                    props.navigation.navigate("Datapasien", { id: item.id })
+                                                }
+                                            }}>
                                                 <Image
                                                     source={require("../../../assets/image/empty.png")}
                                                     style={{ width: 100, height: 100 }}
@@ -234,12 +268,12 @@ function Listpasien(props) {
                                                         <Ionicons name={'person'} size={17} color={colors.button} />
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
-                                                   
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
+
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Nama Nurse : Resma</Text>
                                                 </View>
                                             </TouchableOpacity>
-                                        ))}
+                                        ) : (null))}
 
 
                                     </View>)}

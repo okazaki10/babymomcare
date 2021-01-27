@@ -18,8 +18,8 @@ LogBox.ignoreLogs([
   'VirtualizedList',
   'Looks like'
 ]);
-//global.url = "http://192.168.1.5:10/api";
-global.url = "https://mobile.temanbunda.com/api";
+global.url = "http://192.168.1.8:10/api";
+//global.url = "https://mobile.temanbunda.com/api";
 global.initialroute = "Login"
 global.status = 0
 global.key = "";
@@ -27,6 +27,7 @@ global.user_id = "";
 global.guide = "1";
 global.add = 1;
 global.mode = "";
+global.kuis = 1;
 function App() {
   const { width: DEVICE_WIDTH } = Dimensions.get('window');
   const [sudah, setsudah] = useState(false);

@@ -43,8 +43,39 @@ function Tambahmateri(props) {
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
     const forumdiubah = () => {
-        setisipesan("Materi berhasil diubah!")
+        setspinner(true)
+        fetch(global.url + '/materi/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id:props.route.params.id_materi,
+                title: judul,
+                content: pertanyaan,
+                base64_img: gambar2,
+                category_id: props.route.params.id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Materi berhasil diubah!")
         toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
     }
     const forumdibuat = () => {
         setspinner(true)
@@ -122,6 +153,44 @@ function Tambahmateri(props) {
         props.navigation.goBack()
         toggleModal()
     }
+    const lihatdetailmateri = () => {
+        //setspinner(true)
+        fetch(global.url + '/materi/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id_materi
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setjudul(json.data.title)
+                    setpertanyaan(json.data.content)
+                    //setgambar(json.data.image)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        if (props.route.params) {
+            if (props.route.params.id_materi) {
+                lihatdetailmateri()
+            }
+        }
+    })
     return (
         <View style={style.main}>
 
@@ -158,9 +227,9 @@ function Tambahmateri(props) {
                 <ScrollView nestedScrollEnabled={true}>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul Materi</Text>
-                        <TextInput onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={judul} onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Deskripsi Materi</Text>
-                        <TextInput onChangeText={setpertanyaan} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
+                        <TextInput value={pertanyaan} onChangeText={setpertanyaan} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
                         {/*
                         <View style={[style.card]}>
                             <RichEditor
@@ -169,15 +238,15 @@ function Tambahmateri(props) {
                             />
                             </View>
                             */}
-                        {hide ? (null) : (
+                        {gambar ? (
                             <View style={{ marginTop: 15 }}><Image
                                 source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
                                 style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
                                 resizeMode="cover"
-                            ></Image></View>)}
+                            ></Image></View>):(null)}
 
 
-                        <View style={{ flexDirection: "row", marginTop: 15 }}>
+                        <View style={{ flexDirection: "row", marginTop: 30 }}>
                             <View style={{ flex: 1, marginRight: 10 }}>
                                 <Button title="Upload Dokumen" onPress={gantiprofil} buttonStyle={[style.button, { backgroundColor: "#C4C4C4" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                             </View>

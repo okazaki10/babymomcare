@@ -20,63 +20,8 @@ function Kelolakuis(props) {
     const [isipesan, setisipesan] = useState("")
     const [cari, setcari] = useState("")
     const [materi, setmateri] = useState("")
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
+
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const [isModalVisible2, setModalVisible2] = useState(false);
@@ -87,17 +32,17 @@ function Kelolakuis(props) {
         setisipesan("Pilih tindakan untuk data ini")
         toggleModal2()
     }
-
+    const [id_kuis, setid_kuis] = useState("")
     const ubahkuis = () => {
-
-        props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis", halaman: jumlah })
+        toggleModal2()
         global.add = 0
+        props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis", id_kuis: id_kuis })
 
     }
 
     const tambahkuis = () => {
 
-     
+
 
     }
 
@@ -107,6 +52,37 @@ function Kelolakuis(props) {
         setisipesan("Apakah anda yakin untuk menghapus kuis ini")
         toggleModal3()
 
+    }
+   
+    const hapus2 = () => {
+        setspinner(true)
+        fetch(global.url + '/quiz/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id_kuis,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatkategori()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
     const [isModalVisible3, setModalVisible3] = useState(false);
     const toggleModal3 = () => {
@@ -129,7 +105,7 @@ function Kelolakuis(props) {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+                console.log(JSON.stringify(json.data))
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
@@ -179,7 +155,7 @@ function Kelolakuis(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -198,7 +174,10 @@ function Kelolakuis(props) {
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={hapuskuis} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={ubahkuis} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -211,22 +190,32 @@ function Kelolakuis(props) {
 
                 <View style={{ flex: 1, padding: 20 }}>
 
-                {global.status == 1 ? (null) : (
+                    {global.status == 1 ? (null) : (
                         <View>
-                      
+
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Jumlah Halaman</Text>
 
-                                    <TextInput onChangeText={setjumlah} value={jumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5,flex:0 }]} keyboardType="numeric"></TextInput>
-                          
+                            <TextInput onChangeText={setjumlah} value={jumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5, flex: 0 }]} keyboardType="numeric"></TextInput>
+
                         </View>
                     )}
 
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item) => (<TouchableOpacity onLongPress={tindakankuis} onPress={()=>{
-                                       props.navigation.navigate("Tambahkuis", { halaman: jumlah,id:item.id})
-                                       global.add = 1
+                                {data.map((item) => item.id ? (<TouchableOpacity onLongPress={() => {
+                                    if (item.quiz) {
+                                        setid_kuis(item.quiz.id)
+                                        tindakankuis()
+                                    }
+                                }} onPress={() => {
+                                    if (item.quiz) {
+                                        props.navigation.navigate("Kerjakankuis", { id: item.quiz.id })
+                                    } else {
+                                        global.add = 1
+                                        props.navigation.navigate("Tambahkuis", { halaman: jumlah, id: item.id })
+                                    }
+
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.title}</Text>
@@ -239,7 +228,7 @@ function Kelolakuis(props) {
                                             <Ionicons name={'trash'} size={24} color={colors.grey} />
                                         </View>
                                     </View>
-                                </TouchableOpacity>))}
+                                </TouchableOpacity>) : (null))}
 
 
                             </View>

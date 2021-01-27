@@ -176,7 +176,7 @@ function Kategorikuis(props) {
                         <View style={{ padding: 3 }}>
                             <View>
 
-                                {data.map((item) => (<TouchableOpacity onPress={() => { props.navigation.navigate("Kelolakuis", { id: item.id }) }} onLongPress={tindakankontrol} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+                                {data.map((item) => item.id?(<TouchableOpacity onPress={() => { props.navigation.navigate("Kelolakuis", { id: item.id }) }} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
                                     <Image
                                         source={require("../../../assets/image/empty.png")}
                                         style={{ width: 35, height: 35 }}
@@ -185,7 +185,7 @@ function Kategorikuis(props) {
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
                                     </View>
-                                </TouchableOpacity>))}
+                                </TouchableOpacity>):(null))}
 
 
                             </View>

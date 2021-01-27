@@ -340,7 +340,7 @@ function Relasipasien(props) {
                                         </View>
                                         <Button title="+ Tambah Relasi Pasien" onPress={tambahrelasi} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                     </View>)}
-                                    {data.map((item) => (
+                                    {data.map((item) => item.id?(
                                             <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                                 <Image
                                                     source={require("../../../assets/image/empty.png")}
@@ -353,11 +353,11 @@ function Relasipasien(props) {
                                                         <Ionicons name={'person'} size={17} color={colors.button} />
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} kg</Text>
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
                   
                                                 </View>
                                             </TouchableOpacity>
-                                        ))}
+                                        ):(null))}
                         </View>
                     </ScrollView>
                 </View>
