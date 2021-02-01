@@ -81,7 +81,7 @@ function Login(props) {
                         routes: [{ name: 'Menubaradmin' }],
                     });
                 } else if (json.role == "super_admin") {
-                    global.status = 3
+                    global.status = 4
                     storeData(json.token)
                     props.navigation.reset({
                         index: 0,
@@ -149,10 +149,18 @@ function Login(props) {
                         <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                     </View>
                 </ScrollView>
-                <View style={{ padding: 22 }}>
-                    <Button title="Masuk" onPress={login} buttonStyle={style.button} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+              
+                <View style={{ padding: 22, flexDirection: "row" }}>
+                        <View style={{ flex: 1, marginRight: 10 }}>
+                            <Button title="Masuk" onPress={login} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        </View>
+                        <View style={{ flex: 1, marginLeft: 10 }}>
+                            <Button title="Daftar Pasien" onPress={login} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
+                    </View>
+                    
                 </View>
-            </View>
+            
 
         </View>
     );

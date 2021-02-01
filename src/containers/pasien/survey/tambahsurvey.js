@@ -134,6 +134,7 @@ function Tambahsurvey(props) {
         props.navigation.navigate("Mainpage")
 
     };
+    const [kuis2, setkuis2] = useState("")
     const kuisdiubah = () => {
         setspinner(true)
         fetch(global.url + '/survey/update', {
@@ -145,7 +146,7 @@ function Tambahsurvey(props) {
             },
             body: JSON.stringify({
                 id: props.route.params.id_survey,
-                title: props.route.params.kuis,
+                title: kuis2,
                 questions: judul,
                 choice_type: props.route.params.choice_type
             })
@@ -178,7 +179,7 @@ function Tambahsurvey(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                title: props.route.params.kuis,
+                title: kuis2,
                 questions: judul,
                 choice_type: props.route.params.choice_type
             })
@@ -222,13 +223,13 @@ function Tambahsurvey(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     sethalaman(json.length)
-              
+
                     var judul = []
                     for (var i = 0; i < json.length; i++) {
                         judul[i] = json[i].question
                     }
                     setjudul(judul)
-
+                    setkuis2(props.route.params?.judul_kuis)
                 }
                 setspinner(false)
             })
@@ -288,6 +289,9 @@ function Tambahsurvey(props) {
             </Modal>
 
             <View style={{ flex: 1 }}>
+                <View style={{padding: 22 }}>
+                    <TextInput placeholder={"Judul Kuisioner"} value={kuis2} onChangeText={setkuis2} style={[style.card, { elevation: 5, marginTop: 10, flex: 0 }]}></TextInput>
+                </View>
                 <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 10, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>

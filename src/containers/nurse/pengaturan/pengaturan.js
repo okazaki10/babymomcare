@@ -64,7 +64,7 @@ function Pengaturan(props) {
         props.navigation.navigate("Forumdetail")
     }
     const tambahforum = () => {
-        props.navigation.navigate("Addforum",{nama:"Buat Forum"})
+        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
     }
     const ubahforum = () => {
         props.navigation.navigate("Addforum", { nama: "Ubah Forum" })
@@ -93,7 +93,7 @@ function Pengaturan(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-    const logout = () =>{
+    const logout = () => {
         props.navigation.navigate("Login")
     }
     return (
@@ -121,13 +121,13 @@ function Pengaturan(props) {
                         </View>
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
-                       
-                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15,flexDirection:"row" }}>
-                            <View style={{ flex: 1,marginRight:15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red"  }]}></Button>
+
+                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
+                            <View style={{ flex: 1, marginRight: 15 }}>
+                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
-                            <View style={{ flex: 1,marginLeft:15}}>
-                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white"  }]}>
+                            <View style={{ flex: 1, marginLeft: 15 }}>
+                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
                                 </Button>
                             </View>
                         </View>
@@ -155,13 +155,18 @@ function Pengaturan(props) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
-            <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20,textAlign:"center" }]}>Settings</Text>
-            <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
+                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Settings</Text>
+                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
-               
+
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-                            <Button title="Log Out" onPress={storeData} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            <View>
+                                <Button title="Ganti Password" onPress={()=>{props.navigation.navigate("Changepassword",{pass:1})}} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            </View>
+                            <View style={{ marginTop: 15 }}>
+                                <Button title="Log Out" onPress={storeData} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            </View>
                         </View>
                     </ScrollView>
                 </View>

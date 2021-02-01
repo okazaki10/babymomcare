@@ -516,7 +516,7 @@ function Tambahresume(props) {
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>{global.status == 1 ? "Catatan Tambahan" : "Catatan dari perawat"}</Text>
                         <View>
-                            <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, height: 200, textAlignVertical: "top", marginTop: 15 }]} multiline={true}></TextInput>
+                            <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Upload Foto Bayi</Text>
                         {gambar ? (<Image

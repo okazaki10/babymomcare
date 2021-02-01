@@ -89,21 +89,54 @@ function Relasipasien(props) {
         props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang" })
         toggleModal2()
     }
-    const tindakanresume = () => {
+    const tindakanrelasi = () => {
 
-        setisipesan("Pilih tindakan untuk resume ini")
+        setisipesan("Pilih tindakan untuk relasi ini")
         toggleModal2()
 
     }
-    const hapusresume = () => {
+    const hapusrelasi = () => {
         toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus konten ini")
+        setisipesan("Apakah anda yakin untuk menghapus relasi ini")
         toggleModal3()
 
     }
     const detailresume = () => {
         global.mode = "resume"
         props.navigation.navigate("Detailresumepulang")
+    }
+    const [id, setid] = useState("")
+    const hapusrelasi2 = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/remove-relation', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                nurse_id: global.nurse_id,
+                patient_id:id
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatpasien()
+                    lihatrelasi()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")
@@ -156,7 +189,7 @@ function Relasipasien(props) {
     }
     const lihatpasien = () => {
         //setspinner(true)
-        fetch(global.url + '/admin/list/patient-nurse2', {
+        fetch(global.url + '/admin/list/patient-nurse3', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -203,6 +236,8 @@ function Relasipasien(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
+                    lihatpasien()
+                    lihatrelasi()
                     setisipesan("Relasi telah dibuat!")
                     toggleModal()
                 }
@@ -269,7 +304,7 @@ function Relasipasien(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapusrelasi2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -286,11 +321,7 @@ function Relasipasien(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapusresume} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
-                        </View>
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={ubahresume} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
-                            </Button>
+                            <Button onPress={hapusrelasi} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
@@ -341,7 +372,12 @@ function Relasipasien(props) {
                                         <Button title="+ Tambah Relasi Pasien" onPress={tambahrelasi} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                     </View>)}
                                     {data.map((item) => item.id?(
-                                            <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                            <TouchableOpacity onPress={()=>{
+                                                props.navigation.navigate("Datapasien",{id:item.id})
+                                             }} onLongPress={()=>{
+                                                setid(item.id)
+                                                tindakanrelasi()
+                                             }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                                 <Image
                                                     source={require("../../../assets/image/empty.png")}
                                                     style={{ width: 100, height: 100 }}

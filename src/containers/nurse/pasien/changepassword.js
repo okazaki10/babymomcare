@@ -12,14 +12,13 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import MultiSelect from 'react-native-multiple-select';
-function Daftarakun(props) {
+function Changepassword(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [email, setemail] = useState("")
-    const [nohp, setnohp] = useState("")
-    const [username, setusername] = useState("")
     const [password, setpassword] = useState("")
+    const [new_password, setnew_password] = useState("")
+    const [confirm, setconfirm] = useState("")
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -34,12 +33,7 @@ function Daftarakun(props) {
 
     const referensi = useRef()
     const [spinner, setspinner] = useState(false)
-    const lanjut = () => {
-        global.emaild = email
-        global.nohpd = nohp
-        global.rekomendasi = selectedItems
-        props.navigation.navigate("Daftarbayi", { username: username, password: password, selectedItems: selectedItems })
-    }
+
     const pasiendiubah = () => {
         setisipesan("Data pasien berhasil diubah!")
         toggleModal()
@@ -49,15 +43,21 @@ function Daftarakun(props) {
         toggleModal()
     }
     const [data, setdata] = useState([{}])
-    const lihatmateri = () => {
-        //setspinner(true)
-        fetch(global.url + '/register/list', {
-            method: 'GET',
+    
+    const gantipassword = () => {
+        if (new_password == confirm){
+        setspinner(true)
+        fetch(global.url + '/password/update', {
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + global.key,
-            }
+            },
+            body: JSON.stringify({
+                password: password,
+                new_password: new_password
+            })
         })
             .then((response) => response.json())
             .then((json) => {
@@ -65,7 +65,8 @@ function Daftarakun(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setitems(json.data)
+                    setisipesan("Password berhasil diubah!")
+                    toggleModal()
                 }
                 setspinner(false)
             })
@@ -74,11 +75,17 @@ function Daftarakun(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
+        }else{
+            ToastAndroid.show("Konfirmasi password tidak sama", ToastAndroid.SHORT)
+        }
     }
     useState(() => {
         if (global.add == 0) {
+            if (props.route.params?.pass){
+
+            }
         }
-        lihatmateri()
+    
 
     })
     return (
@@ -108,7 +115,7 @@ function Daftarakun(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={()=>{props.navigation.goBack()}} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -117,53 +124,21 @@ function Daftarakun(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
-                        {global.add == 1 ? (<View style={{ alignItems: "center" }}>
-                            <Image
-                                source={require("../../../assets/image/register-pasien-1.png")}
-                                style={{ width: "100%", height: DEVICE_WIDTH * 0.15 }}
-                                resizeMode="stretch"
-                            />
-                        </View>) : (null)}
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Email</Text>
-                        <TextInput onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="email-address"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>No hp</Text>
-                        <TextInput onChangeText={setnohp} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
-                        <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
-                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <View style={{ marginTop: 30 }}>
-                            <MultiSelect
-                                hideTags
-                                items={items}
-                                uniqueKey="id"
-                                ref={referensi}
-                                onSelectedItemsChange={onSelectedItemsChange}
-                                selectedItems={selectedItems}
-                                selectText="Pilih Rekomendasi Materi"
-                                searchInputPlaceholderText="Pilih Materi..."
-                                onChangeInput={(text) => console.log(text)}
-                                submitButtonText="Submit"
-                            />
-                        </View>
+               
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password lama</Text>
+                        <TextInput onChangeText={setpassword} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password baru</Text>
+                        <TextInput onChangeText={setnew_password} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Konfirmasi password baru</Text>
+                        <TextInput onChangeText={setconfirm} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
 
                     </View>
                 </ScrollView>
 
-                {global.add == 1 ? (
-                    <View style={{ padding: 22, flexDirection: "row" }}>
-                        <View style={{ flex: 1, marginRight: 10 }}>
-                            <Button title="Batalkan" buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                        </View>
-                        <View style={{ flex: 1, marginLeft: 10 }}>
-                            <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                        </View>
-                    </View>
-                ) : (
                         <View style={{ padding: 22 }}>
-                            <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            <Button title="Simpan" onPress={gantipassword} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         </View>
-                    )}
+                 
 
             </View>
 
@@ -171,4 +146,4 @@ function Daftarakun(props) {
     );
 };
 
-export default Daftarakun;
+export default Changepassword;

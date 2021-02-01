@@ -128,7 +128,7 @@ function Daftarortu(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id:props.route.params.id,
+                id: props.route.params.id,
                 role: "patient",
                 mother_name: namaibu,
                 mother_birthday: format(date, "yyyy-MM-dd HH:mm:ss"),
@@ -175,7 +175,9 @@ function Daftarortu(props) {
 
     }
     useState(() => {
-        lihatpasien()
+        if (global.add == 0) {
+            lihatpasien()
+        }
     })
     const pasiendibuat = () => {
         setspinner(true)
@@ -278,7 +280,7 @@ function Daftarortu(props) {
 
     }
     const kembali = () => {
-        props.navigation.goBack()
+        props.navigation.navigate("Listpasien")
         toggleModal()
     }
     return (

@@ -48,6 +48,7 @@ function Beranda(props) {
 
             });
     }, []);
+
     useEffect(() => {
         const unsubscribe = messaging().onMessage(async remoteMessage => {
 
@@ -148,7 +149,7 @@ function Beranda(props) {
 
             <View style={{ flex: 1 }}>
                 <View style={{ alignItems: "flex-end", padding: 22 }}>
-                    <TouchableOpacity onPress={() => { props.navigation.navigate("Anjuranpasien") }} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
+                    <TouchableOpacity onPress={() => { props.navigation.navigate("Notifikasi") }} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
                         <Ionicons name={'notifications-outline'} size={24} color="#92B1CD" />
                     </TouchableOpacity>
                 </View>
@@ -161,15 +162,47 @@ function Beranda(props) {
                     />
                 </View>
                 <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>{user.name}</Text>
-                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Nurse" : ""}{global.status == 3 ? "Admin" : ""}</Text>
+                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Nurse" : ""}{global.status == 3 ? "Admin" : ""}{global.status == 4 ? "Super Admin" : ""}</Text>
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1 }}>
                     <ScrollView>
                         <View style={{ padding: 3, padding: 20 }}>
                             <View>
-                                {global.status == 2 || global.status == 3 ? (
+                                {global.status == 2 || global.status == 3 || global.status == 4 ? (
                                     <View>
-                                        <TouchableOpacity onPress={() => { props.navigation.navigate("Listpasien") }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                         <TouchableOpacity onPress={() => { 
+                                            if (global.status == 3 || global.status == 4){
+                                                props.navigation.navigate("Listpasien",{idadmin:1,survey:1})
+                                            }else{
+                                                props.navigation.navigate("Listpasien",{survey:1})
+                                            }
+                                            }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
+                                            <Image
+                                                source={require("../../assets/image/addpeople.png")}
+                                                style={{ width: 55, height: 65 }}
+                                                resizeMode="stretch"
+                                            />
+                                            <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Lihat hasil survey pasien</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { 
+                                            if (global.status == 3 || global.status == 4){
+                                                props.navigation.navigate("Listpasien",{idadmin:1,quiz:1})
+                                            }else{
+                                                props.navigation.navigate("Listpasien",{quiz:1})
+                                            }
+                                            }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                            <Image
+                                                source={require("../../assets/image/addpeople.png")}
+                                                style={{ width: 55, height: 65 }}
+                                                resizeMode="stretch"
+                                            />
+                                            <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Lihat hasil quiz pasien</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={() => { props.navigation.navigate("Listpasien") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                             <Image
                                                 source={require("../../assets/image/addpeople.png")}
                                                 style={{ width: 55, height: 65 }}
@@ -203,7 +236,7 @@ function Beranda(props) {
                                             </View>
                                         </TouchableOpacity>
                                     </View>) : (null)}
-                                {global.status == 3 ? (
+                                {global.status == 3 || global.status == 4 ? (
                                     <View>
                                         <TouchableOpacity onPress={() => { props.navigation.navigate("Nurse") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                             <Image
@@ -226,11 +259,11 @@ function Beranda(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Survey</Text>
                                     </View>
                                 </TouchableOpacity>
-                                {global.status == 3 ? (<View>
-                                   
+                                {global.status == 3 || global.status == 4 ? (<View>
+
                                     <TouchableOpacity onPress={() => {
                                         global.mode = "resume"
-                                        props.navigation.navigate("Resumepulang")
+                                        props.navigation.navigate("Nurse", { nama: "Pilih Nurse", mode: "resume" })
                                     }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                         <Image
                                             source={require("../../assets/image/resume.png")}
@@ -241,6 +274,7 @@ function Beranda(props) {
                                             <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang Pasien</Text>
                                         </View>
                                     </TouchableOpacity>
+                                    {/*
                                     <TouchableOpacity onPress={() => {
                                         props.navigation.navigate("Datakontrolpasien")
                                     }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
@@ -253,8 +287,10 @@ function Beranda(props) {
                                             <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol Pasien</Text>
                                         </View>
                                     </TouchableOpacity>
+                                */}
                                     <TouchableOpacity onPress={() => {
-                                        props.navigation.navigate("Nurse",{nama:"Pilih Nurse",mode:"kontrol"})
+                                         global.mode = "kontrol"
+                                        props.navigation.navigate("Nurse", { nama: "Pilih Nurse", mode: "kontrol" })
                                     }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
                                         <Image
                                             source={require("../../assets/image/resume.png")}
@@ -262,7 +298,7 @@ function Beranda(props) {
                                             resizeMode="stretch"
                                         />
                                         <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol pasien</Text>
                                         </View>
                                     </TouchableOpacity>
                                 </View>
@@ -303,7 +339,7 @@ function Beranda(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>Forum</Text>
                                     </View>
                                 </TouchableOpacity>
-                                {global.status == 3 ? (
+                                {global.status == 3 || global.status == 4 ? (
 
                                     <TouchableOpacity onPress={() => {
 

@@ -45,23 +45,16 @@ function Kelolasurvey(props) {
         }
     }
     const [id_survey, setid_survey] = useState("")
+    const [judul_kuis,setjudul_kuis] = useState("")
     const ubahkuis = () => {
-        if (kuis == ""){
-            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
-        }else{
         toggleModal2()
-        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice })
+        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice,judul_kuis:judul_kuis})
         global.add = 0
-        }
     }
 
     const tambahkuis = () => {
-        if (kuis == ""){
-            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
-        }else{
-        props.navigation.navigate("Tambahsurvey", { halaman: jumlah, kuis: kuis, choice_type: choice })
+        props.navigation.navigate("Tambahsurvey", { halaman: jumlah, choice_type: choice })
         global.add = 1
-        }
     }
 
 
@@ -208,9 +201,7 @@ function Kelolasurvey(props) {
                 <View style={{ flex: 1, padding: 20 }}>
                     {global.status == 1 ? (null) : (
                         <View>
-                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Kuisioner</Text>
-                            <TextInput onChangeText={setkuis} style={[style.card, { elevation: 5, marginTop: 10, flex: 0 }]}></TextInput>
-                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Tipe Pertanyaan</Text>
+                            <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tipe Pertanyaan</Text>
                             <View style={[style.card, { elevation: 5, padding: 0, flex: 0, marginTop: 15 }]}>
                                 <Picker
                                     selectedValue={choice}
@@ -240,6 +231,7 @@ function Kelolasurvey(props) {
                             <View>
                                 {data.map(item => item.id ? (<TouchableOpacity onLongPress={() => {
                                     setid_survey(item.id)
+                                    setjudul_kuis(item.title)
                                     tindakankuis()
                                 }} onPress={() => {
                                     props.navigation.navigate("Kerjakansurvey", { id: item.id, choice_type: item.choice_type })

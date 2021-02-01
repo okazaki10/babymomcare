@@ -57,8 +57,8 @@ function Daftarbayi(props) {
     };
 
     const [spinner, setspinner] = useState(false)
-    
-  
+
+
     const pasiendibuat = () => {
         setisipesan("Data bayi berhasil dibuat!")
         toggleModal()
@@ -95,7 +95,7 @@ function Daftarbayi(props) {
                 } else {
                     //setdata(json.data)
                     setnama(json.data.baby_name)
-                   
+
                     setbbnow(json.data.born_weight.toString())
                     setpjl(json.data.born_length.toString())
                     setjenis_kelamin(json.data.baby_gender)
@@ -122,16 +122,16 @@ function Daftarbayi(props) {
             },
             body: JSON.stringify({
                 role: "patient",
-                id:props.route.params.id,
+                id: props.route.params.id,
                 baby_name: nama,
                 baby_birthday: format(date, "yyyy-MM-dd HH:mm:ss"),
                 born_weight: bbnow,
                 born_length: pjl,
                 baby_gender: jenis_kelamin,
-                usia_gestas:gestas,
-                lingkar_kepala:lk,
-                harapan_orangtua:diharapkan
-               
+                usia_gestas: gestas,
+                lingkar_kepala: lk,
+                harapan_orangtua: diharapkan
+
 
             })
         })
@@ -162,7 +162,9 @@ function Daftarbayi(props) {
 
     }
     useState(() => {
-        lihatpasien()
+        if (global.add == 0) {
+            lihatpasien()
+        }
     })
     return (
         <View style={style.main}>
@@ -202,10 +204,10 @@ function Daftarbayi(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={()=>{
+                            <Button title="Ok" onPress={() => {
                                 toggleModal()
                                 props.navigation.goBack()
-                                }} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            }} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>

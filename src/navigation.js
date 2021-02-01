@@ -52,6 +52,9 @@ import Logperawat from './containers/admin/nurse/logperawat';
 import Addcomment from './containers/nurse/forum/addcomment';
 import Tambahkategori from './containers/nurse/materi/tambahkategori';
 import Tambahtopik from './containers/nurse/forum/tambahtopik';
+import Lihathasilsurvey from './containers/pasien/survey/lihathasilsurvey';
+import Lihathasilkuis from './containers/nurse/kuis/lihathasilkuis';
+import Changepassword from './containers/nurse/pasien/changepassword';
 
 
 
@@ -293,6 +296,21 @@ function Navigation() {
           name="Tambahtopik"
           component={Tambahtopik}
           options={{ headerTitle:"Tambah Topik"}}
+        />
+        <Stack.Screen
+          name="Lihathasilsurvey"
+          component={Lihathasilsurvey}
+          options={{ headerTitle:"Lihat hasil survey"}}
+        />
+        <Stack.Screen
+          name="Lihathasilkuis"
+          component={Lihathasilkuis}
+          options={{ headerTitle:"Lihat hasil kuis"}}
+        />
+        <Stack.Screen
+          name="Changepassword"
+          component={Changepassword}
+          options={{ headerTitle:"Ganti password"}}
         />
       </Stack.Navigator>
     </NavigationContainer>

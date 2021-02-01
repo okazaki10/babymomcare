@@ -31,27 +31,28 @@ function Nurse(props) {
         }
     }
 
- 
+
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tambahnurse = () => {
+        global.add = 1
         props.navigation.navigate("Pendaftarannurse")
     }
     const ubahnurse = () => {
-        props.navigation.navigate("Pendaftarannurse", { nama: "Nurse" })
         global.add = 0
+        props.navigation.navigate("Pendaftarannurse", { nama: "Nurse", id_nurse: id })
         toggleModal2()
     }
     const lihatnurse = () => {
         props.navigation.navigate("Tabnurse", { nama: "Nurse" })
     }
     const tindakannurse = () => {
-        setisipesan("Pilih tindakan untuk reminder ini")
+        setisipesan("Pilih tindakan untuk nurse ini")
         toggleModal2()
     }
     const hapusnurse = () => {
         toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus reminder ini")
+        setisipesan("Apakah anda yakin untuk menghapus nurse ini")
         toggleModal3()
     }
     const [title2, settitle2] = useState("")
@@ -64,7 +65,103 @@ function Nurse(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [isModalVisible4, setModalVisible4] = useState(false);
+    const toggleModal4 = () => {
+        setModalVisible4(!isModalVisible4);
+    };
     const [data, setdata] = useState([{}])
+    const [id, setid] = useState("")
+    const [idpromote, setidpromote] = useState("")
+    const hapusnurse2 = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/nurse/delete', {
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal3()
+                    lihatpasien()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const promote = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/promote', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: idpromote,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal4()
+                    lihatpasien()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const demote = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/demote', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: idpromote,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    toggleModal4()
+                    lihatpasien()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     const lihatpasien = () => {
         //setspinner(true)
         fetch(global.url + '/admin/list/approved-nurse', {
@@ -106,7 +203,26 @@ function Nurse(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-
+            <Modal isVisible={isModalVisible4}
+                onBackdropPress={toggleModal4}
+                onBackButtonPress={toggleModal4}>
+                <View style={style.content}>
+                    <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
+                    <View style={{ flexDirection: "row", marginTop: 40 }}>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={promote} title="Promote" titleStyle={[style.nunitosans, { textAlign: "center", color: "blue" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={demote} title="Demote" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
@@ -127,7 +243,7 @@ function Nurse(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapusnurse2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -150,6 +266,13 @@ function Nurse(props) {
                             <Button onPress={ubahnurse} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
                         </View>
+                        {global.status == 4?(<View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={() => {
+                                toggleModal4()
+                                toggleModal2()
+                            }} title="Promote" titleStyle={[style.nunitosans, { textAlign: "center", color: "blue" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>):(null)}
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -164,9 +287,14 @@ function Nurse(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item) => item.id ? (<TouchableOpacity onLongPress={tindakannurse} onPress={() => {
+                                {data.map((item) => item.id ? (<TouchableOpacity onLongPress={() => {
+                                    setid(item.id)
+                                    setidpromote(item.user_id)
+                                    tindakannurse()
+                                }
+                                } onPress={() => {
                                     if (props.route.params) {
-                                        props.navigation.navigate("Listpasien", { idls: item.id })
+                                        props.navigation.navigate("Listpasien", { idls: item.id, mode: props.route.params.mode })
                                     } else {
                                         global.nurse_id = item.id
                                         props.navigation.navigate("Tabnurse", { nama: "Nurse" })
@@ -179,6 +307,7 @@ function Nurse(props) {
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
+                                        <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.role}</Text>
                                     </View>
                                 </TouchableOpacity>) : (null))}
 

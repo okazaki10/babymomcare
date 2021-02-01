@@ -52,7 +52,7 @@ function Detailmateri(props) {
                 } else {
                     setdata(json.data)
                 }
-                setspinner(false)
+                //setspinner(false)
             })
             .catch((error) => {
                 console.error(error)
@@ -60,9 +60,11 @@ function Detailmateri(props) {
                 setspinner(false)
             });
     }
+
     const [data2, setdata2] = useState()
+
     const showquiz = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/quiz/status', {
             method: 'POST',
             headers: {
@@ -85,6 +87,7 @@ function Detailmateri(props) {
                     }
                     setdata2(json)
                 }
+                lihatdetailmateri()
                 setspinner(false)
             })
             .catch((error) => {
@@ -98,7 +101,6 @@ function Detailmateri(props) {
 
     useEffect(() => {
         if (isFocused) {
-            lihatdetailmateri()
             showquiz()
         }
     }, [isFocused])

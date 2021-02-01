@@ -99,7 +99,7 @@ function Kategorikuis(props) {
                 setspinner(false)
             });
     }
- 
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -176,18 +176,22 @@ function Kategorikuis(props) {
                         <View style={{ padding: 3 }}>
                             <View>
 
-                                {data.map((item) => item.id?(<TouchableOpacity onPress={() => { props.navigation.navigate("Kelolakuis", { id: item.id }) }} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+                                {data.map((item) => item.id ? (<TouchableOpacity onPress={() => { props.navigation.navigate("Kelolakuis", { id: item.id }) }} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
                                     <Image
-                                        source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 35, height: 35 }}
-                                        resizeMode="contain"
+                                        source={{ uri: item.image ? item.image : "https://nameproscdn.com/a/2018/05/106343_82907bfea9fe97e84861e2ee7c5b4f5b.png" }}
+                                        style={{ width: 35, height: 35, borderRadius: 50 }}
+                                        resizeMode="cover"
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
                                     </View>
-                                </TouchableOpacity>):(null))}
+                                </TouchableOpacity>) : (null))}
 
-
+                                <TouchableOpacity onPress={() => { props.navigation.navigate("Kelolakuis", { lihatkuis: 1 }) }} style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>Lihat semua kuis</Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                         </View>
                     </ScrollView>

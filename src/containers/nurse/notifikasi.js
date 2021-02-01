@@ -13,6 +13,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HyperLink from 'react-native-hyperlink';
+import { id } from 'date-fns/locale';
+import { format } from 'date-fns';
 function Notifikasi(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -31,51 +33,6 @@ function Notifikasi(props) {
         }
     }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const tindakanpasien = () => {
@@ -97,6 +54,36 @@ function Notifikasi(props) {
         setisipesan("Apakah anda yakin untuk menghapus pasien ini")
         toggleModal3()
     }
+    const [data,setdata] = useState([{}])
+    const lihatnotifikasi = () => {
+        //setspinner(true)
+        fetch(global.url + '/advice/notification', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+        lihatnotifikasi()
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -158,10 +145,10 @@ function Notifikasi(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <View style={[style.card, { padding: 22 }]}>
-                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>Update Data Kontrol!</Text>
-                                        <Text style={[style.nunitosans, {marginTop:5, fontSize: 13 }]}>12/11/2019 12:00</Text>
-                                </View>
+                                {data.map((item) => item.id ? (<View style={[style.card, { padding: 22,marginTop:15 }]}>
+                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.notification}</Text>
+                                    <Text style={[style.nunitosans, { marginTop: 5, fontSize: 13 }]}>{item.created_at ? format(new Date(item.created_at), "iii', 'dd' 'MMM', 'yyyy'", { locale: id }) : ""}</Text>
+                                </View>) : (null))}
                             </View>
                         </View>
                     </ScrollView>

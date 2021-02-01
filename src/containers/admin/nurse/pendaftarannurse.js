@@ -51,18 +51,16 @@ function Pendaftarannurse(props) {
     const [nilai, setnilai] = useState("")
     const nursediubah = () => {
         setspinner(true)
-        fetch(global.url + '/register', {
-            method: 'POST',
+        fetch(global.url + '/nurse/data/update', {
+            method: 'PUT',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                role: "nurse",
-                username: username,
-                password: password,
-                nurse_name: nama,
+                id:props.route.params.id_nurse,
+                name: nama,
                 working_exp: lamabekerja,
                 education: pendidikanibu,
                 phone: nomortelepon,
@@ -72,8 +70,12 @@ function Pendaftarannurse(props) {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
-                setisipesan("Data nurse berhasil diubah!")
-                toggleModal()
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data nurse berhasil diubah!")
+                    toggleModal()
+                }
                 setspinner(false)
             })
             .catch((error) => {
@@ -81,7 +83,8 @@ function Pendaftarannurse(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-
+          
+           
     }
     const nursedibuat = () => {
         setspinner(true)
@@ -100,7 +103,7 @@ function Pendaftarannurse(props) {
                 working_exp: lamabekerja,
                 education: pendidikanibu,
                 phone: nomortelepon,
-                hospital_id: 1
+                hospital_id: alamat
             })
         })
             .then((response) => response.json())
@@ -124,9 +127,49 @@ function Pendaftarannurse(props) {
         props.navigation.goBack()
         toggleModal()
     }
+    const lihatnurse = () => {
+        setspinner(true)
+        fetch(global.url + '/admin/nurse/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id_nurse
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setnama(json.data.name)
+                    setusername(json.data.username)
+                    setalamat(json.data.hospital_id.toString())
+                    setnomortelepon(json.data.phone.toString())
+                    setlamabekerja(json.data.working_exp.toString())
+                    setpendidikanibu(json.data.education)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    useState(() => {
+
+        if (props.route.params?.id_nurse) {
+            lihatnurse()
+        }
+
+    })
     return (
         <View style={style.main}>
-
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -134,8 +177,8 @@ function Pendaftarannurse(props) {
                 textStyle={{ color: '#FFF' }}
             />
             <Modal isVisible={isModalVisible}
-                onBackdropPress={kembali}
-                onBackButtonPress={kembali}>
+                onBackdropPress={toggleModal}
+                onBackButtonPress={toggleModal}>
                 <View style={style.content}>
                     <View>
                         <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={kembali}>
@@ -162,9 +205,9 @@ function Pendaftarannurse(props) {
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Nama</Text>
-                        <TextInput onChangeText={setnama} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={nama} onChangeText={setnama} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Username</Text>
-                        <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={username} onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
                         <TextInput onChangeText={setpassword} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} secureTextEntry={true}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Alamat Rumah Sakit</Text>
@@ -204,11 +247,11 @@ function Pendaftarannurse(props) {
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Nomor Telepon</Text>
-                        <TextInput onChangeText={setnomortelepon} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <TextInput value={nomortelepon} onChangeText={setnomortelepon} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
                         {/*<Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Rumah Sakit</Text>
                         <TextInput onChangeText={settempatrumahsakit} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>*/}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lama Bekerja</Text>
-                        <TextInput onChangeText={setlamabekerja} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <TextInput value={lamabekerja} onChangeText={setlamabekerja} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
 
 
 

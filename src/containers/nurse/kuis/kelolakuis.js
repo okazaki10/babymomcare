@@ -18,10 +18,7 @@ function Kelolakuis(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
     const [materi, setmateri] = useState("")
-
-
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
     const [isModalVisible2, setModalVisible2] = useState(false);
@@ -53,7 +50,7 @@ function Kelolakuis(props) {
         toggleModal3()
 
     }
-   
+
     const hapus2 = () => {
         setspinner(true)
         fetch(global.url + '/quiz/delete', {
@@ -119,12 +116,96 @@ function Kelolakuis(props) {
                 setspinner(false)
             });
     }
+    const lihatquiz = () => {
+        //setspinner(true)
+        fetch(global.url + '/quiz/index', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(JSON.stringify(json))
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const setcari = (key) => {
+        if (props.route.params?.lihatkuis) {
+            fetch(global.url + '/quiz/search', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + global.key,
+                },
+                body: JSON.stringify({
+                    keyword: key,
+                })
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json)
+                    if (json.errors) {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    } else {
+                        setdata(json)
+                    }
+                })
+                .catch((error) => {
+                    console.error(error)
+                    ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                });
+        } else {
+            fetch(global.url + '/materi/search', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + global.key,
+                },
+                body: JSON.stringify({
+                    keyword: key,
+                })
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json)
+                    if (json.errors) {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    } else {
+                        setdata(json.data)
+                    }
+                })
+                .catch((error) => {
+                    console.error(error)
+                    ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                });
+        }
+    }
 
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
-            lihatkategori()
+            if (props.route.params?.lihatkuis) {
+                lihatquiz()
+            } else {
+                lihatkategori()
+            }
+
         }
     }, [isFocused])
     return (
@@ -189,9 +270,12 @@ function Kelolakuis(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-
+                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
+                        <TextInput onChangeText={setcari} placeholder="Cari Kuis" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                        <Ionicons name={'search-outline'} size={24} color={colors.grey} />
+                    </View>
                     {global.status == 1 ? (null) : (
-                        <View>
+                        <View >
 
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Jumlah Halaman</Text>
 
@@ -209,11 +293,15 @@ function Kelolakuis(props) {
                                         tindakankuis()
                                     }
                                 }} onPress={() => {
-                                    if (item.quiz) {
-                                        props.navigation.navigate("Kerjakankuis", { id: item.quiz.id })
+                                    if (props.route.params.lihatquiz) {
+                                        props.navigation.navigate("Kerjakankuis", { id: item.quiz.id, lihatquiz: 1, id_pasien: props.route.params.id_pasien })
                                     } else {
-                                        global.add = 1
-                                        props.navigation.navigate("Tambahkuis", { halaman: jumlah, id: item.id })
+                                        if (item.quiz) {
+                                            props.navigation.navigate("Kerjakankuis", { id: item.quiz.id })
+                                        } else {
+                                            global.add = 1
+                                            props.navigation.navigate("Tambahkuis", { halaman: jumlah, id: item.id })
+                                        }
                                     }
 
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>

@@ -54,7 +54,7 @@ function App() {
             global.status = 3
             global.initialroute = "Menubaradmin"
           } else if (json.data.role == "super_admin") {
-            global.status = 3
+            global.status = 4
             global.initialroute = "Menubaradmin"
           } else {
             global.initialroute = "Login";

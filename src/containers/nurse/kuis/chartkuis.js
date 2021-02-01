@@ -123,24 +123,7 @@ function Chartkuis(props) {
         }
         console.log(event.nativeEvent)
     }
-    const [data2,setdata2] = useState([
-      
-        {
-            name: "Toronto",
-            count: 2,
-            color: "blue",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-        },
-        {
-            name: "Beijing",
-            count: 5,
-            color: "red",
-            legendFontColor: "#7F7F7F",
-            legendFontSize: 15
-        },
-      
-    ])
+    const [data2, setdata2] = useState([{}])
     const chartConfig = {
         backgroundGradientFrom: "#1E2923",
         backgroundGradientFromOpacity: 0,
@@ -164,7 +147,7 @@ function Chartkuis(props) {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+                console.log(JSON.stringify(json))
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
@@ -216,22 +199,29 @@ function Chartkuis(props) {
                                 />
                             </View>
                                 */}
-                            <View>
-                                <View style={{flexDirection:"row"}}>
-                            <Text style={[style.poppinsmedium, { fontSize: 14,flex:1 }]}>Chart kuisioner_2</Text>
-                            <Text style={[style.poppinsmedium, { fontSize: 14,flex:1 }]}>Rasio Skala</Text>
-                            </View>
-                                <PieChart
-                                    data={data2}
-                                    width={DEVICE_WIDTH * 0.8}
-                                    height={200}
-                                    chartConfig={chartConfig}
-                                    accessor={"count"}
-                                    backgroundColor={"transparent"}
-                                    paddingLeft={"15"}
-                                    
-                                />
-                            </View>
+                            {data2.map((item) => item ? (<View>
+                                <View style={{ flexDirection: "row" }}>
+                                    <Text style={[style.poppinsbold, {  flex: 1 }]}>{item.survey}</Text>
+                                </View>
+                                {item.pertanyaan?.map((item2) => item2 ? (
+                                    <View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.poppinsmedium, { fontSize: 14, flex: 1 }]}>{item2.question}</Text>
+                                            <Text style={[style.poppinsmedium, { fontSize: 14, flex: 1 }]}>Rasio Skala</Text>
+                                        </View>
+                                        <PieChart
+                                            data={item2.jawaban}
+                                            width={DEVICE_WIDTH * 0.8}
+                                            height={200}
+                                            chartConfig={chartConfig}
+                                            accessor={"count"}
+                                            backgroundColor={"transparent"}
+                                            paddingLeft={"15"}
+                                        />
+                                    </View>
+                                ) : (null))}
+                            </View>) : (null))}
+
                         </View>
                     </ScrollView>
                 </View>

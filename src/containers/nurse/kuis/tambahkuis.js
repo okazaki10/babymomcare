@@ -81,14 +81,14 @@ function Tambahkuis(props) {
     const kurangnomor = () => {
         setnomor(nomor - 1)
     }
- 
+
 
     const [spinner, setspinner] = useState(false)
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
-
+    const [title, settitle] = useState("")
     const kuisdibuat = () => {
         setspinner(true)
         fetch(global.url + '/quiz/store', {
@@ -99,13 +99,13 @@ function Tambahkuis(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                title: "kuisioner_1",
+                title: title,
                 materi_id: props.route.params.id,
                 questions: judul,
                 choice1: opsi,
                 choice2: opsi2,
                 choice3: opsi3,
-                is_true:jawabanbenar
+                is_true: jawabanbenar
             })
         })
             .then((response) => response.json())
@@ -139,7 +139,7 @@ function Tambahkuis(props) {
             },
             body: JSON.stringify({
                 quizId: id,
-                title: "kuisioner_1",
+                title: title,
                 questionId: judulid,
                 questions: judul,
                 choice1Id: opsiid,
@@ -276,7 +276,10 @@ function Tambahkuis(props) {
             </Modal>
 
             <View style={{ flex: 1 }}>
-                <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 10, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
+                <View style={{ padding: 22 }}>
+                    <TextInput placeholder={"Judul Kuis"} onChangeText={settitle} value={title} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10, flex: 0 }]}></TextInput>
+                </View>
+                <Text style={[style.poppinsbold, { fontSize: 17, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>

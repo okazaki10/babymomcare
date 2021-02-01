@@ -12,13 +12,14 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Picker } from '@react-native-picker/picker';
 import { useIsFocused } from '@react-navigation/native';
-function Listpasien(props) {
+function Lihathasilkuis(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [cari, setcari] = useState("")
-
+    const [materi, setmateri] = useState("")
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -33,87 +34,47 @@ function Listpasien(props) {
 
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const tindakanpasien = () => {
-
-        setisipesan("Pilih tindakan untuk data ini")
-        toggleModal2()
-
-    }
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
     };
-    const [isModalVisible3, setModalVisible3] = useState(false);
-    const toggleModal3 = () => {
-        setModalVisible3(!isModalVisible3);
-    };
-    const hapuspasien = () => {
+    const tindakankuis = () => {
+        if (global.status != 1) {
+            setisipesan("Pilih tindakan untuk data ini")
+            toggleModal2()
+        }
+    }
+    const [id_survey, setid_survey] = useState("")
+    const ubahkuis = () => {
+        if (kuis == "") {
+            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
+        } else {
+            toggleModal2()
+            props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice })
+            global.add = 0
+        }
+    }
+
+    const tambahkuis = () => {
+        if (kuis == "") {
+            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
+        } else {
+            props.navigation.navigate("Tambahsurvey", { halaman: jumlah, kuis: kuis, choice_type: choice })
+            global.add = 1
+        }
+    }
+
+
+    const hapuskuis = () => {
         toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus pasien ini")
+        setisipesan("Apakah anda yakin untuk menghapus kuis ini")
         toggleModal3()
 
     }
-    const [datapasien, setdatapasien] = useState([{}])
 
-    const lihatpasien = () => {
-        //setspinner(true)
-        fetch(global.url + '/nurse/index', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            }
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setdatapasien(json.data)
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    const lihatpasien2 = () => {
-        //setspinner(true)
-        fetch(global.url + '/nurse/index', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                id: props.route.params.idls
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setdatapasien(json.data)
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    const [idpasien, setidpasien] = useState()
-    const hapuspasien2 = () => {
+    const hapus2 = () => {
         setspinner(true)
-        fetch(global.url + '/nurse/delete', {
+        fetch(global.url + '/survey/delete', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -121,7 +82,7 @@ function Listpasien(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id: idpasien,
+                id: id_survey,
             })
         })
             .then((response) => response.json())
@@ -131,7 +92,7 @@ function Listpasien(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     toggleModal3()
-                    lihatpasien()
+                    lihatsurvey()
                 }
                 setspinner(false)
             })
@@ -141,11 +102,16 @@ function Listpasien(props) {
                 setspinner(false)
             });
     }
-
-    const lihatpasienadmin = () => {
+    const [isModalVisible3, setModalVisible3] = useState(false);
+    const toggleModal3 = () => {
+        setModalVisible3(!isModalVisible3);
+    };
+    const [jumlah, setjumlah] = useState("5")
+    const [data, setdata] = useState([{}])
+    const lihatsurvey = () => {
         //setspinner(true)
-        fetch(global.url + '/admin/list/patient-nurse2', {
-            method: 'POST',
+        fetch(global.url + '/survey/index', {
+            method: 'GET',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -158,7 +124,65 @@ function Listpasien(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setdatapasien(json.data)
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatsurveypasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/admin/survey/list', {
+            method: 'POST   ',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                patient_id: props.route.params.id_pasien,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatquizpasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/admin/quiz/list', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                patient_id: props.route.params.id_pasien
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
                 }
                 setspinner(false)
             })
@@ -172,15 +196,11 @@ function Listpasien(props) {
 
     useEffect(() => {
         if (isFocused) {
-            if (props.route.params?.idls) {
-                lihatpasien2()
-            } else if (props.route.params?.idadmin) {
-                lihatpasienadmin()
-            } else {
-                lihatpasien()
-            }
+            lihatquizpasien()
         }
     }, [isFocused])
+    const [kuis, setkuis] = useState("")
+    const [choice, setchoice] = useState("text")
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -209,8 +229,9 @@ function Listpasien(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={hapuspasien2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
+
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
                                 </Button>
@@ -226,9 +247,12 @@ function Listpasien(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapuspasien} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            <Button onPress={hapuskuis} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+                            <Button onPress={ubahkuis} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            </Button>
+                        </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -240,69 +264,30 @@ function Listpasien(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-                            {kosong ? (<View>
-                                <View style={{ width: "100%", justifyContent: "center", alignItems: 'center', marginTop: 20 }}>
-                                    <Image
-                                        source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 100, height: 100 }}
-                                        resizeMode="contain"
-                                    />
-                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki pasien</Text>
-                                </View>
-                                <Button title="+ Tambah Pasien Baru" onPress={() => {
-                                    global.add = 1
-                                    props.navigation.navigate("Daftarakun")
-                                }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                            </View>) : (
-                                    <View>
-                                        <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
-                                            <Ionicons name={'search-outline'} size={24} color={colors.button} />
-                                            <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                            <View>
+                                {data.map(item => item.quiz_id ? (<TouchableOpacity onPress={() => {
+                                    //props.navigation.navigate("Kerjakankuis", { id: item.quiz_id,lihatquiz:1 })
+                                }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.quiz}</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>Jawaban Benar = {item.point}/{item.total}</Text>
+                                    </View>
+                                    {global.status == 1 ? (null) : (
+                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <View style={{ marginRight: 15 }}>
+                                                <Ionicons name={'pencil'} size={24} color={colors.grey} />
+                                            </View>
+                                            <View style={{ marginRight: 15 }}>
+                                                <Ionicons name={'trash'} size={24} color={colors.grey} />
+                                            </View>
                                         </View>
-                                        <Button title="+ Tambah Pasien Baru" onPress={() => {
-                                            global.add = 1
-                                            props.navigation.navigate("Daftarakun")
-                                        }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                        {datapasien.map((item) => item.id ? (
-                                            <TouchableOpacity onLongPress={() => {
-                                                setidpasien(item.id)
-                                                tindakanpasien()
-                                            }} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
-                                                if (props.route.params?.mode == "kontrol") {
-                                                    props.navigation.navigate("Datakontrol", { id: item.id })
-                                                }else if (props.route.params?.mode == "resume") {
-                                                    props.navigation.navigate("Detailresumepulang", { id: item.id })
-                                                } else if (props.route.params?.quiz) {
-                                                    props.navigation.navigate("Lihathasilkuis", { id_pasien: item.id, lihatquiz: 1 })
-                                                } else if (props.route.params?.survey) {
-                                                    props.navigation.navigate("Lihathasilsurvey", { id_pasien: item.id, lihatsurvey: 1 })
-                                                } else {
-                                                    props.navigation.navigate("Datapasien", { id: item.id })
-                                                }
-                                            }}>
-                                                <Image
-                                                    source={require("../../../assets/image/empty.png")}
-                                                    style={{ width: 100, height: 100 }}
-                                                    resizeMode="contain"
-                                                />
-                                                <View style={{ marginLeft: 15 }}>
-                                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
-                                                    <View style={{ flexDirection: "row" }}>
-                                                        <Ionicons name={'person'} size={17} color={colors.button} />
-                                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
-                                                    </View>
-
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Nama Nurse : Resma</Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        ) : (null))}
+                                    )}
+                                </TouchableOpacity>) : (null))}
 
 
-                                    </View>)}
+                            </View>
                         </View>
                     </ScrollView>
                 </View>
@@ -310,8 +295,8 @@ function Listpasien(props) {
 
             </View>
 
-        </View>
+        </View >
     );
 };
 
-export default Listpasien;
+export default Lihathasilkuis;

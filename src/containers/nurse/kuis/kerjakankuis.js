@@ -114,6 +114,7 @@ function Kerjakankuis(props) {
     const [selesai, setselesai] = useState(false)
 
     const [data, setdata] = useState({})
+    const [halaman, sethalaman] = useState([{}])
     const lihatkuis = () => {
         //setspinner(true)
         fetch(global.url + '/quiz/show', {
@@ -134,6 +135,7 @@ function Kerjakankuis(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setdata(json.data)
+                    sethalaman(json.data.questions)
                 }
                 setspinner(false)
             })
@@ -208,7 +210,7 @@ function Kerjakankuis(props) {
             });
     }
     const selesaikuis2 = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/quiz/answer/show', {
             method: 'POST',
             headers: {
@@ -362,8 +364,9 @@ function Kerjakankuis(props) {
                                                     <Button title="Kembali" onPress={kurangnomor} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                                                 ) : (null)}
                                             </View>
+                                            <Text>{data.length}</Text>
                                             <View style={{ flex: 1, marginLeft: 10 }}>
-                                                {nomor >= kuis.length ? (
+                                                {nomor >= halaman.length - 1 ? (
                                                     <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                                 ) : (
                                                         <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}

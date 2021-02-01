@@ -218,8 +218,43 @@ function Kerjakansurvey(props) {
                 setspinner(false)
             });
     }
+    const lihatsurveypasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/admin/survey/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                survey_id: props.route.params.id,
+                patient_id: props.route.params.id_pasien,
+                order: props.route.params.order
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     useState(() => {
-        lihatsurvey()
+        if (props.route.params.lihatsurvey) {
+            lihatsurveypasien()
+        } else {
+            lihatsurvey()
+        }
     })
     const kembali = () => {
         toggleModal()
@@ -318,20 +353,32 @@ function Kerjakansurvey(props) {
                                 </View>
 
                                 <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-
-                                    {listjawaban.map((item,index) => (
-                                        jawaban[nomor] == item ? (
+                                    {props.route.params.lihatsurvey ? listjawaban.map((item, index) => (
+                                        data[nomor].answer == item ? (
                                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                 <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number"?item:listjawaban2[index]}</Text>
+                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
                                             </TouchableOpacity>
                                         ) : (
-                                                <TouchableOpacity onPress={() => { pilih(nomor, item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                     <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number"?item:listjawaban2[index]}</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
                                                 </TouchableOpacity>
                                             )
-                                    ))}
+                                    )) :
+                                        listjawaban.map((item, index) => (
+                                            jawaban[nomor] == item ? (
+                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
+                                                </TouchableOpacity>
+                                            ) : (
+                                                    <TouchableOpacity onPress={() => { pilih(nomor, item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                        <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
+                                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
+                                                    </TouchableOpacity>
+                                                )
+                                        ))}
 
                                 </View>
                                 <View style={{ flexDirection: "row", marginTop: 20 }}>
@@ -341,8 +388,10 @@ function Kerjakansurvey(props) {
                                         ) : (null)}
                                     </View>
                                     <View style={{ flex: 1, marginLeft: 10 }}>
-                                        {nomor >= kuis.length ? (
-                                            <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                        {nomor >= data.length - 1 ? (
+                                            props.route.params.lihatsurvey ? (null) : (
+                                                <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                            )
                                         ) : (
                                                 <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
 

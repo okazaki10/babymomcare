@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
+
 import { colors } from '../../../globalstyles';
+
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
@@ -10,13 +12,14 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Picker } from '@react-native-picker/picker';
 import { useIsFocused } from '@react-navigation/native';
-function Judulmateri(props) {
+function Lihathasilsurvey(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
-
-    //const [cari, setcari] = useState("")
-
+    const [isipesan, setisipesan] = useState("")
+    const [cari, setcari] = useState("")
+    const [materi, setmateri] = useState("")
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -29,62 +32,49 @@ function Judulmateri(props) {
         }
     }
 
-   
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const [isipesan, setisipesan] = useState("")
-    const tambahmateri = () => {
-        global.add = 1
-        props.navigation.navigate("Tambahmateri", { id: props.route.params.id })
-    }
-
-    const ubahmateri = () => {
-        global.add = 0
-        props.navigation.navigate("Tambahmateri", { nama: "Ubah materi",id_materi:id_materi })
-        toggleModal2()
-    }
-    const tindakankontrol = () => {
+    const [isModalVisible2, setModalVisible2] = useState(false);
+    const toggleModal2 = () => {
+        setModalVisible2(!isModalVisible2);
+    };
+    const tindakankuis = () => {
         if (global.status != 1) {
-            setisipesan("Pilih tindakan untuk materi ini")
+            setisipesan("Pilih tindakan untuk data ini")
             toggleModal2()
         }
     }
-    const hapusmateri = () => {
+    const [id_survey, setid_survey] = useState("")
+    const ubahkuis = () => {
+        if (kuis == "") {
+            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
+        } else {
+            toggleModal2()
+            props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice })
+            global.add = 0
+        }
+    }
+
+    const tambahkuis = () => {
+        if (kuis == "") {
+            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
+        } else {
+            props.navigation.navigate("Tambahsurvey", { halaman: jumlah, kuis: kuis, choice_type: choice })
+            global.add = 1
+        }
+    }
+
+
+    const hapuskuis = () => {
         toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus materi ini")
+        setisipesan("Apakah anda yakin untuk menghapus kuis ini")
         toggleModal3()
 
     }
-    const setcari = (key) => {
-        fetch(global.url + '/materi/search', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                keyword: key,
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setdata(json.data)
-                }
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-            });
-    }
-    const [id_materi, setid_materi] = useState()
+
     const hapus2 = () => {
         setspinner(true)
-        fetch(global.url + '/materi/delete', {
+        fetch(global.url + '/survey/delete', {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -92,7 +82,7 @@ function Judulmateri(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id: id_materi,
+                id: id_survey,
             })
         })
             .then((response) => response.json())
@@ -102,7 +92,7 @@ function Judulmateri(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     toggleModal3()
-                    lihatkategori()
+                    lihatsurvey()
                 }
                 setspinner(false)
             })
@@ -112,31 +102,49 @@ function Judulmateri(props) {
                 setspinner(false)
             });
     }
-    const detailmateri = () => {
-        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
-    const [isModalVisible2, setModalVisible2] = useState(false);
-    const toggleModal2 = () => {
-        setModalVisible2(!isModalVisible2);
-    };
     const [isModalVisible3, setModalVisible3] = useState(false);
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
+    const [jumlah, setjumlah] = useState("5")
     const [data, setdata] = useState([{}])
-    const lihatkategori = () => {
+    const lihatsurvey = () => {
         //setspinner(true)
-        fetch(global.url + '/materi/index', {
-            method: 'POST',
+        fetch(global.url + '/survey/index', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatsurveypasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/admin/survey/list', {
+            method: 'POST   ',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id: props.route.params.id
+                patient_id: props.route.params.id_pasien,
             })
         })
             .then((response) => response.json())
@@ -155,16 +163,15 @@ function Judulmateri(props) {
                 setspinner(false)
             });
     }
-
-
-
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
-            lihatkategori()
+            lihatsurveypasien()
         }
     }, [isFocused])
+    const [kuis, setkuis] = useState("")
+    const [choice, setchoice] = useState("text")
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -195,6 +202,7 @@ function Judulmateri(props) {
                             <View style={{ flex: 1, marginRight: 15 }}>
                                 <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
+
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
                                 </Button>
@@ -210,10 +218,10 @@ function Judulmateri(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapusmateri} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            <Button onPress={hapuskuis} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={ubahmateri} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
+                            <Button onPress={ubahkuis} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
                         </View>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
@@ -223,25 +231,30 @@ function Judulmateri(props) {
                     </View>
                 </View>
             </Modal>
+
             <View style={{ flex: 1 }}>
+
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 2 || global.status == 3 ||global.status == 4 ? (
-                        <Button title="+ Tambah Materi" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    ) : (null)}
-                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
-                        <TextInput onChangeText={setcari} placeholder="Cari Judul Materi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
-                        <Ionicons name={'search-outline'} size={24} color={colors.grey} />
-                    </View>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item) => item.id ? (<TouchableOpacity onLongPress={()=>{
-                                    setid_materi(item.id)
-                                    tindakankontrol()
-                                }} style={[style.card, { marginBottom: 15 }]} onPress={() => props.navigation.navigate("Detailmateri", { id: item.id })}>
-                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 14 }]}>{item.title}</Text>
+                                {data.map(item => item.survey_id ? (<TouchableOpacity onPress={() => {
+                                    props.navigation.navigate("Kerjakansurvey", { id: item.survey_id, id_pasien: props.route.params.id_pasien,order:item.order, choice_type: item.choice_type, lihatsurvey: 1 })
+
+                                }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
+                                    <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.survey}</Text>
                                     </View>
+                                    {global.status == 1 ? (null) : (
+                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                            <View style={{ marginRight: 15 }}>
+                                                <Ionicons name={'pencil'} size={24} color={colors.grey} />
+                                            </View>
+                                            <View style={{ marginRight: 15 }}>
+                                                <Ionicons name={'trash'} size={24} color={colors.grey} />
+                                            </View>
+                                        </View>
+                                    )}
                                 </TouchableOpacity>) : (null))}
 
 
@@ -249,9 +262,12 @@ function Judulmateri(props) {
                         </View>
                     </ScrollView>
                 </View>
+
+
             </View>
-        </View>
+
+        </View >
     );
 };
 
-export default Judulmateri;
+export default Lihathasilsurvey;
