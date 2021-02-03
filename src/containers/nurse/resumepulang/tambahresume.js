@@ -326,7 +326,7 @@ function Tambahresume(props) {
                     setlk(json.data.lingkar_kepala.toString())
                     setpb(json.data.length.toString())
                     setsuhu(json.data.temperature.toString())
-                    //setgambar(json.data.image)
+                    setgambar(json.data.image)
                     setanjuran(json.data.nurse_note)
                 }
                 setspinner(false)
@@ -361,7 +361,7 @@ function Tambahresume(props) {
                         setlk(json.data.lingkar_kepala.toString())
                         setpb(json.data.length.toString())
                         setsuhu(json.data.temperature.toString())
-                        //setgambar(json.data.image)
+                        setgambar(json.data.image)
                         setanjuran(json.data.nurse_note)
                     }
                 }
@@ -400,7 +400,7 @@ function Tambahresume(props) {
                         setlk(json.data.lingkar_kepala.toString())
                         setpb(json.data.length.toString())
                         setsuhu(json.data.temperature.toString())
-                        //setgambar(json.data.image)
+                        setgambar(json.data.image)
                         setanjuran(json.data.nurse_note)
                     }
                 }

@@ -55,7 +55,7 @@ function Tambahmateri(props) {
                 id:props.route.params.id_materi,
                 title: judul,
                 content: pertanyaan,
-                base64_img: gambar2,
+                base64_image: gambar2,
                 category_id: props.route.params.id
             })
         })
@@ -89,7 +89,7 @@ function Tambahmateri(props) {
             body: JSON.stringify({
                 title: judul,
                 content: pertanyaan,
-                base64_img: gambar2,
+                base64_image: gambar2,
                 category_id: props.route.params.id
             })
         })
@@ -174,7 +174,7 @@ function Tambahmateri(props) {
                 } else {
                     setjudul(json.data.title)
                     setpertanyaan(json.data.content)
-                    //setgambar(json.data.image)
+                    setgambar(json.data.image)
                 }
                 setspinner(false)
             })

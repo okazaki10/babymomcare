@@ -64,6 +64,7 @@ function Daftarbayi(props) {
         toggleModal()
     }
     const lanjut = () => {
+        if (nama&&bbnow&&pjl&&jenis_kelamin&&diharapkan&&gestas&&lk){
         global.baby_name = nama
         global.baby_birthday = format(date, "yyyy-MM-dd HH:mm:ss")
         global.born_weight = bbnow
@@ -73,6 +74,9 @@ function Daftarbayi(props) {
         global.gestas = gestas
         global.lk = lk
         props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password, selectedItems: props.route.params.selectedItems })
+        }else{
+            ToastAndroid.show("Pastikan data tidak ada yang kosong", ToastAndroid.SHORT)
+        }
     }
     const lihatpasien = () => {
         //setspinner(true)

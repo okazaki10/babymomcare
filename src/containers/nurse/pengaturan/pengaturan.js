@@ -162,7 +162,7 @@ function Pengaturan(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                <Button title="Ganti Password" onPress={()=>{props.navigation.navigate("Changepassword",{pass:1})}} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                <Button title="Ganti Password" onPress={()=>{props.navigation.navigate("Changepassword",{pass:1})}} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, {  fontSize: 15 }]}></Button>
                             </View>
                             <View style={{ marginTop: 15 }}>
                                 <Button title="Log Out" onPress={storeData} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>

@@ -55,6 +55,8 @@ import Tambahtopik from './containers/nurse/forum/tambahtopik';
 import Lihathasilsurvey from './containers/pasien/survey/lihathasilsurvey';
 import Lihathasilkuis from './containers/nurse/kuis/lihathasilkuis';
 import Changepassword from './containers/nurse/pasien/changepassword';
+import Webview from './containers/webview';
+import Userlog from './containers/nurse/userlog';
 
 
 
@@ -230,7 +232,7 @@ function Navigation() {
        <Stack.Screen
           name="Chartkuis"
           component={Chartkuis}
-          options={{ headerTitle:"Chart Kuis"}}
+          options={{ headerTitle:"Chart Survey"}}
         />
           <Stack.Screen
           name="Notifikasi"
@@ -311,6 +313,16 @@ function Navigation() {
           name="Changepassword"
           component={Changepassword}
           options={{ headerTitle:"Ganti password"}}
+        />
+        <Stack.Screen
+          name="Webview"
+          component={Webview}
+          options={{ headerTitle:"Daftar Nurse"}}
+        />
+        <Stack.Screen
+          name="Userlog"
+          component={Userlog}
+          options={{ headerTitle:"User log"}}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -139,7 +139,8 @@ function Datakontrol(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id: idd
+                id: idd,
+                mode: "kontrol"
             })
         })
             .then((response) => response.json())

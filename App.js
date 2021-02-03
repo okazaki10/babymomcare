@@ -18,8 +18,8 @@ LogBox.ignoreLogs([
   'VirtualizedList',
   'Looks like'
 ]);
-global.url = "http://192.168.1.8:10/api";
-//global.url = "https://mobile.temanbunda.com/api";
+//global.url = "http://192.168.1.8:10/api";
+global.url = "https://mobile.temanbunda.com/api";
 global.initialroute = "Login"
 global.status = 0
 global.key = "";

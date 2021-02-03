@@ -132,7 +132,7 @@ function Tambahkategori(props) {
                 if (response.uri) {
                     sethide(false)
                     setgambar(response.uri)
-                    //setgambar2(response.data)
+                    setgambar2(response.data)
                 }
 
                 // You can also display the image using data:

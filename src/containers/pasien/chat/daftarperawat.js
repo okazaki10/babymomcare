@@ -165,9 +165,9 @@ function Daftarperawat(props) {
 
     useEffect(() => {
         if (isFocused) {
-            if (global.status == 1){
-            lihatnurse()
-            }else{
+            if (global.status == 1) {
+                lihatnurse()
+            } else {
                 lihatpasien()
             }
         }
@@ -189,26 +189,31 @@ function Daftarperawat(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item)=> item.id?(
-                                     <TouchableOpacity onPress={() => {
+                                {data.map((item) => item.id ? (
+                                    <TouchableOpacity onPress={() => {
                                         if (global.status == 1) {
-                                            props.navigation.navigate("Kontakperawat",{id:item.user_id,id_kontak:item.id})
+                                            props.navigation.navigate("Kontakperawat", { id: item.user_id, id_kontak: item.id })
                                         } else {
-                                            props.navigation.navigate("Chat", { nama: "Chat Pasien",id:item.user_id})
+                                            props.navigation.navigate("Chat", { nama: "Chat Pasien", id: item.user_id })
                                         }
                                     }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
-                                        <Image
+                                        {global.status == 1 ? (<Image
+                                            source={require("../../../assets/image/profilcewe.png")}
+                                            style={{ width: 45, height: 65, marginLeft: 15 }}
+                                            resizeMode="contain"
+                                        />) : (<Image
                                             source={require("../../../assets/image/addpeople.png")}
-                                            style={{ width: 55, height: 65 }}
-                                            resizeMode="stretch"
-                                        />
+                                            style={{ width: 45, height: 65, marginLeft: 15 }}
+                                            resizeMode="contain"
+                                        />)}
+
                                         <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name?item.name:item.mother_name}</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name ? item.name : item.mother_name}</Text>
                                         </View>
-    
+
                                     </TouchableOpacity>
-                                ):(null))}
-                               
+                                ) : (null))}
+
 
 
                             </View>

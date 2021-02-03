@@ -17,8 +17,59 @@ function Resumepulang(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
-
+    const setcari = (key) => {
+        if (global.status == 2) {
+            fetch(global.url + '/nurse/search-patient', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + global.key,
+                },
+                body: JSON.stringify({
+                    keyword: key,
+                })
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json)
+                    if (json.errors) {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    } else {
+                        setdatapasien(json.data)
+                    }
+                })
+                .catch((error) => {
+                    console.error(error)
+                    ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                });
+        } else if (global.status == 3 || global.status == 4) {
+            fetch(global.url + '/admin/search-patient', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + global.key,
+                },
+                body: JSON.stringify({
+                    keyword: key,
+                })
+            })
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json)
+                    if (json.errors) {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    } else {
+                        setdatapasien(json.data)
+                    }
+                })
+                .catch((error) => {
+                    console.error(error)
+                    ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                });
+        }
+    }
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -42,8 +93,8 @@ function Resumepulang(props) {
         toggleModal2()
         global.mode = "resume"
         global.add = 0
-        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang",id:id})
-  
+        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang", id: id })
+
     }
     const tindakanresume = () => {
 
@@ -61,7 +112,7 @@ function Resumepulang(props) {
         global.mode = "resume"
         props.navigation.navigate("Detailresumepulang")
     }
-    const [id,setid] = useState("")
+    const [id, setid] = useState("")
     const hapus2 = () => {
         setspinner(true)
         fetch(global.url + '/kontrol/delete', {
@@ -73,7 +124,7 @@ function Resumepulang(props) {
             },
             body: JSON.stringify({
                 id: id,
-                mode:"resume"
+                mode: "resume"
             })
         })
             .then((response) => response.json())
@@ -180,11 +231,11 @@ function Resumepulang(props) {
                 <View style={style.content}>
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
-                     
+
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={hapusresume} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
-                   
+
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={ubahresume} title="Ubah" titleStyle={[style.nunitosans, { textAlign: "center", color: "#E3DB69" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -242,11 +293,7 @@ function Resumepulang(props) {
                                                     }
                                                 }}
                                             >
-                                                <Image
-                                                    source={require("../../../assets/image/empty.png")}
-                                                    style={{ width: 100, height: 100 }}
-                                                    resizeMode="contain"
-                                                />
+                                              
                                                 <View style={{ marginLeft: 15 }}>
                                                     <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
                                                     <View style={{ flexDirection: "row" }}>

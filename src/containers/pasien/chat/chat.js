@@ -165,8 +165,8 @@ function Chat(props) {
                             {item.sender_username == global.username ? (
                                 <View style={{ alignItems: "flex-end", marginRight: 15, marginLeft: 15 }}>
                                     <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row" }}>
-                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",marginTop:10 }}>
-                                            {item.is_read == 1?( <Text style={[style.poppinsmedium, { fontSize: 14,marginRight:5,color:"gray" }]}>Read</Text>):(null)}
+                                        <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 10 }}>
+                                            {item.is_read == 1 ? (<Text style={[style.nunitosans, { fontSize: 10, marginRight: 10, color: "gray" }]}>Read</Text>) : (null)}
                                             <View style={{ backgroundColor: colors.primary, padding: 20, borderRadius: 25 }}>
                                                 <Text style={[style.poppinsmedium, { fontSize: 14 }]}>{item.text}</Text>
                                             </View>
@@ -174,13 +174,18 @@ function Chat(props) {
                                     </View>
                                 </View>
                             ) : (
-                                    <View style={{ alignItems: "flex-start", marginRight: 15, marginLeft: 15,marginTop:15 }}>
+                                    <View style={{ alignItems: "flex-start", marginRight: 15, marginLeft: 15, marginTop: 15 }}>
                                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row" }}>
-                                            <Image
+                                            {item.role == "nurse" ? (<Image
                                                 source={require("../../../assets/image/profilcewe.png")}
                                                 style={{ width: 50, height: 50, marginRight: 10 }}
                                                 resizeMode="contain"
-                                            />
+                                            />) : (<Image
+                                                source={require("../../../assets/image/addpeople.png")}
+                                                style={{ width: 50, height: 50, marginRight: 10 }}
+                                                resizeMode="contain"
+                                            />)}
+
                                             <View>
                                                 <Text style={[style.nunitosans, { fontSize: 14, marginLeft: 20 }]}>{item.sender_name}</Text>
                                                 <View style={{ backgroundColor: "#EFF3F7", padding: 20, borderRadius: 25, marginTop: 10 }}>

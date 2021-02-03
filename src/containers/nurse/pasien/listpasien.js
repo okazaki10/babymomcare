@@ -17,7 +17,7 @@ function Listpasien(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
+
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -168,6 +168,71 @@ function Listpasien(props) {
                 setspinner(false)
             });
     }
+
+    const setcari = (key) => {
+        if (key) {
+            if (global.status == 2) {
+                fetch(global.url + '/nurse/search-patient', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + global.key,
+                    },
+                    body: JSON.stringify({
+                        keyword: key,
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json)
+                        if (json.errors) {
+                            ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                        } else {
+                            setdatapasien(json)
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                    });
+            } else if (global.status == 3 || global.status == 4) {
+                fetch(global.url + '/admin/search-patient', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + global.key,
+                    },
+                    body: JSON.stringify({
+                        keyword: key,
+                    })
+                })
+                    .then((response) => response.json())
+                    .then((json) => {
+                        console.log(json)
+                        if (json.errors) {
+                            ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                        } else {
+                            setdatapasien(json.data)
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(error)
+                        ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                    });
+            }
+        } else {
+            if (props.route.params?.idls) {
+                lihatpasien2()
+            } else if (props.route.params?.idadmin) {
+                lihatpasienadmin()
+            } else {
+                lihatpasien()
+            }
+        }
+    }
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -273,7 +338,7 @@ function Listpasien(props) {
                                             }} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
                                                 if (props.route.params?.mode == "kontrol") {
                                                     props.navigation.navigate("Datakontrol", { id: item.id })
-                                                }else if (props.route.params?.mode == "resume") {
+                                                } else if (props.route.params?.mode == "resume") {
                                                     props.navigation.navigate("Detailresumepulang", { id: item.id })
                                                 } else if (props.route.params?.quiz) {
                                                     props.navigation.navigate("Lihathasilkuis", { id_pasien: item.id, lihatquiz: 1 })
@@ -283,11 +348,7 @@ function Listpasien(props) {
                                                     props.navigation.navigate("Datapasien", { id: item.id })
                                                 }
                                             }}>
-                                                <Image
-                                                    source={require("../../../assets/image/empty.png")}
-                                                    style={{ width: 100, height: 100 }}
-                                                    resizeMode="contain"
-                                                />
+
                                                 <View style={{ marginLeft: 15 }}>
                                                     <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
                                                     <View style={{ flexDirection: "row" }}>
@@ -296,7 +357,6 @@ function Listpasien(props) {
                                                     </View>
 
                                                     <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Nama Nurse : Resma</Text>
                                                 </View>
                                             </TouchableOpacity>
                                         ) : (null))}

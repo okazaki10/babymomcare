@@ -35,10 +35,14 @@ function Daftarakun(props) {
     const referensi = useRef()
     const [spinner, setspinner] = useState(false)
     const lanjut = () => {
-        global.emaild = email
-        global.nohpd = nohp
-        global.rekomendasi = selectedItems
-        props.navigation.navigate("Daftarbayi", { username: username, password: password, selectedItems: selectedItems })
+        if (username && password && email && nohp) {
+            global.emaild = email
+            global.nohpd = nohp
+            global.rekomendasi = selectedItems
+            props.navigation.navigate("Daftarbayi", { username: username, password: password, selectedItems: selectedItems })
+        } else {
+            ToastAndroid.show("Pastikan data tidak ada yang kosong", ToastAndroid.SHORT)
+        }
     }
     const pasiendiubah = () => {
         setisipesan("Data pasien berhasil diubah!")

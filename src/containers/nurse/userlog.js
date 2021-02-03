@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
-import { colors } from '../../../globalstyles';
-import style from '../../../globalstyles';
+
+import { colors } from '../../globalstyles';
+
+import style from '../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
@@ -10,11 +12,13 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useIsFocused } from '@react-navigation/native';
-function Kategoriforum(props) {
+import HyperLink from 'react-native-hyperlink';
+import { id } from 'date-fns/locale';
+import { format } from 'date-fns';
+function Userlog(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
-
+    const [isipesan, setisipesan] = useState("")
     const [cari, setcari] = useState("")
 
     const toggleModal = () => {
@@ -31,34 +35,10 @@ function Kategoriforum(props) {
 
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const [isipesan, setisipesan] = useState("")
-    const tambahmateri = () => {
-        global.add = 1
-        props.navigation.navigate("Tambahtopik")
-    }
-
-    const ubahmateri = () => {
-        global.add = 0
-        props.navigation.navigate("Tambahtopik", { nama: "Ubah kategori", id: id_kategori, judul: judul, gambar: gambar })
+    const tindakanpasien = () => {
+        setisipesan("Pilih tindakan untuk data ini")
         toggleModal2()
     }
-    const tindakankontrol = () => {
-        if (global.status != 1) {
-            setisipesan("Pilih tindakan untuk materi ini")
-            toggleModal2()
-        }
-    }
-    const hapusmateri = () => {
-        toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus materi ini")
-        toggleModal3()
-
-    }
-    const detailmateri = () => {
-        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -67,48 +47,23 @@ function Kategoriforum(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-    const klik = () => {
-        props.navigation.navigate("Forum")
+    const hapuspasien = () => {
+        toggleModal2()
+        setisipesan("Apakah anda yakin untuk menghapus pasien ini")
+        toggleModal3()
     }
     const [data, setdata] = useState([{}])
-    const lihatkategori = () => {
+    const lihatnotifikasi = (limit) => {
         //setspinner(true)
-        fetch(global.url + '/forum/topic', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            }
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setdata(json)
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    const [id, setid] = useState("")
-    const hapus2 = () => {
-        setspinner(true)
-        fetch(global.url + '/forum/topic/delete', {
-            method: 'DELETE',
+        fetch(global.url + '/admin/user/log', {
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id: id,
+                limit: limit
             })
         })
             .then((response) => response.json())
@@ -117,8 +72,7 @@ function Kategoriforum(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    toggleModal3()
-                    lihatkategori()
+                    setdata(json.data)
                 }
                 setspinner(false)
             })
@@ -128,13 +82,17 @@ function Kategoriforum(props) {
                 setspinner(false)
             });
     }
-    const isFocused = useIsFocused()
-
-    useEffect(() => {
-        if (isFocused) {
-            lihatkategori()
-        }
-    }, [isFocused])
+    const globallimit = 10;
+    const [scrollable, setscrollable] = useState(true)
+    const [limit, setlimit] = useState(globallimit)
+    const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }) => {
+        const paddingToBottom = 3;
+        return layoutMeasurement.height + contentOffset.y >=
+            contentSize.height - paddingToBottom;
+    };
+    useState(() => {
+        lihatnotifikasi(globallimit)
+    })
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -153,7 +111,7 @@ function Kategoriforum(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: "center" }}>
                             <Image
-                                source={require("../../../assets/image/exit.png")}
+                                source={require("../../assets/image/exit.png")}
                                 style={{ width: 100, height: 100 }}
                                 resizeMode="contain"
                             />
@@ -163,7 +121,7 @@ function Kategoriforum(props) {
 
                         <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
                             <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
+                                <Button onPress={toggleModal3} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 15 }}>
                                 <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
@@ -180,8 +138,9 @@ function Kategoriforum(props) {
                     <Text style={[style.nunitosans, { textAlign: "center" }]}>{isipesan}</Text>
                     <View style={{ flexDirection: "row", marginTop: 40 }}>
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                            <Button onPress={hapusmateri} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
+                            <Button onPress={hapuspasien} title="Hapus" titleStyle={[style.nunitosans, { textAlign: "center", color: "red" }]} buttonStyle={{ backgroundColor: "white" }}></Button>
                         </View>
+
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
                             <Button onPress={toggleModal2} title="Batal" titleStyle={[style.nunitosans, { textAlign: "center", color: "black" }]} buttonStyle={{ backgroundColor: "white" }}>
                             </Button>
@@ -189,42 +148,35 @@ function Kategoriforum(props) {
                     </View>
                 </View>
             </Modal>
+
             <View style={{ flex: 1 }}>
-
-                {global.status == 2 ? (<View>
-                    <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Topik Forum</Text>
-                    <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
-                </View>) : (null)}
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 1 ? (null) : (<View><Button title="+ Tambah Topik" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    <View style={[style.line,{marginTop:0,marginBottom:15}]}></View>
-                    </View>)}
-
-              
-
-                    <ScrollView>
+                    <ScrollView
+                        onScroll={({ nativeEvent }) => {
+                            if (isCloseToBottom(nativeEvent) && scrollable) {
+                                console.log("asdasd")
+                                setlimit(limit + globallimit)
+                                console.log(limit)
+                                lihatnotifikasi(limit + globallimit)
+                            }
+                        }}>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item) => item.id ? (<TouchableOpacity onPress={() => { props.navigation.navigate("Forum", { id: item.id }) }}
-                                    onLongPress={() => {
-                                        setid(item.id)
-                                        tindakankontrol()
-                                    }
-                                    } style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
-                                    
-                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
-                                    </View>
-                                </TouchableOpacity>) : (null))}
-
-
+                                {data.map((item) => item.id ? (<View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.log}</Text>
+                                    <Text style={[style.nunitosans, { fontSize: 15 }]}>User : {item.name}</Text>
+                                    <Text style={[style.nunitosans, { marginTop: 5, fontSize: 13 }]}>{item.created_at ? format(new Date(item.created_at), "iii', 'dd' 'MMM', 'yyyy'", { locale: id }) : ""}</Text>
+                                </View>) : (null))}
                             </View>
                         </View>
                     </ScrollView>
                 </View>
+
+
             </View>
+
         </View>
     );
 };
 
-export default Kategoriforum;
+export default Userlog;

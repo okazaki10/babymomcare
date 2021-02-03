@@ -18,7 +18,7 @@ function Forum(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
+ 
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -40,12 +40,13 @@ function Forum(props) {
         props.navigation.navigate("Forumdetail", { id: props.route.params.id })
     }
     const tambahforum = () => {
+        global.add = 1
         props.navigation.navigate("Addforum", { nama: "Buat Forum", id: props.route.params.id })
     }
-    const [id_forum,setid_forum] = useState()
+    const [id_forum, setid_forum] = useState()
     const ubahforum = () => {
         global.add = 0
-        props.navigation.navigate("Addforum", { nama: "Ubah Forum",id:props.route.params.id,id_forum:id_forum })
+        props.navigation.navigate("Addforum", { nama: "Ubah Forum", id: props.route.params.id, id_forum: id_forum })
         toggleModal2()
     }
     const tindakanforum = () => {
@@ -54,7 +55,7 @@ function Forum(props) {
             toggleModal2()
         }
     }
-    
+
     const hapusforum = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus forum ini")
@@ -130,7 +131,32 @@ function Forum(props) {
                 setspinner(false)
             });
     }
-
+    const setcari = (key) => {
+        fetch(global.url + '/forum/search', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                keyword: key,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+            });
+    }
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -212,15 +238,13 @@ function Forum(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map((item) => item.id?(<TouchableOpacity onLongPress={()=>{
+                                {data.map((item) => item.id ? (<TouchableOpacity onLongPress={() => {
                                     setid_forum(item.id)
                                     tindakanforum()
-                                }} onPress={() => { props.navigation.navigate("Forumdetail", { id: item.id, nama: item.user }) }} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
-                                    <Image
-                                        source={require("../../../assets/image/empty.png")}
-                                        style={{ width: 40, height: 40 }}
-                                        resizeMode="contain"
-                                    />
+                                }} onPress={() => {
+                                    props.navigation.navigate("Forumdetail", { id: item.id, nama: item.user })
+                                }} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
+                                  
                                     <View style={{ marginLeft: 15 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.judulforum, paddingRight: 50 }]}>{item.title}</Text>
                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 2, paddingRight: 50 }]}>Oleh: {item.user}</Text>
@@ -231,7 +255,7 @@ function Forum(props) {
                                             <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
                                         </View>
                                     </View>
-                                </TouchableOpacity>):(null))}
+                                </TouchableOpacity>) : (null))}
 
 
                             </View>

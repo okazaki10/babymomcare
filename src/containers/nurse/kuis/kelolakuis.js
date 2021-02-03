@@ -298,7 +298,9 @@ function Kelolakuis(props) {
                                     } else {
                                         if (item.quiz) {
                                             props.navigation.navigate("Kerjakankuis", { id: item.quiz.id })
-                                        } else {
+                                        } else if (item.materi_id) {
+                                            props.navigation.navigate("Kerjakankuis", { id: item.id })
+                                        }  else {
                                             global.add = 1
                                             props.navigation.navigate("Tambahkuis", { halaman: jumlah, id: item.id })
                                         }
@@ -308,14 +310,19 @@ function Kelolakuis(props) {
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.title}</Text>
                                     </View>
-                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                    {item.quiz || item.materi_id ? (<View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <View style={{ marginRight: 15 }}>
-                                            <Ionicons name={'add'} size={24} color={colors.grey} />
+                                            <Ionicons name={'pencil'} size={24} color={colors.grey} />
                                         </View>
                                         <View style={{ marginRight: 15 }}>
                                             <Ionicons name={'trash'} size={24} color={colors.grey} />
                                         </View>
-                                    </View>
+                                    </View>) : (<View style={{ flexDirection: "row", alignItems: "center" }}>
+                                        <View style={{ marginRight: 15 }}>
+                                            <Ionicons name={'add'} size={24} color={colors.grey} />
+                                        </View>
+                                    </View>)}
+
                                 </TouchableOpacity>) : (null))}
 
 

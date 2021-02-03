@@ -194,12 +194,11 @@ function Materiedukasi(props) {
                 </View>) : (null)}
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 1 ? (null) : (<Button title="+ Tambah Kategori" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                    {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    <View style={[style.line,{marginTop:0,marginBottom:15}]}></View>
+                    </View>)}
 
-                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
-                        <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
-                        <Ionicons name={'search-outline'} size={24} color={colors.grey} />
-                    </View>
+                  
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
