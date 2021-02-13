@@ -193,7 +193,7 @@ function Materiedukasi(props) {
                     <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 </View>) : (null)}
 
-                <View style={{ flex: 1, padding: 20 }}>
+                <View style={{ flex: 0, padding: 20 }}>
                     {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <View style={[style.line,{marginTop:0,marginBottom:15}]}></View>
                     </View>)}
@@ -210,7 +210,7 @@ function Materiedukasi(props) {
                                         setgambar(item.image)
                                         tindakankontrol()
                                     }}
-                                    style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
+                                    style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button,flex: 0 }]} >
                                     <Image
                                         source={{ uri: item.image ? item.image : "https://nameproscdn.com/a/2018/05/106343_82907bfea9fe97e84861e2ee7c5b4f5b.png" }}
                                         style={{ width: 35, height: 35, borderRadius: 50 }}

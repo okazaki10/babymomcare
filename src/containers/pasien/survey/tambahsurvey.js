@@ -292,8 +292,8 @@ function Tambahsurvey(props) {
                 <View style={{padding: 22 }}>
                     <TextInput placeholder={"Judul Kuisioner"} value={kuis2} onChangeText={setkuis2} style={[style.card, { elevation: 5, marginTop: 10, flex: 0 }]}></TextInput>
                 </View>
-                <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 10, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
                 <ScrollView>
+                <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 10, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>
                         <TextInput onChangeText={(item) => { setjuduld(nomor, item) }} value={judul[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>

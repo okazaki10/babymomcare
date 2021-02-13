@@ -273,6 +273,7 @@ function Lihathasilkuis(props) {
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.quiz}</Text>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>Jawaban Benar = {item.point}/{item.total}</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0}]}>Nilai = {(100 * (item.point / item.total)).toString().substr(0,4)}</Text>
                                     </View>
                                     {global.status == 1 ? (null) : (
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>

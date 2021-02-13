@@ -219,7 +219,7 @@ function Tambahkuis(props) {
                     setopsiid(soal1id)
                     setopsi2id(soal2id)
                     setopsi3id(soal3id)
-
+                    settitle(json.data.title)
                 }
                 setspinner(false)
             })
@@ -279,8 +279,8 @@ function Tambahkuis(props) {
                 <View style={{ padding: 22 }}>
                     <TextInput placeholder={"Judul Kuis"} onChangeText={settitle} value={title} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10, flex: 0 }]}></TextInput>
                 </View>
-                <Text style={[style.poppinsbold, { fontSize: 17, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
                 <ScrollView>
+                <Text style={[style.poppinsbold, { fontSize: 17, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>
                         <TextInput onChangeText={(item) => { setjuduld(nomor, item) }} value={judul[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
