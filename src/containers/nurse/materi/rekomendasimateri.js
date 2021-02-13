@@ -158,11 +158,12 @@ function Rekomendasimateri(props) {
                 </View>) : (null)}
 
                 <View style={{ flex: 1, padding: 20 }}>
-
+                    {/*
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>
+                    */}
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>

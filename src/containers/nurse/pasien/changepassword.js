@@ -126,11 +126,11 @@ function Changepassword(props) {
                     <View style={{ flex: 1, padding: 22 }}>
                
                         <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Password lama</Text>
-                        <TextInput onChangeText={setpassword} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput onChangeText={setpassword} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} secureTextEntry={true}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password baru</Text>
-                        <TextInput onChangeText={setnew_password} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput onChangeText={setnew_password} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]} secureTextEntry={true}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Konfirmasi password baru</Text>
-                        <TextInput onChangeText={setconfirm} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput onChangeText={setconfirm} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]} secureTextEntry={true}></TextInput>
 
                     </View>
                 </ScrollView>

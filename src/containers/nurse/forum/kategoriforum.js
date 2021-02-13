@@ -87,7 +87,7 @@ function Kategoriforum(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setdata(json)
+                    setdata(json.data)
                 }
                 setspinner(false)
             })

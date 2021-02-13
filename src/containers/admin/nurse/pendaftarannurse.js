@@ -59,8 +59,9 @@ function Pendaftarannurse(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id:props.route.params.id_nurse,
+                id: props.route.params.id_nurse,
                 name: nama,
+                password:password,
                 working_exp: lamabekerja,
                 education: pendidikanibu,
                 phone: nomortelepon,
@@ -83,8 +84,8 @@ function Pendaftarannurse(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-          
-           
+
+
     }
     const nursedibuat = () => {
         setspinner(true)
@@ -147,7 +148,6 @@ function Pendaftarannurse(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setnama(json.data.name)
-                    setusername(json.data.username)
                     setalamat(json.data.hospital_id.toString())
                     setnomortelepon(json.data.phone.toString())
                     setlamabekerja(json.data.working_exp.toString())
@@ -206,8 +206,10 @@ function Pendaftarannurse(props) {
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Nama</Text>
                         <TextInput value={nama} onChangeText={setnama} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Username</Text>
-                        <TextInput value={username} onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        {global.add == 1 ? (<View>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Username</Text>
+                            <TextInput value={username} onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        </View>) : (null)}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
                         <TextInput onChangeText={setpassword} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} secureTextEntry={true}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Alamat Rumah Sakit</Text>

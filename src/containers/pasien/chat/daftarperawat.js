@@ -182,8 +182,10 @@ function Daftarperawat(props) {
             />
 
             <View style={{ flex: 1 }}>
-                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>{global.status == 1 ? "Daftar Perawat" : "Daftar Pasien"}</Text>
-                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
+                <View style={{ backgroundColor: "white", height: 69, justifyContent: "center" }}>
+                    <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center",marginTop:5 }]}>{global.status == 1 ? "Daftar Perawat" : "Daftar Pasien"}</Text>
+                </View>
+                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC', marginTop: 0 }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
 
                     <ScrollView>

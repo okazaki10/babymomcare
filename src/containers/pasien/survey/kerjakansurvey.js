@@ -218,6 +218,7 @@ function Kerjakansurvey(props) {
                 setspinner(false)
             });
     }
+    const [guide, setguide] = useState(true)
     const lihatsurveypasien = () => {
         //setspinner(true)
         fetch(global.url + '/admin/survey/show', {
@@ -346,61 +347,71 @@ function Kerjakansurvey(props) {
                 <View style={{ flex: 1, padding: 20 }}>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-                            {data[nomor] ? (<View>
-                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Pertanyaan {nomor + 1}</Text>
+                            {guide ? (<View>
                                 <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{data[nomor].question}</Text>
+                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Guide Menyelesaikan Survey :</Text>
+                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Pilih salah satu jawaban dari skala 0 sampai 4 atau tidak pernah sampai selesai</Text>
                                 </View>
-
-                                <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                    {props.route.params.lihatsurvey ? listjawaban.map((item, index) => (
-                                        data[nomor].answer == item ? (
-                                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
-                                            </TouchableOpacity>
-                                        ) : (
-                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
-                                                </TouchableOpacity>
-                                            )
-                                    )) :
-                                        listjawaban.map((item, index) => (
-                                            jawaban[nomor] == item ? (
-                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
-                                                </TouchableOpacity>
-                                            ) : (
-                                                    <TouchableOpacity onPress={() => { pilih(nomor, item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                        <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
-                                                    </TouchableOpacity>
-                                                )
-                                        ))}
-
+                                <View style={{ marginTop: 30 }}>
+                                    <Button title="Lanjut" onPress={() => { setguide(false) }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                 </View>
-                                <View style={{ flexDirection: "row", marginTop: 20 }}>
-                                    <View style={{ flex: 1, marginRight: 10 }}>
-                                        {nomor > 0 ? (
-                                            <Button title="Kembali" onPress={kurangnomor} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                                        ) : (null)}
+                            </View>) : (
+                                    <View>
+                                        {data[nomor] ? (<View>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Pertanyaan {nomor + 1}</Text>
+                                            <View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{data[nomor].question}</Text>
+                                            </View>
+
+                                            <View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                                {props.route.params.lihatsurvey ? listjawaban.map((item, index) => (
+                                                    data[nomor].answer == item ? (
+                                                        <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                            <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
+                                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
+                                                        </TouchableOpacity>
+                                                    ) : (
+                                                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                                <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
+                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
+                                                            </TouchableOpacity>
+                                                        )
+                                                )) :
+                                                    listjawaban.map((item, index) => (
+                                                        jawaban[nomor] == item ? (
+                                                            <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                                <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
+                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
+                                                            </TouchableOpacity>
+                                                        ) : (
+                                                                <TouchableOpacity onPress={() => { pilih(nomor, item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
+                                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
+                                                                </TouchableOpacity>
+                                                            )
+                                                    ))}
+
+                                            </View>
+                                            <View style={{ flexDirection: "row", marginTop: 20 }}>
+                                                <View style={{ flex: 1, marginRight: 10 }}>
+                                                    {nomor > 0 ? (
+                                                        <Button title="Kembali" onPress={kurangnomor} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                                    ) : (null)}
+                                                </View>
+                                                <View style={{ flex: 1, marginLeft: 10 }}>
+                                                    {nomor >= data.length - 1 ? (
+                                                        props.route.params.lihatsurvey ? (null) : (
+                                                            <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                                        )
+                                                    ) : (
+                                                            <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+
+                                                </View>
+                                            </View>
+                                        </View>
+                                        ) : (<Text>Survey belum dibuat</Text>)}
                                     </View>
-                                    <View style={{ flex: 1, marginLeft: 10 }}>
-                                        {nomor >= data.length - 1 ? (
-                                            props.route.params.lihatsurvey ? (null) : (
-                                                <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                            )
-                                        ) : (
-                                                <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
-
-                                    </View>
-                                </View>
-                            </View>
-                            ) : (<Text>Survey belum dibuat</Text>)}
-
-
+                                )}
 
                         </View>
                     </ScrollView>

@@ -270,20 +270,20 @@ function Kelolakuis(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
+                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Kuis" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>
                     {global.status == 1 ? (null) : (
                         <View >
 
-                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Jumlah Halaman</Text>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Jumlah Soal</Text>
 
-                            <TextInput onChangeText={setjumlah} value={jumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5, flex: 0 }]} keyboardType="numeric"></TextInput>
+                            <TextInput onChangeText={setjumlah} value={jumlah} placeholder="Total Soal" autoCapitalize="none" style={[style.card, { elevation: 5, flex: 0, marginTop: 15 }]} keyboardType="numeric"></TextInput>
 
                         </View>
                     )}
-
+                    <View style={[style.line]}></View>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
@@ -300,7 +300,7 @@ function Kelolakuis(props) {
                                             props.navigation.navigate("Kerjakankuis", { id: item.quiz.id })
                                         } else if (item.materi_id) {
                                             props.navigation.navigate("Kerjakankuis", { id: item.id })
-                                        }  else {
+                                        } else {
                                             global.add = 1
                                             props.navigation.navigate("Tambahkuis", { halaman: jumlah, id: item.id })
                                         }

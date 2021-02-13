@@ -1,4 +1,4 @@
-import React, { createRef, useState } from 'react';
+import React, { createRef, useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 
@@ -18,6 +18,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import ImagePicker from 'react-native-image-picker';
 import { actions, defaultActions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
+import MultiSelect from 'react-native-multiple-select';
 function Tambahmateri(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -52,7 +53,7 @@ function Tambahmateri(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id:props.route.params.id_materi,
+                id: props.route.params.id_materi,
                 title: judul,
                 content: pertanyaan,
                 base64_image: gambar2,
@@ -66,7 +67,7 @@ function Tambahmateri(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setisipesan("Materi berhasil diubah!")
-        toggleModal()
+                    toggleModal()
                 }
                 setspinner(false)
             })
@@ -90,7 +91,8 @@ function Tambahmateri(props) {
                 title: judul,
                 content: pertanyaan,
                 base64_image: gambar2,
-                category_id: props.route.params.id
+                category_id: props.route.params.id,
+                forum_id: forum_id
             })
         })
             .then((response) => response.json())
@@ -184,12 +186,49 @@ function Tambahmateri(props) {
                 setspinner(false)
             });
     }
+    const [items, setitems] = useState([{}])
+    const [selectedItems, setselectedItems] = useState([])
+    const [forum_id, setforum_id] = useState("")
+    const onSelectedItemsChange = (selectedItems) => {
+        setselectedItems(selectedItems)
+        console.log(selectedItems[selectedItems.length - 1])
+        setforum_id(selectedItems[selectedItems.length - 1])
+    };
+
+    const referensi = useRef()
+    const lihatforum = () => {
+        //setspinner(true)
+        fetch(global.url + '/forum/index/all', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setitems(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     useState(() => {
         if (props.route.params) {
             if (props.route.params.id_materi) {
                 lihatdetailmateri()
             }
         }
+        lihatforum()
     })
     return (
         <View style={style.main}>
@@ -230,28 +269,34 @@ function Tambahmateri(props) {
                         <TextInput value={judul} onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Deskripsi Materi</Text>
                         <TextInput value={pertanyaan} onChangeText={setpertanyaan} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
-                        {/*
-                        <View style={[style.card]}>
-                            <RichEditor
-                                ref={textref}
-                                onChange={setpertanyaan}
+                        <View style={{ marginTop: 30 }}>
+                            <MultiSelect
+                                hideTags
+                                items={items}
+                                uniqueKey="id"
+                                ref={referensi}
+                                onSelectedItemsChange={onSelectedItemsChange}
+                                selectedItems={selectedItems}
+                                selectText="Pilih topik yang terkait (1 saja)"
+                                searchInputPlaceholderText="Pilih Topik..."
+                                onChangeInput={(text) => console.log(text)}
+                                submitButtonText="Submit"
                             />
-                            </View>
-                            */}
+                        </View>
                         {gambar ? (
                             <View style={{ marginTop: 15 }}><Image
                                 source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
                                 style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
                                 resizeMode="cover"
-                            ></Image></View>):(null)}
+                            ></Image></View>) : (null)}
 
 
                         <View style={{ flexDirection: "row", marginTop: 30 }}>
                             <View style={{ flex: 1, marginRight: 10 }}>
-                                <Button title="Upload Dokumen" onPress={gantiprofil} buttonStyle={[style.button, { backgroundColor: "#C4C4C4" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                <Button title="Upload Foto Materi" onPress={gantiprofil} buttonStyle={[style.button, { backgroundColor: "#C4C4C4" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 10, justifyContent: "center" }}>
-                                <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Pilih Dokumen Anda</Text>
+                                <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Pilih Foto Anda</Text>
                             </View>
                         </View>
 

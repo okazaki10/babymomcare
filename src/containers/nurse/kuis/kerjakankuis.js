@@ -239,7 +239,7 @@ function Kerjakankuis(props) {
                 setspinner(false)
             });
     }
-
+    const [guide, setguide] = useState(true)
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -336,7 +336,17 @@ function Kerjakankuis(props) {
                                     </View>
                                 </View>
                             ) : (
-                                    <View>
+                                    guide ? (
+                                        <View>
+                                            <View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Guide Menyelesaikan Kuis :</Text>
+                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Pilih salah satu jawaban yang paling benar dari ketiga jawaban</Text>
+                                            </View>
+                                            <View style={{ marginTop: 30 }}>
+                                                <Button title="Lanjut" onPress={() => { setguide(false) }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                            </View>
+                                        </View>
+                                    ) : (<View>
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Pertanyaan {nomor + 1}</Text>
                                         <View style={[style.card, { padding: 22, marginTop: 15 }]}>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{data.questions ? data.questions[nomor].question : ""}</Text>
@@ -373,8 +383,7 @@ function Kerjakankuis(props) {
 
                                             </View>
                                         </View>
-                                    </View>
-
+                                    </View>)
                                 )}
 
                         </View>

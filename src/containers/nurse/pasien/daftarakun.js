@@ -35,7 +35,7 @@ function Daftarakun(props) {
     const referensi = useRef()
     const [spinner, setspinner] = useState(false)
     const lanjut = () => {
-        if (username && password && email && nohp) {
+        if (username && password) {
             global.emaild = email
             global.nohpd = nohp
             global.rekomendasi = selectedItems
@@ -45,12 +45,50 @@ function Daftarakun(props) {
         }
     }
     const pasiendiubah = () => {
-        setisipesan("Data pasien berhasil diubah!")
-        toggleModal()
+        setspinner(true)
+        fetch(global.url + '/patient/data/update', {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                role: "patient",
+                id: props.route.params.id,
+                phone:nohp,
+                email:email,
+                password:password
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    if (json.errors.username) {
+                        ToastAndroid.show(json.errors.username[0], ToastAndroid.SHORT)
+                    } else {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    }
+                } else {
+                    if (props.route.params.selectedItems) {
+                        assignmateri(json.id)
+                    } else {
+                        setisipesan("Data pasien berhasil diubah!")
+                        toggleModal()
+                    }
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+
     }
     const pasiendibuat = () => {
-        setisipesan("Data pasien berhasil dibuat!")
-        toggleModal()
+        
     }
     const [data, setdata] = useState([{}])
     const lihatmateri = () => {
@@ -79,8 +117,39 @@ function Daftarakun(props) {
                 setspinner(false)
             });
     }
+    const lihatpasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/nurse/show', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: props.route.params.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setemail(json.data.email)
+                    setnohp(json.data.phone.toString())
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     useState(() => {
         if (global.add == 0) {
+            lihatpasien()
         }
         lihatmateri()
 
@@ -112,7 +181,9 @@ function Daftarakun(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={toggleModal} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Ok" onPress={()=>{
+                                toggleModal()
+                                props.navigation.goBack()}} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -129,14 +200,17 @@ function Daftarakun(props) {
                             />
                         </View>) : (null)}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Email</Text>
-                        <TextInput onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="email-address"></TextInput>
+                        <TextInput value={email} onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="email-address"></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>No hp</Text>
-                        <TextInput onChangeText={setnohp} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
-                        <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput value={nohp} onChangeText={setnohp} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        {global.add == 1 ? (
+                            <View>
+                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
+                                <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                            </View>) : (null)}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
                         <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <View style={{ marginTop: 30 }}>
+                        {global.add == 1 ? (<View style={{ marginTop: 30 }}>
                             <MultiSelect
                                 hideTags
                                 items={items}
@@ -149,7 +223,8 @@ function Daftarakun(props) {
                                 onChangeInput={(text) => console.log(text)}
                                 submitButtonText="Submit"
                             />
-                        </View>
+                        </View>) : (null)}
+
 
                     </View>
                 </ScrollView>

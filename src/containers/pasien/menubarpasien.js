@@ -108,7 +108,7 @@ function Menubarpasien() {
         name="Reminder"
         component={Tabreminder}
         options={{
-          tabBarLabel: 'Reminder',
+          tabBarLabel: 'Anjuran',
           tabBarIcon: ({color, size}) => (
             <FontAwesomeIcon icon={faClipboardList} size={28} color={color}></FontAwesomeIcon>
           ),
@@ -118,7 +118,7 @@ function Menubarpasien() {
         name="Settings"
         component={Pengaturan}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'Pengaturan',
           tabBarIcon: ({color, size}) => (
             <FontAwesomeIcon icon={faCog} size={28} color={color}></FontAwesomeIcon>
           ),

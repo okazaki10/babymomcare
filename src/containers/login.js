@@ -153,7 +153,7 @@ function Login(props) {
                             <Button title="Masuk" onPress={login} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         </View>
                         <View style={{ flex: 1, marginLeft: 10 }}>
-                            <Button title="Daftar Pasien" onPress={()=>{props.navigation.navigate("Webview")}} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Daftar Nurse" onPress={()=>{props.navigation.navigate("Webview")}} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                     

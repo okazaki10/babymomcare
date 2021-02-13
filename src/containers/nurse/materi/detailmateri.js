@@ -116,14 +116,16 @@ function Detailmateri(props) {
                 <View style={{ flex: 1, padding: 23 }}>
                     {data.quiz ? (global.status == 1 ? (
                         selesai == true ?
-                            (<TouchableOpacity onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id,mode:"review" }) }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
+                            (<TouchableOpacity onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id, mode: "review" }) }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
                                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
                                     <View>
                                         <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>{data2 ? data2.total_point : ""}/{data2 ? data2.total_question : ""}</Text>
+
                                         {/*<Text style={[style.poppinsmedium, { fontSize: 12, textDecorationLine: "underline", color: colors.button }]}>Kerjakan Lagi</Text>*/}
                                     </View>
                                 </View>
+                                <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>Nilai = {(100 * (data2.total_point / data2.total_question)).toString().substr(0,4)}</Text>
                             </TouchableOpacity>
                             ) : (
                                 <Button title="Kerjakan Kuis" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
@@ -140,28 +142,24 @@ function Detailmateri(props) {
                             <Text style={[style.nunitomateri, { fontSize: 14, marginTop: 15, flex: 1 }]}>{data.content}</Text>
                         </HyperLink>
                     </View>
-                    <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Forum Terkait</Text>
-                    <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
-                        {data.forum ? data.forum.map((item) => (<View>
-                            <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Daftarakun") }}>
-                                <Image
-                                    source={require("../../../assets/image/empty.png")}
-                                    style={{ width: 40, height: 40 }}
-                                    resizeMode="contain"
-                                />
-                                <View style={{ marginLeft: 15 }}>
-                                    <Text style={[style.poppinsbold, { fontSize: 12 }]}>Mengapa anak saya kesulitan membaca?</Text>
-                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey }]}>Oleh: Raffi Ahmad</Text>
+                    {data.forum ? (
+                        <View>
+                            <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Forum Terkait</Text>
+                            <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
+                                <View>
+                                    <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Forumdetail", { id: data.forum.id }) }}>
+                                        <View style={{ marginLeft: 15 }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 12 }]}>{data.forum.title}</Text>
+                                            {/*<Text style={[style.nunitosans, { fontSize: 11, color: colors.grey }]}>Oleh: Raffi Ahmad</Text>*/}
+                                        </View>
+                                    </TouchableOpacity>
                                 </View>
-                            </TouchableOpacity>
-                            <View style={[style.line, { marginBottom: 15 }]}></View>
-                        </View>)) : (null)}
-
-
-                    </View>
+                            </View>
+                        </View>
+                    ) : (null)}
                 </View>
             </ScrollView>
-        </View>
+        </View >
     );
 };
 

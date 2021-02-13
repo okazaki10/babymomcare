@@ -204,7 +204,7 @@ function Datanurse(props) {
                                     <Text style={[style.nunitosans, style.datapasien]}>Lama Bekerja</Text>
                                     <Text style={[style.nunitosans, style.datapasien2]}>: {data.working_exp} tahun</Text>
                                 </View>
-                                <Button title="Lihat Log Nurse" onPress={() => { props.navigation.navigate("Logperawat") }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                
                             </View>
                         </View>
                     </ScrollView>

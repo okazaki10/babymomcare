@@ -28,7 +28,7 @@ const style = StyleSheet.create({
   },
   main: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "#fafafa"
   },
   container: {
     flex: 1,

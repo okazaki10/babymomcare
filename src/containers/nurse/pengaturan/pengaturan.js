@@ -155,8 +155,10 @@ function Pengaturan(props) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
-                <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Settings</Text>
-                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
+            <View style={{ backgroundColor: "white", height: 69, justifyContent: "center" }}>
+                    <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center",marginTop:5 }]}>Pengaturan</Text>
+                </View>
+                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC', marginTop: 0 }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
 
                     <ScrollView>

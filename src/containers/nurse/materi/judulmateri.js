@@ -228,7 +228,7 @@ function Judulmateri(props) {
                     {global.status == 2 || global.status == 3 ||global.status == 4 ? (
                         <Button title="+ Tambah Materi" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     ) : (null)}
-                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
+                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0,  marginBottom: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Judul Materi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>

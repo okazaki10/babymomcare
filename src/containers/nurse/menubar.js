@@ -124,7 +124,7 @@ function Menubar() {
         name="Settings"
         component={Pengaturan}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'Pengaturan',
           tabBarIcon: ({ color, size }) => (
             <FontAwesomeIcon icon={faCog} size={28} color={color}></FontAwesomeIcon>
           ),

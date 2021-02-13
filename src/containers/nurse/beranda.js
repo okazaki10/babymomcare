@@ -166,7 +166,7 @@ function Beranda(props) {
 
                 </View>
                 <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>{user.name}</Text>
-                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Nurse" : ""}{global.status == 3 ? "Admin" : ""}{global.status == 4 ? "Super Admin" : ""}</Text>
+                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Perawat" : ""}{global.status == 3 ? "Admin" : ""}{global.status == 4 ? "Super Admin" : ""}</Text>
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 <View style={{ flex: 1 }}>
                     <ScrollView>
@@ -243,7 +243,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Nurse (approved)</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Perawat (disetujui)</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => { props.navigation.navigate("Nurse", { approved: 1 }) }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
@@ -251,7 +251,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Nurse (unapproved)</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Perawat (belum disetujui)</Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>) : (null)}

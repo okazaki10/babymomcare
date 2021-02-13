@@ -45,10 +45,10 @@ function Kelolasurvey(props) {
         }
     }
     const [id_survey, setid_survey] = useState("")
-    const [judul_kuis,setjudul_kuis] = useState("")
+    const [judul_kuis, setjudul_kuis] = useState("")
     const ubahkuis = () => {
         toggleModal2()
-        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice,judul_kuis:judul_kuis})
+        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice, judul_kuis: judul_kuis })
         global.add = 0
     }
 
@@ -224,8 +224,10 @@ function Kelolasurvey(props) {
                                     <Button title="+ Tambah Survey" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                 </View>
                             </View>
+                            <View style={[style.line]}></View>
                         </View>
                     )}
+  
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>

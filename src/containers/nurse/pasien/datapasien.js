@@ -36,16 +36,16 @@ function Datapasien(props) {
     const [kosong, setkosong] = useState(false)
     const ubahpasien = (index) => {
         if (index == 0) {
-            props.navigation.navigate("Daftarbayi", { nama: "Edit Data Bayi",id:props.route.params.id })
+            props.navigation.navigate("Daftarbayi", { nama: "Edit Data Bayi", id: props.route.params.id })
             global.add = 0
         } else if (index == 1) {
-            props.navigation.navigate("Daftarortu", { nama: "Ubah Ortu",id:props.route.params.id })
+            props.navigation.navigate("Daftarortu", { nama: "Ubah Ortu", id: props.route.params.id })
             global.add = 0
         }
-        /* else if (index == 2) {
-            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun",id:props.route.params.id })
+        else if (index == 2) {
+            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun", id: props.route.params.id })
             global.add = 0
-        }*/
+        }
     }
 
     const addpasien = () => {
@@ -75,12 +75,12 @@ function Datapasien(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id:props.route.params.id,
+                id: props.route.params.id,
             })
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+                console.log(JSON.stringify(json))
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
@@ -164,41 +164,41 @@ function Datapasien(props) {
                                     <TouchableOpacity onPress={() => { ubahpasien(0) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Nama</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data?data.baby_name:""}</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data ? data.baby_name : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.baby_birthday:""}</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.baby_birthday : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Jenis Kelamin</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.baby_gender:""}</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.baby_gender : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Panjang bayi lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.born_length:""} cm</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.born_length : ""} cm</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Lingkar kepala lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.lingkar_kepala_lahir:""} cm</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.lingkar_kepala_lahir : ""} cm</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Lingkar kepala sekarang</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.lingkar_kepala_sekarang:""} cm</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.lingkar_kepala_sekarang : ""} cm</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>BB Lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.born_weight:""} gram</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.born_weight : ""} gram</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Usia gestas</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.usia_gestas:""} Minggu</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.usia_gestas : ""} Minggu</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Apakah diharapkan orang tua?</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.harapan_orangtua == 1?"Iya":"Tidak":""}</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.harapan_orangtua == 1 ? "Iya" : "Tidak" : ""}</Text>
                                         </View>
-                                 
+
                                     </TouchableOpacity>
                                 </View>) : (null)}
                                 {menuswitch == 1 ? (<View>
@@ -211,66 +211,66 @@ function Datapasien(props) {
                                             <Text style={[style.poppinsbold, { fontSize: 14, color: colors.grey, paddingRight: 50 }]}>Data Ibu</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Nama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_name:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.mother_name : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_birthday:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.mother_birthday : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Pekerjaan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_job:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.mother_job : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tingkat pendidikan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_education:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.mother_education : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Agama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.mother_religion:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.mother_religion : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Paritas</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.paritas:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.paritas : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Jumlah anak</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.jumlah_anak == "kds2"?"Kurang dari sama dengan 2":"Lebih dari sama dengan 2":""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.jumlah_anak == "kds2" ? "Kurang dari sama dengan 2" : "Lebih dari sama dengan 2" : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Pendapatan keluaraga</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.pendapatan_keluarga == "kd3"?"Kurang dari 3 jt":"Lebih dari sama dengan 3 jt":""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.pendapatan_keluarga == "kd3" ? "Kurang dari 3 jt" : "Lebih dari sama dengan 3 jt" : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Pengalaman merawat bayi</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.pengalaman_merawat == "1"?"Pernah":"Tidak pernah":""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.pengalaman_merawat == "1" ? "Pernah" : "Tidak pernah" : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Apakah ibu tinggal dengan suami?</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.tinggal_dengan_suami=="1"?"Iya":"Tidak":""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.tinggal_dengan_suami == "1" ? "Iya" : "Tidak" : ""}</Text>
                                             </View>
 
                                             <Text style={[style.poppinsbold, { fontSize: 14, color: colors.grey, marginTop: 22, paddingRight: 50 }]}>Data Ayah</Text>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Nama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_name:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.father_name : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_birthday:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.father_birthday : ""}</Text>
                                             </View>
 
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Pekerjaan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_job:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.father_job : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tingkat pendidikan</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_education:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.father_education : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Agama</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.father_religion:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.father_religion : ""}</Text>
                                             </View>
                                         </View>
                                     </TouchableOpacity>
@@ -284,25 +284,26 @@ function Datapasien(props) {
                                         <View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Email</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data?data.email:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data ? data.email : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>No Hp</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.email:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.phone : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Username</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data?data.username:""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.username : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Password</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: *******</Text>
                                             </View>
-                                            <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Rekomendasi Materi</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: makanan</Text>
-                                            </View>
-                                    
+                                            {data ? data.materi.map((item,index) =>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text style={[style.nunitosans, style.datapasien]}>{index==0?"Rekomendasi Materi":""}</Text>
+                                                    <Text style={[style.nunitosans, style.datapasien2]}>: {item.title}</Text>
+                                                </View>
+                                            ) : ""}
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)}

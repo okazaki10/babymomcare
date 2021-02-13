@@ -171,14 +171,15 @@ function Kontakperawat(props) {
                             <View>
                                 <TouchableOpacity onPress={() => { openWhatsApp("", data.phone) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
-                                        source={{ uri: "https://logos-world.net/wp-content/uploads/2020/05/WhatsApp-Logo.png" }}
-                                        style={{ width: 70, height: 65 }}
+                                        source={{ uri: "https://image.flaticon.com/icons/png/512/124/124034.png" }}
+                                        style={{ width:40, height: 65,borderRadius:50,marginRight:15,marginLeft:15}}
                                         resizeMode="contain"
                                     />
                                     <View style={{ marginLeft: 0, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>{data.phone}</Text>
                                     </View>
                                 </TouchableOpacity>
+                                {/*
                                 <TouchableOpacity onPress={() => { openemail("", data.email) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <View style={{ width: 70, height: 65, justifyContent: "center", alignItems: "center" }}>
                                         <Image
@@ -191,6 +192,7 @@ function Kontakperawat(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>{data.email}</Text>
                                     </View>
                                 </TouchableOpacity>
+                                */}
                                 <TouchableOpacity onPress={() => { openMaps(data.hospital) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <View style={{ width: 70, height: 65, justifyContent: "center", alignItems: "center" }}>
                                         <Image
