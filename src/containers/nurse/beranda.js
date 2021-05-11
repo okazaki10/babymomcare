@@ -148,29 +148,29 @@ function Beranda(props) {
             />
 
             <View style={{ flex: 1 }}>
-            <ScrollView>
-                <View style={{ alignItems: "flex-end", padding: 22 }}>
-                    <TouchableOpacity onPress={() => { props.navigation.navigate("Notifikasi") }} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
-                        <Ionicons name={'notifications-outline'} size={24} color="#92B1CD" />
-                    </TouchableOpacity>
-                </View>
-                <View style={{ width: "100%", justifyContent: "center", alignItems: 'center' }}>
-                    {global.status == 1 ? (<Image
-                        source={require("../../assets/image/addpeople.png")}
-                        style={{ width: 100, height: 100 }}
-                        resizeMode="contain"
-                    />) : (<Image
-                        source={require("../../assets/image/profilcewe.png")}
-                        style={{ width: 100, height: 100 }}
-                        resizeMode="contain"
-                    />)}
+                <ScrollView>
+                    <View style={{ alignItems: "flex-end", padding: 22 }}>
+                        <TouchableOpacity onPress={() => { props.navigation.navigate("Notifikasi") }} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
+                            <Ionicons name={'notifications-outline'} size={24} color="#92B1CD" />
+                        </TouchableOpacity>
+                    </View>
+                    <View style={{ width: "100%", justifyContent: "center", alignItems: 'center' }}>
+                        {global.status == 1 ? (<Image
+                            source={require("../../assets/image/addpeople.png")}
+                            style={{ width: 100, height: 100 }}
+                            resizeMode="contain"
+                        />) : (<Image
+                            source={require("../../assets/image/profilcewe.png")}
+                            style={{ width: 100, height: 100 }}
+                            resizeMode="contain"
+                        />)}
 
-                </View>
-                <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>{user.name}</Text>
-                <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Perawat" : ""}{global.status == 3 ? "Admin" : ""}{global.status == 4 ? "Super Admin" : ""}</Text>
-                <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
-                <View style={{ flex: 0 }}>
-               
+                    </View>
+                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>{user.name}</Text>
+                    <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Perawat" : ""}{global.status == 3 ? "Admin" : ""}{global.status == 4 ? "Super Admin" : ""}</Text>
+                    <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
+                    <View style={{ flex: 0 }}>
+
                         <View style={{ padding: 3, padding: 20 }}>
                             <View>
                                 {global.status == 2 || global.status == 3 || global.status == 4 ? (
@@ -346,10 +346,21 @@ function Beranda(props) {
                                     </TouchableOpacity>
                                 ) : (null)}
 
+                                <TouchableOpacity onPress={() => {
+
+                                    props.navigation.navigate("Faq")
+                                }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0, flex: 0 }]}>
+                                    <View
+                                        style={{ height: 65 }}
+                                    />
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Faq</Text>
+                                    </View>
+                                </TouchableOpacity>
                             </View>
                         </View>
-              
-                </View>
+
+                    </View>
                 </ScrollView>
 
             </View>

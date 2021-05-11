@@ -57,6 +57,7 @@ import Lihathasilkuis from './containers/nurse/kuis/lihathasilkuis';
 import Changepassword from './containers/nurse/pasien/changepassword';
 import Webview from './containers/webview';
 import Userlog from './containers/nurse/userlog';
+import Faq from './containers/nurse/faq/faq';
 
 
 
@@ -323,6 +324,11 @@ function Navigation() {
           name="Userlog"
           component={Userlog}
           options={{ headerTitle:"User log"}}
+        />
+        <Stack.Screen
+          name="Faq"
+          component={Faq}
+          options={{ headerTitle:"Faq"}}
         />
       </Stack.Navigator>
     </NavigationContainer>
