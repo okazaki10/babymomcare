@@ -10,11 +10,12 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-import DateTimePicker from '@react-native-community/datetimepicker';
+
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
+import DatePicker from 'react-native-date-picker'
 function Daftarbayi(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -45,15 +46,9 @@ function Daftarbayi(props) {
         }
     }
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-    };
 
     const showDatepicker = (tipe) => {
-        setMode(tipe);
-        setShow(true);
+        toggleModal4()
     };
 
     const [spinner, setspinner] = useState(false)
@@ -64,17 +59,17 @@ function Daftarbayi(props) {
         toggleModal()
     }
     const lanjut = () => {
-        if (nama&&bbnow&&pjl&&jenis_kelamin&&diharapkan&&gestas&&lk){
-        global.baby_name = nama
-        global.baby_birthday = format(date, "yyyy-MM-dd HH:mm:ss")
-        global.born_weight = bbnow
-        global.born_length = pjl
-        global.baby_gender = jenis_kelamin
-        global.diharapkan = diharapkan
-        global.gestas = gestas
-        global.lk = lk
-        props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password, selectedItems: props.route.params.selectedItems })
-        }else{
+        if (nama && bbnow && pjl && jenis_kelamin && diharapkan && gestas && lk) {
+            global.baby_name = nama
+            global.baby_birthday = format(date, "yyyy-MM-dd HH:mm:ss")
+            global.born_weight = bbnow
+            global.born_length = pjl
+            global.baby_gender = jenis_kelamin
+            global.diharapkan = diharapkan
+            global.gestas = gestas
+            global.lk = lk
+            props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password, selectedItems: props.route.params.selectedItems })
+        } else {
             ToastAndroid.show("Pastikan data tidak ada yang kosong", ToastAndroid.SHORT)
         }
     }
@@ -170,20 +165,26 @@ function Daftarbayi(props) {
             lihatpasien()
         }
     })
+    const [isModalVisible4, setModalVisible4] = useState(false);
+    const toggleModal4 = () => {
+        setModalVisible4(!isModalVisible4);
+    };
     return (
         <View style={style.main}>
 
-            {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
-
-                />
-            )}
+            <Modal isVisible={isModalVisible4}
+                onBackdropPress={toggleModal4}
+                onBackButtonPress={toggleModal4}>
+                <View style={style.content}>
+                    <View>
+                        <DatePicker
+                            date={date}
+                            onDateChange={setDate}
+                            mode="date"
+                        />
+                    </View>
+                </View>
+            </Modal>
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}

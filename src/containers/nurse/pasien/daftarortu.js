@@ -11,11 +11,11 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
+import DatePicker from 'react-native-date-picker'
 function Daftarortu(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -43,34 +43,17 @@ function Daftarortu(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-    };
+
+
 
     const showDatepicker = (tipe) => {
-        setMode(tipe);
-        setShow(true);
-    };
-    const onChange2 = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow2(Platform.OS === 'ios');
-        setDate2(currentDate);
+        toggleModal4()
     };
 
+
     const showDatepicker2 = (tipe) => {
-        setMode2(tipe);
-        setShow2(true);
+        toggleModal5()
     };
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
@@ -283,29 +266,45 @@ function Daftarortu(props) {
         props.navigation.navigate("Listpasien")
         toggleModal()
     }
+    const [isModalVisible4, setModalVisible4] = useState(false);
+    const toggleModal4 = () => {
+        setModalVisible4(!isModalVisible4);
+    };
+    const [isModalVisible5, setModalVisible5] = useState(false);
+    const toggleModal5 = () => {
+        setModalVisible5(!isModalVisible5);
+    };
     return (
         <View style={style.main}>
 
-            {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
-                />
-            )}
-            {show2 && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date2}
-                    mode={mode2}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange2}
-                />
-            )}
+            <Modal isVisible={isModalVisible5}
+                onBackdropPress={toggleModal5}
+                onBackButtonPress={toggleModal5}>
+                <View style={style.content}>
+                    <View>
+                        <DatePicker
+                            date={date2}
+                            onDateChange={setDate2}
+                            mode="date"
+                        />
+                    </View>
+                </View>
+            </Modal>
+
+            <Modal isVisible={isModalVisible4}
+                onBackdropPress={toggleModal4}
+                onBackButtonPress={toggleModal4}>
+                <View style={style.content}>
+                    <View>
+                        <DatePicker
+                            date={date}
+                            onDateChange={setDate}
+                            mode="date"
+                        />
+                    </View>
+                </View>
+            </Modal>
+
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -497,9 +496,9 @@ function Daftarortu(props) {
                             <Button title="Simpan" onPress={pasiendibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         </View>
                     </View>) : (
-                        <View style={{ padding: 22 }}>
-                            <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                        </View>)}
+                    <View style={{ padding: 22 }}>
+                        <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    </View>)}
 
 
             </View>
