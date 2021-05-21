@@ -56,9 +56,9 @@ function Daftarakun(props) {
             body: JSON.stringify({
                 role: "patient",
                 id: props.route.params.id,
-                phone:nohp,
-                email:email,
-                password:password
+                phone: nohp,
+                email: email,
+                password: password
             })
         })
             .then((response) => response.json())
@@ -71,8 +71,8 @@ function Daftarakun(props) {
                         ToastAndroid.show(json.message, ToastAndroid.SHORT)
                     }
                 } else {
-                    if (props.route.params.selectedItems) {
-                        assignmateri(json.id)
+                    if (selectedItems) {
+                        assignmateri(props.route.params.id)
                     } else {
                         setisipesan("Data pasien berhasil diubah!")
                         toggleModal()
@@ -88,7 +88,7 @@ function Daftarakun(props) {
 
     }
     const pasiendibuat = () => {
-        
+
     }
     const [data, setdata] = useState([{}])
     const lihatmateri = () => {
@@ -147,6 +147,39 @@ function Daftarakun(props) {
                 setspinner(false)
             });
     }
+
+    const assignmateri = (id_pasien) => {
+        setspinner(true)
+        fetch(global.url + '/register/materi', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                id: id_pasien,
+                materis: selectedItems
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data pasien berhasil dibuat!")
+                    toggleModal()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    
     useState(() => {
         if (global.add == 0) {
             lihatpasien()
@@ -181,9 +214,10 @@ function Daftarakun(props) {
                         <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
                         <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
                         <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
-                            <Button title="Ok" onPress={()=>{
+                            <Button title="Ok" onPress={() => {
                                 toggleModal()
-                                props.navigation.goBack()}} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                props.navigation.goBack()
+                            }} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 </View>
@@ -209,8 +243,8 @@ function Daftarakun(props) {
                                 <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                             </View>) : (null)}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
-                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        {global.add == 1 ? (<View style={{ marginTop: 30 }}>
+                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]} autoCapitalize="none"></TextInput>
+                        {global.add == 0 ? (<View style={{ marginTop: 30 }}>
                             <MultiSelect
                                 hideTags
                                 items={items}
@@ -232,17 +266,17 @@ function Daftarakun(props) {
                 {global.add == 1 ? (
                     <View style={{ padding: 22, flexDirection: "row" }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <Button title="Batalkan" buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Batalkan" onPress={()=>{props.navigation.goBack()}} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                         <View style={{ flex: 1, marginLeft: 10 }}>
                             <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         </View>
                     </View>
                 ) : (
-                        <View style={{ padding: 22 }}>
-                            <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                        </View>
-                    )}
+                    <View style={{ padding: 22 }}>
+                        <Button title="Simpan" onPress={pasiendiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    </View>
+                )}
 
             </View>
 

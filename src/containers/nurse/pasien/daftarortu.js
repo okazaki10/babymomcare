@@ -21,17 +21,17 @@ function Daftarortu(props) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [namaibu, setnamaibu] = useState("")
-    const [agamaibu, setagamaibu] = useState("")
-    const [pendidikanibu, setpendidikanibu] = useState("sarjana")
+    const [agamaibu, setagamaibu] = useState("jawa")
+    const [pendidikanibu, setpendidikanibu] = useState("SMA")
     const [pengalamanibu, setpengalamanibu] = useState("1")
     const [pekerjaanibu, setpekerjaanibu] = useState("")
     const [paritas, setparitas] = useState("")
     const [namaayah, setnamaayah] = useState("")
-    const [agamaayah, setagamaayah] = useState("")
-    const [pendidikanayah, setpendidikanayah] = useState("sarjana")
+    const [agamaayah, setagamaayah] = useState("jawa")
+    const [pendidikanayah, setpendidikanayah] = useState("SMA")
     const [pengalamanayah, setpengalamanayah] = useState("")
     const [pekerjaanayah, setpekerjaanayah] = useState("")
-    const [jumlah_anak, setjumlah_anak] = useState("kds2")
+    const [jumlah_anak, setjumlah_anak] = useState("")
     const [pendapatan, setpendapatan] = useState("kd3")
     const [suami, setsuami] = useState("1")
     const [show, setShow] = useState(false);
@@ -88,7 +88,7 @@ function Daftarortu(props) {
                     setagamaayah(json.data.father_religion)
                     setpendidikanayah(json.data.father_job)
                     setpekerjaanayah(json.data.father_job)
-                    setjumlah_anak(json.data.jumlah_anak)
+                    setjumlah_anak(json.data.jumlah_anak.toString())
                     setpendapatan(json.data.pendapatan_keluarga)
                     setpengalamanibu(json.data.pengalaman_merawat)
                     setsuami(json.data.tinggal_dengan_suami)
@@ -213,12 +213,15 @@ function Daftarortu(props) {
                         ToastAndroid.show(json.message, ToastAndroid.SHORT)
                     }
                 } else {
+                    setisipesan("Data pasien berhasil dibuat!")
+                    toggleModal()
+                    /*
                     if (props.route.params.selectedItems) {
                         assignmateri(json.id)
                     } else {
                         setisipesan("Data pasien berhasil dibuat!")
                         toggleModal()
-                    }
+                    }*/
                 }
                 setspinner(false)
             })
@@ -230,7 +233,7 @@ function Daftarortu(props) {
 
     }
 
-    const assignmateri = (id_pasien) => {
+    /*const assignmateri = (id_pasien) => {
         setspinner(true)
         fetch(global.url + '/register/materi', {
             method: 'POST',
@@ -260,8 +263,8 @@ function Daftarortu(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
             });
-
     }
+    */
     const kembali = () => {
         props.navigation.navigate("Listpasien")
         toggleModal()
@@ -393,13 +396,29 @@ function Daftarortu(props) {
                                 }
                                 }
                                 mode="dropdown">
-                                <Picker.Item label="Sarjana" value="sarjana" />
-                                <Picker.Item label="Magister" value="magister" />
-                                <Picker.Item label="Doktor" value="doktor" />
+                                <Picker.Item label="SD" value="SD" />
+                                <Picker.Item label="SMP" value="SMP" />
+                                <Picker.Item label="SMA" value="SMA" />
+                                <Picker.Item label="DIPLOMA/PERGURUAN TINGGI" value="DIPLOMA/PERGURUAN TINGGI" />
                             </Picker>
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
-                        <TextInput value={agamaibu} onChangeText={setagamaibu} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Suku</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={agamaibu}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setagamaibu(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Batak" value="batak" />
+                                <Picker.Item label="Jawa" value="jawa" />
+                                <Picker.Item label="Sunda" value="sunda" />
+                                <Picker.Item label="Betawi" value="betawi" />
+                                <Picker.Item label="Lainnya" value="betawi" />
+                            </Picker>
+                        </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Paritas</Text>
                         <TextInput value={paritas} onChangeText={setparitas} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ayah</Text>
@@ -434,27 +453,32 @@ function Daftarortu(props) {
                                 }
                                 }
                                 mode="dropdown">
-                                <Picker.Item label="Sarjana" value="sarjana" />
-                                <Picker.Item label="Magister" value="magister" />
-                                <Picker.Item label="Doktor" value="doktor" />
+                                <Picker.Item label="SD" value="SD" />
+                                <Picker.Item label="SMP" value="SMP" />
+                                <Picker.Item label="SMA" value="SMA" />
+                                <Picker.Item label="DIPLOMA/PERGURUAN TINGGI" value="DIPLOMA/PERGURUAN TINGGI" />
                             </Picker>
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Agama</Text>
-                        <TextInput value={agamaayah} onChangeText={setagamaayah} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jumlah Anak</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Suku</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
-                                selectedValue={jumlah_anak}
+                                selectedValue={agamaayah}
                                 onValueChange={(itemValue, itemIndex) => {
-                                    setjumlah_anak(itemValue)
+                                    setagamaayah(itemValue)
                                     console.log(itemValue)
                                 }
                                 }
                                 mode="dropdown">
-                                <Picker.Item label="<= 2" value="kds2" />
-                                <Picker.Item label="> 2" value="ld2" />
+                                <Picker.Item label="Batak" value="batak" />
+                                <Picker.Item label="Jawa" value="jawa" />
+                                <Picker.Item label="Sunda" value="sunda" />
+                                <Picker.Item label="Betawi" value="betawi" />
+                                <Picker.Item label="Lainnya" value="betawi" />
                             </Picker>
                         </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jumlah Anak</Text>
+                        <TextInput value={jumlah_anak} onChangeText={setjumlah_anak} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType={"numeric"}></TextInput>
+
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pengalaman Merawat Bayi</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker

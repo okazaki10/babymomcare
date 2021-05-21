@@ -198,7 +198,7 @@ function Detailresumepulang(props) {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+                console.log(JSON.stringify(json))
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
@@ -226,7 +226,7 @@ function Detailresumepulang(props) {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+                console.log(JSON.stringify(json))
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
@@ -258,7 +258,7 @@ function Detailresumepulang(props) {
         })
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
+                console.log(JSON.stringify(json))
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
@@ -411,10 +411,29 @@ function Detailresumepulang(props) {
                                             </View>
                                         ) : (null)}
                                         {global.mode == "resume" ? (
-                                            <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
-                                                <Text style={{ marginTop: 15 }}>: </Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.nurse_note}</Text>
+                                            <View>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
+                                                    <Text style={{ marginTop: 15 }}>: </Text>
+                                                    <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.nurse_note}</Text>
+                                                </View>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text style={[style.nunitosans, style.datapasien]}>Hasil Penunjang</Text>
+                                                    <Text style={{ marginTop: 15 }}>: </Text>
+                                                    <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.hasil_penunjang}</Text>
+                                                </View>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text style={[style.nunitosans, style.datapasien]}>Terapi Pulang</Text>
+                                                    <Text style={{ marginTop: 15 }}>: </Text>
+                                                    <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.terapi_pulang}</Text>
+                                                </View>
+                                                {datakontrol.advices ? datakontrol.advices.map((item, index) =>
+                                                    <View style={{ flexDirection: "row" }}>
+                                                        <Text style={[style.nunitosans, style.datapasien]}>{index == 0 ? "Anjuran Pasien" : ""}</Text>
+                                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                                        <Text style={[style.nunitosans, style.datapasien2]}>{item.name}</Text>
+                                                    </View>
+                                                ) : "Anjuran Pasien"}
                                             </View>) : (<View>
                                                 <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan dari perawat</Text>
                                                 <View>

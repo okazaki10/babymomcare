@@ -226,7 +226,7 @@ function Datapasien(props) {
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.mother_education : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Agama</Text>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Suku</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.mother_religion : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
@@ -269,7 +269,7 @@ function Datapasien(props) {
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.father_education : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Agama</Text>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Suku</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.father_religion : ""}</Text>
                                             </View>
                                         </View>
@@ -303,7 +303,7 @@ function Datapasien(props) {
                                                     <Text style={[style.nunitosans, style.datapasien]}>{index==0?"Rekomendasi Materi":""}</Text>
                                                     <Text style={[style.nunitosans, style.datapasien2]}>: {item.title}</Text>
                                                 </View>
-                                            ) : ""}
+                                            ) : "Anda belum mengisi rekomendasi materi"}
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)}

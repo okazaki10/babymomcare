@@ -87,7 +87,7 @@ function Resumepulang(props) {
     const tambahresume = (id) => {
         global.mode = "resume"
         global.add = 1
-        props.navigation.navigate("Tambahresume", { id: id })
+        props.navigation.navigate("Tambahresume", { nama:"Tambah resume pulang",id: id })
     }
     const ubahresume = () => {
         toggleModal2()

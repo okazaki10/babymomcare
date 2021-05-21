@@ -144,7 +144,7 @@ function Login(props) {
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
                         <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
-                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]} autoCapitalize="none"></TextInput>
                     </View>
                 </ScrollView>
               

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
@@ -14,6 +14,8 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-picker';
+import DatePicker from 'react-native-date-picker';
+import MultiSelect from 'react-native-multiple-select';
 function Tambahresume(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -27,6 +29,19 @@ function Tambahresume(props) {
     const [show, setShow] = useState(false);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
+    const [hasil_penunjang,sethasil_penunjang] = useState("")
+    const [terapi_pulang,setterapi_pulang] = useState("")
+
+    const [items, setitems] = useState([{}])
+    const [selectedItems, setselectedItems] = useState([])
+
+    const onSelectedItemsChange = (selectedItems) => {
+        setselectedItems(selectedItems)
+        console.log(selectedItems)
+    };
+
+    const referensi = useRef()
+    
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -49,7 +64,7 @@ function Tambahresume(props) {
         setMode(tipe);
         setShow(true);
     };
-    
+
     const [spinner, setspinner] = useState(false)
     const [gambar, setgambar] = useState("")
     const [gambar2, setgambar2] = useState("")
@@ -66,7 +81,7 @@ function Tambahresume(props) {
         setayd(index => [...index, ""])
     }
     const [anjuran, setanjuran] = useState("")
-    const [id_resume,setid_resume] = useState("")
+    const [id_resume, setid_resume] = useState("")
     const resumediubah = () => {
         setspinner(true)
         fetch(global.url + '/kontrol/update', {
@@ -77,7 +92,7 @@ function Tambahresume(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id:id_resume,
+                id: id_resume,
                 title: "Data Resume",
                 date: format(date, "yyyy-MM-dd HH:mm:ss"),
                 tempat_kontrol: tempatkontrol,
@@ -128,6 +143,7 @@ function Tambahresume(props) {
                 temperature: suhu,
                 base64_img: gambar2,
                 note: anjuran,
+        
                 mode: "resume",
                 patient_id: props.route.params.id
             })
@@ -169,6 +185,9 @@ function Tambahresume(props) {
                 temperature: suhu,
                 base64_img: gambar2,
                 nurse_note: anjuran,
+                hasil_penunjang:hasil_penunjang,
+                terapi_pulang:terapi_pulang,
+                advices:selectedItems,
                 mode: "resume",
                 patient_id: props.route.params.id
             })
@@ -201,7 +220,7 @@ function Tambahresume(props) {
                 'Authorization': 'Bearer ' + global.key,
             },
             body: JSON.stringify({
-                id:props.route.params.id,
+                id: props.route.params.id,
                 order: 1,
                 date: format(date, "yyyy-MM-dd HH:mm:ss"),
                 tempat_kontrol: tempatkontrol,
@@ -412,7 +431,38 @@ function Tambahresume(props) {
                 setspinner(false)
             });
     }
+    const [isModalVisible4, setModalVisible4] = useState(false);
+    const toggleModal4 = () => {
+        setModalVisible4(!isModalVisible4);
+    };
+    const lihatadvice = () => {
+        //setspinner(true)
+        fetch(global.url + '/advice/list', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setitems(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
     useState(() => {
+        lihatadvice()
         if (global.add == 0) {
             if (global.mode == "kontrol") {
                 lihatkontrol()
@@ -428,17 +478,21 @@ function Tambahresume(props) {
 
     return (
         <View style={style.main}>
-            {show && (
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
 
-                />
-            )}
+            <Modal isVisible={isModalVisible4}
+                onBackdropPress={toggleModal4}
+                onBackButtonPress={toggleModal4}>
+                <View style={style.content}>
+                    <View>
+                        <DatePicker
+                            date={date}
+                            onDateChange={setDate}
+                            mode="date"
+                        />
+                    </View>
+                </View>
+            </Modal>
+
             <StatusBar backgroundColor={colors.primary} />
             <Spinner
                 visible={spinner}
@@ -474,7 +528,7 @@ function Tambahresume(props) {
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tanggal Kontrol Selanjutnya</Text>
                         <View style={{ flexDirection: "row" }} >
-                            <TouchableOpacity onPress={() => showDatepicker('date')} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
+                            <TouchableOpacity onPress={toggleModal4} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
                                 <View style={{ marginLeft: 10 }}>
                                     <Text style={[style.nunitosansemi, { fontSize: 15, color: "black", textDecorationLine: "underline" }]}>{format(date, "dd'/'MM'/'yyyy'", { locale: id })}</Text>
                                 </View>
@@ -513,17 +567,38 @@ function Tambahresume(props) {
                             <TextInput value={suhu} onChangeText={setsuhu} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>celcius</Text>
                         </View>
-
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>{global.status == 1 ? "Catatan Tambahan" : "Catatan dari perawat"}</Text>
-                        <View>
+                        {global.status == 1 ? (<View>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan tambahan</Text>
                             <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                        </View>) : (<View>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan dari perawat</Text>
+                            <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Hasil Penunjang</Text>
+                            <TextInput value={hasil_penunjang} onChangeText={sethasil_penunjang} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Terapi Pulang</Text>
+                            <TextInput value={terapi_pulang} onChangeText={setterapi_pulang} style={[style.card, { elevation: 5, marginTop: 15,marginBottom:22 }]} multiline={true}></TextInput>
+                            <MultiSelect
+                                hideTags
+                                items={items}
+                                uniqueKey="id"
+                                ref={referensi}
+                                onSelectedItemsChange={onSelectedItemsChange}
+                                selectedItems={selectedItems}
+                                selectText="Pilih Saran Anjuran"
+                                searchInputPlaceholderText="Pilih Anjuran..."
+                                onChangeInput={(text) => console.log(text)}
+                                submitButtonText="Submit"
+                            />
+                        </View>)}
+                        <View>
+
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Upload Foto Bayi</Text>
                         {gambar ? (<Image
                             source={{ uri: gambar == "" ? "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" : gambar }}
                             style={{ width: "100%", height: DEVICE_WIDTH * 0.7 }}
                             resizeMode="cover"
-                        ></Image>):(null)}
+                        ></Image>) : (null)}
 
 
                         <View style={{ flexDirection: "row", marginTop: 15 }}>
@@ -547,11 +622,11 @@ function Tambahresume(props) {
                                         resumedibuat2()
                                     }
                                 }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
-                                    <Button title="Simpan" onPress={resumediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                                <Button title="Simpan" onPress={resumediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                         </View>) : (<View>
                             {global.add == 1 ? (
                                 <Button title="Simpan" onPress={kontroldibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
-                                    <Button title="Simpan" onPress={kontroldiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                                <Button title="Simpan" onPress={kontroldiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                         </View>)}
 
                     </View>
