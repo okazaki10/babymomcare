@@ -295,7 +295,7 @@ function Historykuis(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                <Button title="Kerjakan Lagi" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: props.route.params.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    {props.route.params?.admin == 1?(null):(<Button title="Kerjakan Lagi" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: props.route.params.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
@@ -318,8 +318,6 @@ function Historykuis(props) {
                                         </View>
                                     )}
                                 </TouchableOpacity>) : (null))}
-
-
                             </View>
                         </View>
                     </ScrollView>

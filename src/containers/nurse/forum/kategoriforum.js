@@ -192,11 +192,11 @@ function Kategoriforum(props) {
             <View style={{ flex: 1 }}>
 
                 {global.status == 2 ? (<View>
-                    <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Topik Forum</Text>
+                    <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Kategori Topik</Text>
                     <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 </View>) : (null)}
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 1 ? (null) : (<View><Button title="+ Tambah Topik" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori Topik" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <View style={[style.line,{marginTop:0,marginBottom:15}]}></View>
                     </View>)}
 

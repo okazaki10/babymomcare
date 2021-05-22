@@ -98,13 +98,13 @@ function Forumdetail(props) {
                         <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
                             <View style={[{ flexDirection: "row" }]}>
                                 <Image
-                                    source={require("../../../assets/image/empty.png")}
+                                    source={require("../../../assets/image/addpeople.png")}
                                     style={{ width: 40, height: 40 }}
                                     resizeMode="contain"
                                 />
                                 <View style={{ marginLeft: 15 }}>
                                     <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{data.name}</Text>
-                                    <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>{data.role}</Text>
+                                    <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>{data.role == "nurse"?"Perawat":data.role == "admin"?"Admin":"Pasien"}</Text>
                                     <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{data.question}</Text>
                                 </View>
                             </View>
@@ -123,13 +123,13 @@ function Forumdetail(props) {
                                     <View style={[style.line, { marginBottom: 15 }]}></View>
                                     <View style={[{ flexDirection: "row" }]}>
                                         <Image
-                                            source={require("../../../assets/image/empty.png")}
+                                            source={require("../../../assets/image/addpeople.png")}
                                             style={{ width: 40, height: 40 }}
                                             resizeMode="contain"
                                         />
                                         <View style={{ marginLeft: 15 }}>
                                             <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{item.user}</Text>
-                                            <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>{item.role}</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>{item.role == "nurse"?"Perawat":item.role == "admin"?"Admin":"Pasien"}</Text>
                                             <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
                                         </View>
                                     </View>

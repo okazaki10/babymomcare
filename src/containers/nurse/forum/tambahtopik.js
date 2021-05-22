@@ -116,7 +116,7 @@ function Tambahtopik(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView nestedScrollEnabled={true}>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul Topik</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5, color: colors.judulforum }]}>Judul Kategori Topik</Text>
                         <TextInput value={judul} onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
 
                     </View>

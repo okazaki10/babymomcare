@@ -351,7 +351,7 @@ function Kerjakansurvey(props) {
                             {guide ? (<View>
                                 <View style={[style.card, { padding: 22, marginTop: 15 }]}>
                                     <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Guide Menyelesaikan Survey :</Text>
-                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Pilih salah satu jawaban dari skala 0 sampai 4 atau tidak pernah sampai selesai</Text>
+                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Pilih salah satu jawaban dari skala 0 sampai 4 atau tidak pernah sampai selesai atau jawaban iya dan tidak</Text>
                                 </View>
                                 <View style={{ marginTop: 30 }}>
                                     <Button title="Lanjut" onPress={() => { setguide(false) }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>

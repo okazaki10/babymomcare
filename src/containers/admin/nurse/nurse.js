@@ -350,7 +350,7 @@ function Nurse(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    <Button title="+ Register Nurse" onPress={tambahnurse} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    <Button title="+ Daftar Perawat" onPress={tambahnurse} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
@@ -375,7 +375,7 @@ function Nurse(props) {
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
                                         <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.role}</Text>
-                                        <Text style={[style.nunitosans, { fontSize: 11 }]}>{item.is_approved == true ? "disetujui" : "tidak disetujui"}</Text>
+                                        <Text style={[style.nunitosans, { fontSize: 11 }]}>{item.is_approved == true ? "disetujui" : "belum disetujui"}</Text>
                                     </View>
                                 </TouchableOpacity>) : (null))}
 

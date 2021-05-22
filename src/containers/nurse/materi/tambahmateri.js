@@ -277,8 +277,8 @@ function Tambahmateri(props) {
                                 ref={referensi}
                                 onSelectedItemsChange={onSelectedItemsChange}
                                 selectedItems={selectedItems}
-                                selectText="Pilih topik yang terkait (1 saja)"
-                                searchInputPlaceholderText="Pilih Topik..."
+                                selectText="Pilih topik forum yang terkait (1 saja)"
+                                searchInputPlaceholderText="Pilih Topik forum..."
                                 onChangeInput={(text) => console.log(text)}
                                 submitButtonText="Submit"
                             />

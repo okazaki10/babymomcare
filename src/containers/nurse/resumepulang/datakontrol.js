@@ -262,10 +262,12 @@ function Datakontrol(props) {
                                             <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                         ) : (null)}
                                         {datakontrol.map((item) => item.id ? (<TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={() => {
-                                            if (global.status != 1) {
+                                            setidd(item.id)
+                                            tindakankontrol()/*
+                                           if (global.status != 1) {
                                                 setidd(item.id)
                                                 tindakankontrol()
-                                            }
+                                            }*/
                                         }} onPress={() => { detailkontrol(item.id) }}>
                                             <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kontrol Ke-{item.order}</Text>
                                             <View style={{ flexDirection: "row" }}>

@@ -56,7 +56,7 @@ function Chat(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setisipesan("Reminder berhasil dibuat!")
+                    setisipesan("Anjuran berhasil dibuat!")
                     toggleModal()
                 }
                 //setspinner(false)

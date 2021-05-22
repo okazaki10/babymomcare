@@ -194,7 +194,7 @@ function Materiedukasi(props) {
                 </View>) : (null)}
 
                 <View style={{ flex: 0, padding: 20 }}>
-                    {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori Materi" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <View style={[style.line,{marginTop:0,marginBottom:15}]}></View>
                     </View>)}
 

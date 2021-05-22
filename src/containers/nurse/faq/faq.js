@@ -332,21 +332,20 @@ function Faq(props) {
                         <View style={{ padding: 3 }}>
                             <Text>Frequently Asked Question</Text>
                             <Text>Akun</Text>
-                            <Text> 1.	Bagaimana cara daftar akun Catatan Bunda?
-                            2.	Apakah Profil yang sudah dibuat dapat diubah?
-                            3.	Apa yang harus dilakukan jika lupa password akun Catatan Bunda?
+                            <Text>1.	Bagaimana cara daftar akun Catatan Bunda?</Text>
+                            <Text>2.	Apakah Profil yang sudah dibuat dapat diubah?</Text>
+                            <Text>3.	Apa yang harus dilakukan jika lupa password akun Catatan Bunda?</Text>
 
-                            Pengingat
-                            1.	Apa itu fitur Pengingat?
-                            2.	Bagaimana cara saya menggunakan fitur Pengingat?
-                            3.	Bagaimana jika notifikasi fitur Pengingat yang muncul terhapus secara tidak sengaja?
-                            4.	Apakah saya dapat merubah Pengingat yang dibuat?
-                            5.	Berapa lama durasi fitur Pengingat akan mengingatkan lagi jika pengguna mengklik  Snooze/tunda pada button Notifikasi?
+                            <Text style={{marginTop:5}}>Pengingat</Text>
+                            <Text>1.	Apa itu fitur Pengingat?</Text>
+                            <Text>2.	Bagaimana cara saya menggunakan fitur Pengingat?</Text>
+                            <Text>3.	Bagaimana jika notifikasi fitur Pengingat yang muncul terhapus secara tidak sengaja?</Text>
+                            <Text>4.	Apakah saya dapat merubah Pengingat yang dibuat?</Text>
+                            <Text>5.	Berapa lama durasi fitur Pengingat akan mengingatkan lagi jika pengguna mengklik  Snooze/tunda pada button Notifikasi?</Text>
 
-                            Bagaimana privasi data kesehatan anak saya?
-                            Apakah layanan Bicara dengan Perawat?
-                            Bagaimana cara menggunakan fitur Bicara dengan Perawat?
-</Text>
+                            <Text style={{marginTop:5}}>Bagaimana privasi data kesehatan anak saya?</Text>
+                            <Text style={{marginTop:5}}>Apakah layanan Bicara dengan Perawat?</Text>
+                            <Text style={{marginTop:5}}>Bagaimana cara menggunakan fitur Bicara dengan Perawat?</Text>
                         </View>
                     </ScrollView>
                 </View>

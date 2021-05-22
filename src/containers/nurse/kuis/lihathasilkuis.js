@@ -192,9 +192,6 @@ function Lihathasilkuis(props) {
                 setspinner(false)
             });
     }
-
-
-
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -270,14 +267,11 @@ function Lihathasilkuis(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                
                                 {data.map(item => item.quiz_id ? (<TouchableOpacity onPress={() => {
-                                    //props.navigation.navigate("Kerjakankuis", { id: item.quiz_id,lihatquiz:1 })
+                                    props.navigation.navigate("Historykuis", { id: item.quiz_id,admin:1 })
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.quiz}</Text>
-                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>Jawaban Benar = {item.point}/{item.total}</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0}]}>Nilai = {(100 * (item.point / item.total)).toString().substr(0,4)}</Text>
                                     </View>
                                     {global.status == 1 ? (null) : (
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>

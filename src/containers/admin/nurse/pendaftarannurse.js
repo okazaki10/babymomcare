@@ -226,7 +226,7 @@ function Pendaftarannurse(props) {
                                 mode="dropdown">
                                 <Picker.Item label="RSUD Kabupaten Tangerang" value="1" />
                                 <Picker.Item label="RSUD dr. Chasbullah Abdulmadjid Kota Bekasi" value="2" />
-
+                                <Picker.Item label="RSUD Kabupaten Bekasi" value="2" />
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tingkat Pendidikan</Text>

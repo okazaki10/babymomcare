@@ -149,7 +149,7 @@ function Navigation() {
         <Stack.Screen
           name="Tambahanjuran"
           component={Tambahanjuran}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Buat Reminder" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Buat Anjuran" })}
         />
         <Stack.Screen
           name="Kelolakuis"
@@ -164,7 +164,7 @@ function Navigation() {
         <Stack.Screen
           name="Tambahkuis"
           component={Tambahkuis}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Tambah Kuis" })}
+          options={({ route }) => ({ title: route.params ? "Tambah Kuis" : "Tambah Kuis" })}
         />
         <Stack.Screen
           name="Chat"
@@ -209,17 +209,17 @@ function Navigation() {
         <Stack.Screen
           name="Nurse"
           component={Nurse}
-          options={{ headerTitle: "Nurse" }}
+          options={{ headerTitle: "Perawat" }}
         />
         <Stack.Screen
           name="Tabnurse"
           component={Tabnurse}
-          options={{ headerTitle:"Nurse"}}
+          options={{ headerTitle:"Perawat"}}
         />
          <Stack.Screen
           name="Pendaftarannurse"
           component={Pendaftarannurse}
-          options={{ headerTitle:"Nurse"}}
+          options={{ headerTitle:"Perawat"}}
         />
           <Stack.Screen
           name="Tambahsurvey"
@@ -229,7 +229,7 @@ function Navigation() {
           <Stack.Screen
           name="Tambahmateri"
           component={Tambahmateri}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Tambah Materi" })}
+          options={({ route }) => ({ title: route.params ? "Tambah Materi" : "Tambah Materi" })}
         />
        <Stack.Screen
           name="Chartkuis"
@@ -299,7 +299,7 @@ function Navigation() {
         <Stack.Screen
           name="Tambahtopik"
           component={Tambahtopik}
-          options={{ headerTitle:"Tambah Topik"}}
+          options={{ headerTitle:"Tambah Kategori Topik"}}
         />
         <Stack.Screen
           name="Lihathasilsurvey"
@@ -319,7 +319,7 @@ function Navigation() {
         <Stack.Screen
           name="Webview"
           component={Webview}
-          options={{ headerTitle:"Daftar Nurse"}}
+          options={{ headerTitle:"Daftar Perawat"}}
         />
         <Stack.Screen
           name="Userlog"

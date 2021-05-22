@@ -384,6 +384,7 @@ function Detailresumepulang(props) {
                                         <Text style={{ marginTop: 15 }}>: </Text>
                                         <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.temperature} celcius</Text>
                                     </View>
+
                                     {global.status == 1 ? (<View>
 
                                         <View style={{ flexDirection: "row" }}>
@@ -401,7 +402,25 @@ function Detailresumepulang(props) {
                                                     <Button title="Simpan" onPress={add_note} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                                 </View>
                                             </View>
-                                        ) : (null)}
+                                        ) : (<View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Hasil Penunjang</Text>
+                                                <Text style={{ marginTop: 15 }}>: </Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.hasil_penunjang}</Text>
+                                            </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Terapi Pulang</Text>
+                                                <Text style={{ marginTop: 15 }}>: </Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.terapi_pulang}</Text>
+                                            </View>
+                                            {datakontrol.advices ? datakontrol.advices.map((item, index) =>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Text style={[style.nunitosans, style.datapasien]}>{index == 0 ? "Anjuran Pasien" : ""}</Text>
+                                                    <Text style={{ marginTop: 15 }}>: </Text>
+                                                    <Text style={[style.nunitosans, style.datapasien2]}>{item.name}</Text>
+                                                </View>
+                                            ) : "Anjuran Pasien"}
+                                        </View>)}
                                     </View>) : (<View>
                                         {global.mode == "kontrol" ? (
                                             <View style={{ flexDirection: "row" }}>

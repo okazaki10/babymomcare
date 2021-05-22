@@ -40,9 +40,7 @@ function Tambahanjuran(props) {
             },
             body: JSON.stringify({
                 id:props.route.params?props.route.params.isinya.id:0,
-                name: judul,
-                frequency: frekuensi,
-                description: deskripsi,
+                name: judul
             })
         })
             .then((response) => response.json())
@@ -136,12 +134,8 @@ function Tambahanjuran(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Reminder</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Anjuran</Text>
                         <TextInput value={judul} onChangeText={setjudul} style={[style.card, { elevation: 5, marginTop: 15 }]}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Deskripsi</Text>
-                        <TextInput value={deskripsi} onChangeText={setdeskripsi} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Frekuensi (berapa hari sekali)</Text>
-                        <TextInput value={frekuensi} onChangeText={setfrekuensi} style={[style.card, { elevation: 5, marginTop: 15 }]} keyboardType={"numeric"}></TextInput>
                     </View>
                 </ScrollView>
                 <View style={{ padding: 22, flexDirection: "row" }}>

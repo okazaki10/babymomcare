@@ -24,7 +24,7 @@ const Tab = createMaterialTopTabNavigator();
 function Tabreminder() {
   return (
     <View style={{flex:1,backgroundColor:"white"}}>
-      <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Reminder</Text>
+      <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Anjuran</Text>
       <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
       <View style={{
         flex: 1,
@@ -39,7 +39,7 @@ function Tabreminder() {
             name="Hariini"
             component={Anjuranpasien}
             options={{
-              tabBarLabel: "Hari ini",
+              tabBarLabel: "Anjuran yang disarankan",
             }}
           />
      

@@ -421,6 +421,23 @@ function Daftarortu(props) {
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Paritas</Text>
                         <TextInput value={paritas} onChangeText={setparitas} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jumlah Anak</Text>
+                        <TextInput value={jumlah_anak} onChangeText={setjumlah_anak} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType={"numeric"}></TextInput>
+
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pengalaman Merawat Bayi</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={pengalamanibu}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setpendidikanibu(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Pernah" value="1" />
+                                <Picker.Item label="Belum Pernah" value="0" />
+                            </Picker>
+                        </View>
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ayah</Text>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 5 }]}>Nama Ayah</Text>
                         <TextInput value={namaayah} onChangeText={setnamaayah} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
@@ -476,23 +493,7 @@ function Daftarortu(props) {
                                 <Picker.Item label="Lainnya" value="betawi" />
                             </Picker>
                         </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Jumlah Anak</Text>
-                        <TextInput value={jumlah_anak} onChangeText={setjumlah_anak} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType={"numeric"}></TextInput>
-
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Pengalaman Merawat Bayi</Text>
-                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
-                            <Picker
-                                selectedValue={pengalamanibu}
-                                onValueChange={(itemValue, itemIndex) => {
-                                    setpendidikanibu(itemValue)
-                                    console.log(itemValue)
-                                }
-                                }
-                                mode="dropdown">
-                                <Picker.Item label="Pernah" value="1" />
-                                <Picker.Item label="Belum Pernah" value="0" />
-                            </Picker>
-                        </View>
+                  
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Apakah Tinggal Dengan Suami?</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker

@@ -90,12 +90,12 @@ function Daftarperawat(props) {
 
     }
     const tindakananjuran = () => {
-        setisipesan("Pilih tindakan untuk reminder ini")
+        setisipesan("Pilih tindakan untuk anjuran ini")
         toggleModal2()
     }
     const hapusanjuran = () => {
         toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus reminder ini")
+        setisipesan("Apakah anda yakin untuk menghapus anjuran ini")
         toggleModal3()
     }
     const [title2, settitle2] = useState("")

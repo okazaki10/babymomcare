@@ -133,22 +133,22 @@ function Datapasien(props) {
                             {menuswitch == 0 ? (
                                 <Button title="Data Bayi" buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                             ) : (
-                                    <Button title="Data Bayi" onPress={() => gantidata(0)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                                )}
+                                <Button title="Data Bayi" onPress={() => gantidata(0)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            )}
                         </View>
                         <View style={{ flex: 1, marginLeft: 5, marginRight: 5 }}>
                             {menuswitch == 1 ? (
                                 <Button title="Data Ortu" buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                             ) : (
-                                    <Button title="Data Ortu" onPress={() => gantidata(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                                )}
+                                <Button title="Data Ortu" onPress={() => gantidata(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            )}
                         </View>
                         <View style={{ flex: 1, marginLeft: 5 }}>
                             {menuswitch == 2 ? (
                                 <Button title="Data Akun" buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                             ) : (
-                                    <Button title="Data Akun" onPress={() => gantidata(2)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                                )}
+                                <Button title="Data Akun" onPress={() => gantidata(2)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            )}
                         </View>
                     </View>
                     <ScrollView>
@@ -298,12 +298,12 @@ function Datapasien(props) {
                                                 <Text style={[style.nunitosans, style.datapasien]}>Password</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: *******</Text>
                                             </View>
-                                            {data ? data.materi.map((item,index) =>
+                                            {data.materi ? data.materi.map((item, index) =>
                                                 <View style={{ flexDirection: "row" }}>
-                                                    <Text style={[style.nunitosans, style.datapasien]}>{index==0?"Rekomendasi Materi":""}</Text>
+                                                    <Text style={[style.nunitosans, style.datapasien]}>{index == 0 ? "Rekomendasi Materi" : ""}</Text>
                                                     <Text style={[style.nunitosans, style.datapasien2]}>: {item.title}</Text>
                                                 </View>
-                                            ) : "Anda belum mengisi rekomendasi materi"}
+                                            ) : <Text>Anda belum mengisi rekomendasi materi</Text>}
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)}

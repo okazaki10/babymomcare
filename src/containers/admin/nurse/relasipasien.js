@@ -379,7 +379,7 @@ function Relasipasien(props) {
                                                 tindakanrelasi()
                                              }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                                 <Image
-                                                    source={require("../../../assets/image/empty.png")}
+                                                    source={require("../../../assets/image/addpeople.png")}
                                                     style={{ width: 100, height: 100 }}
                                                     resizeMode="contain"
                                                 />
