@@ -116,7 +116,10 @@ function Detailmateri(props) {
                 <View style={{ flex: 1, padding: 23 }}>
                     {data.quiz ? (global.status == 1 ? (
                         selesai == true ?
-                            (<TouchableOpacity onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id, mode: "review" }) }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
+                            (<TouchableOpacity onPress={() => {
+                                props.navigation.navigate("Historykuis", { id: data.quiz.id, mode: "review",materi_id:data.id }) 
+                                 //props.navigation.navigate("Kerjakankuis", { id: data.quiz.id, mode: "review",materi_id:data.id }) 
+                                 }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
                                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
                                     <View>

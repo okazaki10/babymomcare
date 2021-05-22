@@ -192,6 +192,9 @@ function Lihathasilkuis(props) {
                 setspinner(false)
             });
     }
+
+
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -267,6 +270,7 @@ function Lihathasilkuis(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
+                                
                                 {data.map(item => item.quiz_id ? (<TouchableOpacity onPress={() => {
                                     //props.navigation.navigate("Kerjakankuis", { id: item.quiz_id,lihatquiz:1 })
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>

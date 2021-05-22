@@ -14,7 +14,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import { useIsFocused } from '@react-navigation/native';
-function Kelolasurvey(props) {
+function Historykuis(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
@@ -45,16 +45,23 @@ function Kelolasurvey(props) {
         }
     }
     const [id_survey, setid_survey] = useState("")
-    const [judul_kuis, setjudul_kuis] = useState("")
     const ubahkuis = () => {
-        toggleModal2()
-        props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice, judul_kuis: judul_kuis })
-        global.add = 0
+        if (kuis == "") {
+            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
+        } else {
+            toggleModal2()
+            props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice })
+            global.add = 0
+        }
     }
 
     const tambahkuis = () => {
-        props.navigation.navigate("Tambahsurvey", { halaman: jumlah, choice_type: choice })
-        global.add = 1
+        if (kuis == "") {
+            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
+        } else {
+            props.navigation.navigate("Tambahsurvey", { halaman: jumlah, kuis: kuis, choice_type: choice })
+            global.add = 1
+        }
     }
 
 
@@ -127,11 +134,100 @@ function Kelolasurvey(props) {
                 setspinner(false)
             });
     }
+    const lihatsurveypasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/admin/survey/list', {
+            method: 'POST   ',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                patient_id: props.route.params.id_pasien,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+    const lihatquizpasien = () => {
+        //setspinner(true)
+        fetch(global.url + '/admin/quiz/list', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                patient_id: props.route.params.id_pasien
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
+    const lihatquizhistory = () => {
+        //setspinner(true)
+        fetch(global.url + '/quiz/history', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                quiz_id: props.route.params.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(JSON.stringify(json))
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
-            lihatsurvey()
+            lihatquizhistory()
         }
     }, [isFocused])
     const [kuis, setkuis] = useState("")
@@ -199,48 +295,17 @@ function Kelolasurvey(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 1 ? (null) : (
-                        <View>
-                            <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tipe Pertanyaan</Text>
-                            <View style={[style.card, { elevation: 5, padding: 0, flex: 0, marginTop: 15 }]}>
-                                <Picker
-                                    selectedValue={choice}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        setchoice(itemValue)
-                                    }
-                                    mode="dropdown">
-                                    <Picker.Item label="Text" value="text" />
-                                    <Picker.Item label="Angka" value="number" />
-                                    <Picker.Item label="Iya/tidak" value="yes_no" />
-                                </Picker>
-                            </View>
-                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Jumlah Halaman</Text>
-
-                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ flex: 1, marginRight: 15 }}>
-                                    <TextInput onChangeText={setjumlah} value={jumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
-                                </View>
-                                <View style={{ flex: 1 }}>
-                                    <Button title="+ Tambah Survey" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                </View>
-                            </View>
-                            <View style={[style.line]}></View>
-                        </View>
-                    )}
-  
+                <Button title="Kerjakan Lagi" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: props.route.params.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-                                {data.map(item => item.id ? (<TouchableOpacity onLongPress={() => {
-                                    setid_survey(item.id)
-                                    setjudul_kuis(item.title)
-                                    tindakankuis()
-                                }} onPress={() => {
-                                    props.navigation.navigate("Kerjakansurvey", { id: item.id, choice_type: item.choice_type })
-
+                                {data.map(item => item.quiz_id ? (<TouchableOpacity onPress={() => {
+                                    //props.navigation.navigate("Kerjakankuis", { id: item.quiz_id,lihatquiz:1 })
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.title}</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>Pengerjaan ke {item.order}</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 12 }]}>Jawaban Benar = {item.point}/{item.total}</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0}]}>Nilai = {(100 * (item.point / item.total)).toString().substr(0,4)}</Text>
                                     </View>
                                     {global.status == 1 ? (null) : (
                                         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -267,4 +332,4 @@ function Kelolasurvey(props) {
     );
 };
 
-export default Kelolasurvey;
+export default Historykuis;

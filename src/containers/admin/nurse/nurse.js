@@ -369,12 +369,13 @@ function Nurse(props) {
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                     <Image
                                         source={require("../../../assets/image/profilcewe.png")}
-                                        style={{ width: 45, height: 65,marginLeft:15 }}
+                                        style={{ width: 45, height: 65, marginLeft: 15 }}
                                         resizeMode="contain"
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
                                         <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.role}</Text>
+                                        <Text style={[style.nunitosans, { fontSize: 11 }]}>{item.is_approved == true ? "disetujui" : "tidak disetujui"}</Text>
                                     </View>
                                 </TouchableOpacity>) : (null))}
 

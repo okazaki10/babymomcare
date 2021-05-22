@@ -58,6 +58,7 @@ import Changepassword from './containers/nurse/pasien/changepassword';
 import Webview from './containers/webview';
 import Userlog from './containers/nurse/userlog';
 import Faq from './containers/nurse/faq/faq';
+import Historykuis from './containers/nurse/kuis/historykuis';
 
 
 
@@ -329,6 +330,11 @@ function Navigation() {
           name="Faq"
           component={Faq}
           options={{ headerTitle:"Faq"}}
+        />
+        <Stack.Screen
+          name="Historykuis"
+          component={Historykuis}
+          options={{ headerTitle:"History kuis"}}
         />
       </Stack.Navigator>
     </NavigationContainer>

@@ -239,13 +239,46 @@ function Kerjakankuis(props) {
                 setspinner(false)
             });
     }
+
+    const lihatquizhistory = () => {
+        //setspinner(true)
+        fetch(global.url + '/quiz/history', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                quiz_id: props.route.params.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(JSON.stringify(json))
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
     const [guide, setguide] = useState(true)
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
             if (props.route.params.mode) {
-                selesaikuis2()
+                //selesaikuis2()
+                //lihatquizhistory()
+            
             } else {
                 lihatkuis()
             }
