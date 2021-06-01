@@ -416,7 +416,7 @@ function Daftarortu(props) {
                                 <Picker.Item label="Jawa" value="jawa" />
                                 <Picker.Item label="Sunda" value="sunda" />
                                 <Picker.Item label="Betawi" value="betawi" />
-                                <Picker.Item label="Lainnya" value="betawi" />
+                                <Picker.Item label="Lainnya" value="lainnya" />
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Paritas</Text>
@@ -436,6 +436,20 @@ function Daftarortu(props) {
                                 mode="dropdown">
                                 <Picker.Item label="Pernah" value="1" />
                                 <Picker.Item label="Belum Pernah" value="0" />
+                            </Picker>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Apakah Tinggal Dengan Suami?</Text>
+                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
+                            <Picker
+                                selectedValue={suami}
+                                onValueChange={(itemValue, itemIndex) => {
+                                    setsuami(itemValue)
+                                    console.log(itemValue)
+                                }
+                                }
+                                mode="dropdown">
+                                <Picker.Item label="Iya" value="1" />
+                                <Picker.Item label="Tidak" value="0" />
                             </Picker>
                         </View>
                         <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Data Ayah</Text>
@@ -490,24 +504,11 @@ function Daftarortu(props) {
                                 <Picker.Item label="Jawa" value="jawa" />
                                 <Picker.Item label="Sunda" value="sunda" />
                                 <Picker.Item label="Betawi" value="betawi" />
-                                <Picker.Item label="Lainnya" value="betawi" />
+                                <Picker.Item label="Lainnya" value="lainnya" />
                             </Picker>
                         </View>
                   
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Apakah Tinggal Dengan Suami?</Text>
-                        <View style={[style.card, { elevation: 5, padding: 0 }]}>
-                            <Picker
-                                selectedValue={suami}
-                                onValueChange={(itemValue, itemIndex) => {
-                                    setsuami(itemValue)
-                                    console.log(itemValue)
-                                }
-                                }
-                                mode="dropdown">
-                                <Picker.Item label="Iya" value="1" />
-                                <Picker.Item label="Tidak" value="0" />
-                            </Picker>
-                        </View>
+                      
 
                     </View>
                 </ScrollView>

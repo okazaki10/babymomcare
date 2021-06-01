@@ -448,32 +448,6 @@ function Detailresumepulang(props) {
                                                             <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.name}</Text>
                                                         </View>
                                                     </View>
-                                                    <View style={[{ marginTop: 10, flexDirection: "row", padding: 0, flex: 0,borderColor:colors.grey,borderWidth:1,borderRadius:10 }]}>
-                                                        <View
-                                                            style={{ height: 65 }}
-                                                        />
-                                                        <View style={{ justifyContent: "center", marginLeft: 15 }}>
-                                                            <View
-                                                                style={{ height: 10, width: 10, backgroundColor: colors.grey, borderRadius: 50, resizeMode: "content" }}
-                                                            />
-                                                        </View>
-                                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                            <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.name}</Text>
-                                                        </View>
-                                                    </View>
-                                                    <View style={[{ marginTop: 10, flexDirection: "row", padding: 0, flex: 0,borderColor:colors.grey,borderWidth:1,borderRadius:10 }]}>
-                                                        <View
-                                                            style={{ height: 65 }}
-                                                        />
-                                                        <View style={{ justifyContent: "center", marginLeft: 15 }}>
-                                                            <View
-                                                                style={{ height: 10, width: 10, backgroundColor: colors.grey, borderRadius: 50, resizeMode: "content" }}
-                                                            />
-                                                        </View>
-                                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                            <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.name}</Text>
-                                                        </View>
-                                                    </View>
                                                 </View>
                                             ) : "Anjuran Pasien"}
                                         </View>)}

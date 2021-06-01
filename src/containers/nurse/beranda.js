@@ -200,7 +200,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Lihat hasil quiz pasien</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Lihat hasil kuis pasien</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {
