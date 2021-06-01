@@ -95,7 +95,7 @@ function Menubaradmin() {
         name="Daftarperawat"
         component={Daftarperawat}
         options={{
-          tabBarLabel: 'Chat',
+          tabBarLabel: 'Kontak',
           tabBarIcon: ({color, size}) => (
             <View>
            {unread && unread != "0" ? (

@@ -97,7 +97,7 @@ function Menubar() {
         name="Daftarperawat"
         component={Daftarperawat}
         options={{
-          tabBarLabel: 'Chat',
+          tabBarLabel: 'Kontak',
           tabBarIcon: ({ color, size }) => (
             <View>
               {unread && unread != "0" ? (
@@ -114,7 +114,7 @@ function Menubar() {
         name="Kategoriforum"
         component={Kategoriforum}
         options={{
-          tabBarLabel: 'Forum',
+          tabBarLabel: 'Tanya jawab',
           tabBarIcon: ({ color, size }) => (
             <FontAwesomeIcon icon={faCommentDots} size={28} color={color}></FontAwesomeIcon>
           ),

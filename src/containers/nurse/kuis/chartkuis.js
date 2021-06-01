@@ -201,13 +201,12 @@ function Chartkuis(props) {
                                 */}
                             {data2.map((item) => item ? (<View>
                                 <View style={{ flexDirection: "row" }}>
-                                    <Text style={[style.poppinsbold, {  flex: 1 }]}>{item.survey}</Text>
+                                    <Text style={[style.poppinsbold, { flex: 1 }]}>{item.survey}</Text>
                                 </View>
                                 {item.pertanyaan?.map((item2) => item2 ? (
-                                    <View>
+                                    <View style={[style.card, { padding: 22, marginTop: 15 }]}>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.poppinsmedium, { fontSize: 14, flex: 1 }]}>{item2.question}</Text>
-                                            <Text style={[style.poppinsmedium, { fontSize: 14, flex: 1 }]}>Rasio Skala</Text>
                                         </View>
                                         <PieChart
                                             data={item2.jawaban}

@@ -351,6 +351,10 @@ function Nurse(props) {
 
                 <View style={{ flex: 1, padding: 20 }}>
                     <Button title="+ Daftar Perawat" onPress={tambahnurse} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, marginBottom: 15,marginTop:15 }]}>
+                        <TextInput onChangeText={setcari} placeholder="Cari Perawat" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                        <Ionicons name={'search-outline'} size={24} color={colors.grey} />
+                    </View>
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>

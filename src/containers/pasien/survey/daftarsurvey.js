@@ -164,11 +164,11 @@ function Daftarsurvey(props) {
                         <View style={{ padding: 3 }}>
                             <View>
                                 {global.status == 3 ?
-                                    (<Button title="+ Buat Survey" onPress={tambahsurvey} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
+                                    (<Button title="+ Buat Kuesioner" onPress={tambahsurvey} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
                                     : (null)}
 
                                 <View style={[style.card, { padding: 22,marginTop:15 }]}>
-                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>Survey Iterasi 1</Text>
+                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kuesioner Iterasi 1</Text>
                                     <HyperLink linkDefault={true} linkStyle={{ color: '#2980b9' }}>
                                         <Text style={[style.nunitosans, { marginTop: 15, fontSize: 15, textDecorationLine: "underline" }]}>docs.google.com/survey</Text>
                                     </HyperLink>

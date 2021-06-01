@@ -93,7 +93,7 @@ function Datanurse(props) {
     }
 
     const addpasien = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
+        props.navigation.navigate("Addforum", { nama: "Buat Tanya jawab" })
     }
     const forumdetail = () => {
         props.navigation.navigate("Forumdetail")

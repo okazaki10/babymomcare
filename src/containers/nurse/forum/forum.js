@@ -41,24 +41,24 @@ function Forum(props) {
     }
     const tambahforum = () => {
         global.add = 1
-        props.navigation.navigate("Addforum", { nama: "Buat Forum", id: props.route.params.id })
+        props.navigation.navigate("Addforum", { nama: "Buat Tanya jawab", id: props.route.params.id })
     }
     const [id_forum, setid_forum] = useState()
     const ubahforum = () => {
         global.add = 0
-        props.navigation.navigate("Addforum", { nama: "Ubah Forum", id: props.route.params.id, id_forum: id_forum })
+        props.navigation.navigate("Addforum", { nama: "Ubah Tanya jawab", id: props.route.params.id, id_forum: id_forum })
         toggleModal2()
     }
     const tindakanforum = () => {
         if (global.status != 1) {
-            setisipesan("Pilih tindakan untuk forum ini")
+            setisipesan("Pilih tindakan untuk Tanya jawab ini")
             toggleModal2()
         }
     }
 
     const hapusforum = () => {
         toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus forum ini")
+        setisipesan("Apakah anda yakin untuk menghapus Tanya jawab ini")
         toggleModal3()
     }
     const hapus2 = () => {

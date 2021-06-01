@@ -303,6 +303,7 @@ function Tambahresume(props) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
+                ToastAndroid.show(response.error == "Permissions weren't granted"?"Anda harus mengizinkan/permission pada aplikasi di pengaturan":"", ToastAndroid.SHORT)
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
@@ -549,22 +550,22 @@ function Tambahresume(props) {
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat Badan</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={bb} onChangeText={setbb} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={bb} onChangeText={setbb} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>gram</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Panjang Badan</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={pb} onChangeText={setpb} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={pb} onChangeText={setpb} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>cm</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lingkar Kepala</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>cm</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Suhu</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={suhu} onChangeText={setsuhu} style={{ padding: 0, marginLeft: 10 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={suhu} onChangeText={setsuhu} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>celcius</Text>
                         </View>
                         {global.status == 1 ? (<View>

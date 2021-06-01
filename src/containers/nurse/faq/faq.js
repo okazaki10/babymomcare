@@ -7,7 +7,7 @@ import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusSquare, faRoute, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp, faPlusSquare, faRoute, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
@@ -103,12 +103,14 @@ function Faq(props) {
         }
     }
     const addpasien = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
+        props.navigation.navigate("Addforum", { nama: "Buat Tanya jawab" })
     }
     const forumdetail = () => {
         props.navigation.navigate("Forumdetail")
     }
     const [menuswitch, setmenuswitch] = useState(0)
+    const [menuswitch2, setmenuswitch2] = useState(0)
+    const [menuswitch3, setmenuswitch3] = useState(0)
     const gantidata = (index) => {
         setmenuswitch(index)
     }
@@ -276,6 +278,7 @@ function Faq(props) {
             });
     }
 
+
     return (
         <View style={style.main}>
 
@@ -332,20 +335,75 @@ function Faq(props) {
                         <View style={{ padding: 3 }}>
                             <Text>Frequently Asked Question</Text>
                             <Text>Akun</Text>
-                            <Text>1.	Bagaimana cara daftar akun Catatan Bunda?</Text>
-                            <Text>2.	Apakah Profil yang sudah dibuat dapat diubah?</Text>
-                            <Text>3.	Apa yang harus dilakukan jika lupa password akun Catatan Bunda?</Text>
+                            <Text></Text>
+                            <View style={[style.card, { flex: 1, marginLeft: 5 }]}>
+                                {menuswitch == 1 ? (
+                                    <Button icon={
+                                        <View style={{ marginRight: 5 }}>
+                                            <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="1.	Bagaimana cara daftar akun Catatan Bunda?" onPress={() => setmenuswitch(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                ) : (
+                                    <Button icon={
+                                        <View style={{ marginRight: 5 }}>
+                                            <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="1.	Bagaimana cara daftar akun Catatan Bunda?" onPress={() => setmenuswitch(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                )}
 
-                            <Text style={{marginTop:5}}>Pengingat</Text>
+                                {menuswitch == 1 ? (<Text style={{ marginTop: 15 }}>Untuk mendaftar akun catatan bunda, dapat menghubungi perawat yang bersangkutan agar didaftarkan</Text>) : (null)}
+                            </View>
+                            <View style={[style.card, { flex: 1, marginLeft: 5, marginTop: 20 }]}>
+                                {menuswitch2 == 1 ? (
+                                    <Button icon={
+                                        <View style={{}}>
+                                            <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="2.	Bagaimana cara saya menggunakan fitur Pengingat?" onPress={() => setmenuswitch2(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                ) : (
+                                    <Button icon={
+                                        <View style={{ }}>
+                                            <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="2.	Bagaimana cara saya menggunakan fitur Pengingat?" onPress={() => setmenuswitch2(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                )}
+
+                                {menuswitch2 == 1 ? (<Text style={{ marginTop: 15 }}>Untuk mengubah profil yang telat dibuat, dapat menguhubungi perawat yang bersangkutan</Text>) : (null)}
+                            </View>
+                            <View style={[style.card, { flex: 1, marginLeft: 5, marginTop: 20 }]}>
+                                {menuswitch3 == 1 ? (
+                                    <Button icon={
+                                        <View style={{ }}>
+                                            <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="3.	Apa yang harus dilakukan jika lupa password akun Catatan Bunda?" onPress={() => setmenuswitch3(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                ) : (
+                                    <Button icon={
+                                        <View style={{ }}>
+                                            <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="3.	Apa yang harus dilakukan jika lupa password akun Catatan Bunda?" onPress={() => setmenuswitch3(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                )}
+
+                                {menuswitch3 == 1 ? (<Text style={{ marginTop: 15 }}>Anda dapat menghubungi perawat yang bersangkutan untuk ganti password lama anda jika lupa</Text>) : (null)}
+                            </View>
+
+                            <Text style={{ marginTop: 15 }}>Pengingat</Text>
                             <Text>1.	Apa itu fitur Pengingat?</Text>
                             <Text>2.	Bagaimana cara saya menggunakan fitur Pengingat?</Text>
                             <Text>3.	Bagaimana jika notifikasi fitur Pengingat yang muncul terhapus secara tidak sengaja?</Text>
                             <Text>4.	Apakah saya dapat merubah Pengingat yang dibuat?</Text>
                             <Text>5.	Berapa lama durasi fitur Pengingat akan mengingatkan lagi jika pengguna mengklik  Snooze/tunda pada button Notifikasi?</Text>
 
-                            <Text style={{marginTop:5}}>Bagaimana privasi data kesehatan anak saya?</Text>
-                            <Text style={{marginTop:5}}>Apakah layanan Bicara dengan Perawat?</Text>
-                            <Text style={{marginTop:5}}>Bagaimana cara menggunakan fitur Bicara dengan Perawat?</Text>
+                            <Text style={{ marginTop: 5 }}>Bagaimana privasi data kesehatan anak saya?</Text>
+                            <Text style={{ marginTop: 5 }}>Apakah layanan Bicara dengan Perawat?</Text>
+                            <Text style={{ marginTop: 5 }}>Bagaimana cara menggunakan fitur Bicara dengan Perawat?</Text>
                         </View>
                     </ScrollView>
                 </View>

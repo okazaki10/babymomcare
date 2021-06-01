@@ -7,12 +7,15 @@ import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faArrowDown, faChevronDown, faChevronUp, faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useIsFocused } from '@react-navigation/native';
+import Icon from 'react-native-ionicons';
+import format from 'date-fns/format';
+import { id } from 'date-fns/locale';
 
 function Datapasien(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
@@ -46,15 +49,23 @@ function Datapasien(props) {
             props.navigation.navigate("Daftarakun", { nama: "Ubah Akun", id: props.route.params.id })
             global.add = 0
         }
+        else if (index == 3) {
+            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun", id: props.route.params.id, mode: "materi" })
+            global.add = 0
+        }
     }
 
     const addpasien = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
+        props.navigation.navigate("Addforum", { nama: "Buat Tanya jawab" })
     }
     const forumdetail = () => {
         props.navigation.navigate("Forumdetail")
     }
     const [menuswitch, setmenuswitch] = useState(0)
+    const [menuswitch2, setmenuswitch2] = useState(0)
+    const [menuswitch3, setmenuswitch3] = useState(0)
+    const [menuswitch4, setmenuswitch4] = useState(0)
+    const [menuswitch5, setmenuswitch5] = useState(0)
     const gantidata = (index) => {
         setmenuswitch(index)
     }
@@ -128,37 +139,32 @@ function Datapasien(props) {
             />
             <View style={{ flex: 1 }}>
                 <View style={{ flex: 1, padding: 20 }}>
-                    <View style={{ flexDirection: "row" }}>
-                        <View style={{ flex: 1, marginRight: 5 }}>
-                            {menuswitch == 0 ? (
-                                <Button title="Data Bayi" buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                            ) : (
-                                <Button title="Data Bayi" onPress={() => gantidata(0)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                            )}
-                        </View>
-                        <View style={{ flex: 1, marginLeft: 5, marginRight: 5 }}>
-                            {menuswitch == 1 ? (
-                                <Button title="Data Ortu" buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                            ) : (
-                                <Button title="Data Ortu" onPress={() => gantidata(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                            )}
-                        </View>
-                        <View style={{ flex: 1, marginLeft: 5 }}>
-                            {menuswitch == 2 ? (
-                                <Button title="Data Akun" buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                            ) : (
-                                <Button title="Data Akun" onPress={() => gantidata(2)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                            )}
-                        </View>
-                    </View>
+
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
-
-                                {menuswitch == 0 ? (<View>
+                                <View style={{ flex: 1, marginLeft: 5, marginRight: 5 }}>
+                                    {menuswitch2 == 0 ? (
+                                        <View>
+                                            <Button icon={
+                                                <View style={{ marginRight: 5 }}>
+                                                    <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                                </View>
+                                            } title="Data Bayi" onPress={() => setmenuswitch2(1)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                        </View>
+                                    ) : (
+                                        <Button icon={
+                                            <View style={{ marginRight: 5 }}>
+                                                <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                            </View>
+                                        } title="Data Bayi" onPress={() => setmenuswitch2(0)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                    )}
+                                </View>
+                                {menuswitch2 == 0 ? (<View>
                                     <View style={{ flexDirection: "row", marginTop: 15 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Data Bayi</Text>
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
+
                                     </View>
 
                                     <TouchableOpacity onPress={() => { ubahpasien(0) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
@@ -168,11 +174,11 @@ function Datapasien(props) {
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.baby_birthday : ""}</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data.baby_birthday ? format(new Date(data.baby_birthday), "dd' 'MMMM' 'yyy", { locale: id }) : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Jenis Kelamin</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.baby_gender : ""}</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.baby_gender == "male" ? "Laki-laki":"Perempuan" : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Panjang bayi lahir</Text>
@@ -201,7 +207,22 @@ function Datapasien(props) {
 
                                     </TouchableOpacity>
                                 </View>) : (null)}
-                                {menuswitch == 1 ? (<View>
+                                <View style={{ flex: 1, marginLeft: 5, marginRight: 5, marginTop: 20 }}>
+                                    {menuswitch3 == 1 ? (
+                                        <Button icon={
+                                            <View style={{ marginRight: 5 }}>
+                                                <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                            </View>
+                                        } title="Data Ortu" onPress={() => setmenuswitch3(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                    ) : (
+                                        <Button icon={
+                                            <View style={{ marginRight: 5 }}>
+                                                <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                            </View>
+                                        } title="Data Ortu" onPress={() => setmenuswitch3(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                    )}
+                                </View>
+                                {menuswitch3 == 1 ? (<View>
                                     <View style={{ flexDirection: "row", marginTop: 15 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Data Ortu</Text>
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
@@ -215,7 +236,7 @@ function Datapasien(props) {
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.mother_birthday : ""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data.mother_birthday ? format(new Date(data.mother_birthday), "dd' 'MMMM' 'yyy", { locale: id }) : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Pekerjaan</Text>
@@ -257,7 +278,7 @@ function Datapasien(props) {
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.father_birthday : ""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data.father_birthday ? format(new Date(data.father_birthday), "dd' 'MMMM' 'yyy", { locale: id }) : ""}</Text>
                                             </View>
 
                                             <View style={{ flexDirection: "row" }}>
@@ -275,7 +296,25 @@ function Datapasien(props) {
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)}
-                                {menuswitch == 2 ? (<View>
+                                <View style={{ flex: 1, marginLeft: 5, marginTop: 20 }}>
+                                    {menuswitch4 == 1 ? (
+                                        <Button icon={
+                                            <View style={{ marginRight: 5 }}>
+                                                <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                            </View>
+                                        }
+                                            title="Data Akun" onPress={() => setmenuswitch4(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                    ) : (
+                                        <Button icon={
+                                            <View style={{ marginRight: 5 }}>
+                                                <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                            </View>
+                                        }
+                                            title="Data Akun" onPress={() => setmenuswitch4(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                    )}
+                                </View>
+
+                                {menuswitch4 == 1 ? (<View>
                                     <View style={{ flexDirection: "row", marginTop: 15 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Data Akun</Text>
                                         <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
@@ -298,16 +337,46 @@ function Datapasien(props) {
                                                 <Text style={[style.nunitosans, style.datapasien]}>Password</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: *******</Text>
                                             </View>
-                                            {data.materi ? data.materi.map((item, index) =>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>) : (null)}
+                                <View style={{ flex: 1, marginLeft: 5, marginTop: 20 }}>
+                                    {menuswitch5 == 1 ? (
+                                        <Button icon={
+                                            <View style={{ marginRight: 5 }}>
+                                                <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                            </View>
+                                        }
+                                            title="Rekomendasi materi" onPress={() => setmenuswitch5(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                    ) : (
+                                        <Button icon={
+                                            <View style={{ marginRight: 5 }}>
+                                                <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                            </View>
+                                        }
+                                            title="Rekomendasi materi" onPress={() => setmenuswitch5(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                    )}
+                                </View>
+                                {menuswitch5 == 1 ? (<View>
+                                    <View style={{ flexDirection: "row", marginTop: 15 }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Rekomendasi materi</Text>
+                                        <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
+                                    </View>
+                                    <TouchableOpacity onPress={() => { ubahpasien(3) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
+                                        <View>
+                                            {data.materi != "" ? data.materi.map((item, index) =>
                                                 <View style={{ flexDirection: "row" }}>
                                                     <Text style={[style.nunitosans, style.datapasien]}>{index == 0 ? "Rekomendasi Materi" : ""}</Text>
                                                     <Text style={[style.nunitosans, style.datapasien2]}>: {item.title}</Text>
                                                 </View>
-                                            ) : <Text>Anda belum mengisi rekomendasi materi</Text>}
+                                            ) :
+                                                <View>
+                                                    <Text>Anda belum mengisi rekomendasi materi</Text>
+                                                    <Text>Tekan untuk mengisi rekomendasi materi</Text>
+                                                </View>}
                                         </View>
                                     </TouchableOpacity>
                                 </View>) : (null)}
-
                             </View>
                         </View>
                     </ScrollView>

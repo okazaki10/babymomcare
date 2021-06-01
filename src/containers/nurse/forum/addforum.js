@@ -114,7 +114,7 @@ function Addforum(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setisipesan("Forum berhasil diubah!")
+                    setisipesan("Tanya jawab berhasil diubah!")
                     toggleModal()
                 }
                 setspinner(false)
@@ -147,7 +147,7 @@ function Addforum(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setisipesan("Forum berhasil dibuat!")
+                    setisipesan("Tanya jawab berhasil dibuat!")
                     toggleModal()
                 }
                 setspinner(false)

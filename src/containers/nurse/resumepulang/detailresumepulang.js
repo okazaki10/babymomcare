@@ -12,7 +12,9 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import moment from 'moment';
+import { format, isToday, isTomorrow, isYesterday} from 'date-fns';
+import { id } from 'date-fns/locale';
 function Detailresumepulang(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -103,7 +105,7 @@ function Detailresumepulang(props) {
         }
     }
     const addpasien = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
+        props.navigation.navigate("Addforum", { nama: "Buat Tanya jawab" })
     }
     const forumdetail = () => {
         props.navigation.navigate("Forumdetail")
@@ -286,6 +288,9 @@ function Detailresumepulang(props) {
             }
         }
     })
+    const momendate = (date) =>{
+        return moment(date, 'YYYY-M-DD HH:mm:ss')
+      }
     return (
         <View style={style.main}>
 
@@ -344,7 +349,7 @@ function Detailresumepulang(props) {
                                 <View>
 
                                     <View style={{ flexDirection: "row" }}>
-                                        <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Foto Bayi</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Foto Bayi</Text>
                                     </View>
                                     <View style={{ marginTop: 15 }}>
                                         <Image
@@ -354,47 +359,43 @@ function Detailresumepulang(props) {
                                         ></Image>
                                     </View>
                                     <View style={{ flexDirection: "row" }}>
-                                        <Text style={[style.nunitosans, style.datapasien, { marginTop: 15 }]}>Tanggal Kontrol Selanjutnya</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien, { marginTop: 15 }]}>Tanggal Kontrol Selanjutnya</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
-                                        <Text style={[style.nunitosans, style.datapasien2, { marginTop: 15 }]}>{datakontrol.date}</Text>
+                                        <Text style={[style.nunitosans, style.datapasien2, { marginTop: 15 }]}>{format(new Date(datakontrol.date),"dd' 'MMMM' 'yyy", { locale: id })}</Text>
                                     </View>
                                     <View style={{ flexDirection: "row" }}>
-                                        <Text style={[style.nunitosans, style.datapasien]}>Tempat Kontrol</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien]}>Tempat Kontrol</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
                                         <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.tempat_kontrol}</Text>
                                     </View>
 
                                     <View style={{ flexDirection: "row" }}>
-                                        <Text style={[style.nunitosans, style.datapasien]}>Berat Badan</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien]}>Berat Badan</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
                                         <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.weight} gram</Text>
                                     </View>
                                     <View style={{ flexDirection: "row" }}>
-                                        <Text style={[style.nunitosans, style.datapasien]}>Panjang Badan</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien]}>Panjang Badan</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
                                         <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.length} cm</Text>
                                     </View>
                                     <View style={{ flexDirection: "row" }}>
-                                        <Text style={[style.nunitosans, style.datapasien]}>Lingkar Kepala</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien]}>Lingkar Kepala</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
                                         <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.lingkar_kepala} cm</Text>
                                     </View>
                                     <View style={{ flexDirection: "row" }}>
-                                        <Text style={[style.nunitosans, style.datapasien]}>Suhu</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien]}>Suhu</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
                                         <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.temperature} celcius</Text>
                                     </View>
 
                                     {global.status == 1 ? (<View>
 
-                                        <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
-                                            <Text style={{ marginTop: 15 }}>: </Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.nurse_note}</Text>
-                                        </View>
+
                                         {global.mode == "kontrol" ? (
                                             <View>
-                                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan tambahan</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 14, marginTop: 20 }]}>Catatan tambahan</Text>
                                                 <View>
                                                     <TextInput onChangeText={setnote} value={note} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
                                                 </View>
@@ -404,27 +405,95 @@ function Detailresumepulang(props) {
                                             </View>
                                         ) : (<View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Hasil Penunjang</Text>
-                                                <Text style={{ marginTop: 15 }}>: </Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.hasil_penunjang}</Text>
+                                                <Text style={[style.poppinsbold, style.datapasien]}>Hasil Penunjang</Text>
+
+                                            </View>
+                                            <View style={[ { marginTop: 10, flexDirection: "row", padding: 0, flex: 0,borderColor:colors.grey,borderWidth:1,borderRadius:10 }]}>
+                                                <View
+                                                    style={{ height: 65 }}
+                                                />
+                                                <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                    <Text style={[style.nunitosans, { fontSize: 15 }]}>{datakontrol.hasil_penunjang}</Text>
+                                                </View>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Terapi Pulang</Text>
-                                                <Text style={{ marginTop: 15 }}>: </Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.terapi_pulang}</Text>
+                                                <Text style={[style.poppinsbold, style.datapasien]}>Terapi Pulang</Text>
+
+                                            </View>
+                                    
+                                            <View style={[ { marginTop: 10, flexDirection: "row", padding: 0, flex: 0,borderColor:colors.grey,borderWidth:1,borderRadius:10 }]}>
+                                                <View
+                                                    style={{ height: 65 }}
+                                                />
+                                                <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                    <Text style={[style.nunitosans, { fontSize: 15 }]}>{datakontrol.terapi_pulang}</Text>
+                                                </View>
+                                            </View>
+                                            <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.poppinsbold, style.datapasien]}>Anjuran Pasien</Text>
+
                                             </View>
                                             {datakontrol.advices ? datakontrol.advices.map((item, index) =>
-                                                <View style={{ flexDirection: "row" }}>
-                                                    <Text style={[style.nunitosans, style.datapasien]}>{index == 0 ? "Anjuran Pasien" : ""}</Text>
-                                                    <Text style={{ marginTop: 15 }}>: </Text>
-                                                    <Text style={[style.nunitosans, style.datapasien2]}>{item.name}</Text>
+                                                <View>
+                                                    <View style={[{ marginTop: 10, flexDirection: "row", padding: 0, flex: 0,borderColor:colors.grey,borderWidth:1,borderRadius:10 }]}>
+                                                        <View
+                                                            style={{ height: 65 }}
+                                                        />
+                                                        <View style={{ justifyContent: "center", marginLeft: 15 }}>
+                                                            <View
+                                                                style={{ height: 10, width: 10, backgroundColor: colors.grey, borderRadius: 50, resizeMode: "content" }}
+                                                            />
+                                                        </View>
+                                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                            <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.name}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={[{ marginTop: 10, flexDirection: "row", padding: 0, flex: 0,borderColor:colors.grey,borderWidth:1,borderRadius:10 }]}>
+                                                        <View
+                                                            style={{ height: 65 }}
+                                                        />
+                                                        <View style={{ justifyContent: "center", marginLeft: 15 }}>
+                                                            <View
+                                                                style={{ height: 10, width: 10, backgroundColor: colors.grey, borderRadius: 50, resizeMode: "content" }}
+                                                            />
+                                                        </View>
+                                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                            <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.name}</Text>
+                                                        </View>
+                                                    </View>
+                                                    <View style={[{ marginTop: 10, flexDirection: "row", padding: 0, flex: 0,borderColor:colors.grey,borderWidth:1,borderRadius:10 }]}>
+                                                        <View
+                                                            style={{ height: 65 }}
+                                                        />
+                                                        <View style={{ justifyContent: "center", marginLeft: 15 }}>
+                                                            <View
+                                                                style={{ height: 10, width: 10, backgroundColor: colors.grey, borderRadius: 50, resizeMode: "content" }}
+                                                            />
+                                                        </View>
+                                                        <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                            <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.name}</Text>
+                                                        </View>
+                                                    </View>
                                                 </View>
                                             ) : "Anjuran Pasien"}
                                         </View>)}
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.poppinsbold, style.datapasien]}>Catatan dari perawat</Text>
+
+                                        </View>
+                                        <View style={[{ marginTop: 10, flexDirection: "row", padding: 0, flex: 0,borderColor:colors.grey,borderWidth:1,borderRadius:10 }]}>
+                                            <View
+                                                style={{ height: 65 }}
+                                            />
+                                            <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                                <Text style={[style.nunitosans, { fontSize: 15 }]}>{datakontrol.nurse_note}</Text>
+                                            </View>
+                                        </View>
+                                  
                                     </View>) : (<View>
                                         {global.mode == "kontrol" ? (
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Catatan Tambahan</Text>
+                                                <Text style={[style.poppinsbold, style.datapasien]}>Catatan Tambahan</Text>
                                                 <Text style={{ marginTop: 15 }}>: </Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.note}</Text>
                                             </View>
@@ -432,23 +501,23 @@ function Detailresumepulang(props) {
                                         {global.mode == "resume" ? (
                                             <View>
                                                 <View style={{ flexDirection: "row" }}>
-                                                    <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien]}>Catatan dari perawat</Text>
                                                     <Text style={{ marginTop: 15 }}>: </Text>
                                                     <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.nurse_note}</Text>
                                                 </View>
                                                 <View style={{ flexDirection: "row" }}>
-                                                    <Text style={[style.nunitosans, style.datapasien]}>Hasil Penunjang</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien]}>Hasil Penunjang</Text>
                                                     <Text style={{ marginTop: 15 }}>: </Text>
                                                     <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.hasil_penunjang}</Text>
                                                 </View>
                                                 <View style={{ flexDirection: "row" }}>
-                                                    <Text style={[style.nunitosans, style.datapasien]}>Terapi Pulang</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien]}>Terapi Pulang</Text>
                                                     <Text style={{ marginTop: 15 }}>: </Text>
                                                     <Text style={[style.nunitosans, style.datapasien2]}>{datakontrol.terapi_pulang}</Text>
                                                 </View>
                                                 {datakontrol.advices ? datakontrol.advices.map((item, index) =>
                                                     <View style={{ flexDirection: "row" }}>
-                                                        <Text style={[style.nunitosans, style.datapasien]}>{index == 0 ? "Anjuran Pasien" : ""}</Text>
+                                                        <Text style={[style.poppinsbold, style.datapasien]}>{index == 0 ? "Anjuran Pasien" : ""}</Text>
                                                         <Text style={{ marginTop: 15 }}>: </Text>
                                                         <Text style={[style.nunitosans, style.datapasien2]}>{item.name}</Text>
                                                     </View>

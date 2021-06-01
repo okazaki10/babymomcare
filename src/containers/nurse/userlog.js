@@ -165,7 +165,7 @@ function Userlog(props) {
                                 {data.map((item) => item.id ? (<View style={[style.card, { padding: 22, marginTop: 15 }]}>
                                     <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.log}</Text>
                                     <Text style={[style.nunitosans, { fontSize: 15 }]}>User : {item.name}</Text>
-                                    <Text style={[style.nunitosans, { marginTop: 5, fontSize: 13 }]}>{item.created_at ? format(new Date(item.created_at), "iii', 'dd' 'MMM', 'yyyy'", { locale: id }) : ""}</Text>
+                                    <Text style={[style.nunitosans, { marginTop: 5, fontSize: 13 }]}>{item.created_at ? format(new Date(item.created_at), "iii', 'dd' 'MMM', 'yyyy', 'kk:mm", { locale: id }) : ""}</Text>
                                 </View>) : (null))}
                             </View>
                         </View>

@@ -16,7 +16,7 @@ function Webview(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
 
-    return <WebView source={{ uri: "http://192.168.1.6:10/register" }}
+    return <WebView source={{ uri: "http://192.168.1.5:10/register" }}
      />;
 };
 

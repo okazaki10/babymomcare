@@ -83,7 +83,7 @@ function Daftarperawat(props) {
     }
     const kontakperawat = () => {
         if (global.status == 2) {
-            props.navigation.navigate("Chat", { nama: "Chat Pasien" })
+            props.navigation.navigate("Chat", { nama: "Kontak Pasien" })
         } else {
             props.navigation.navigate("Kontakperawat")
         }
@@ -185,6 +185,7 @@ function Daftarperawat(props) {
                 <View style={{ backgroundColor: "white", height: 69, justifyContent: "center" }}>
                     <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center",marginTop:5 }]}>{global.status == 1 ? "Daftar Perawat" : "Daftar Pasien"}</Text>
                 </View>
+           
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC', marginTop: 0 }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
 
@@ -196,7 +197,7 @@ function Daftarperawat(props) {
                                         if (global.status == 1) {
                                             props.navigation.navigate("Kontakperawat", { id: item.user_id, id_kontak: item.id })
                                         } else {
-                                            props.navigation.navigate("Chat", { nama: "Chat Pasien", id: item.user_id })
+                                            props.navigation.navigate("Chat", { nama: "Kontak Pasien", id: item.user_id })
                                         }
                                     }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
                                         {global.status == 1 ? (<Image

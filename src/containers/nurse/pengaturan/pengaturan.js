@@ -64,22 +64,22 @@ function Pengaturan(props) {
         props.navigation.navigate("Forumdetail")
     }
     const tambahforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Forum" })
+        props.navigation.navigate("Addforum", { nama: "Buat Tanya jawab" })
     }
     const ubahforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Ubah Forum" })
+        props.navigation.navigate("Addforum", { nama: "Ubah Tanya jawab" })
         global.add = 0
         toggleModal2()
     }
     const tindakanforum = () => {
 
-        setisipesan("Pilih tindakan untuk forum ini")
+        setisipesan("Pilih tindakan untuk Tanya jawab ini")
         toggleModal2()
 
     }
     const hapusforum = () => {
         toggleModal2()
-        setisipesan("Apakah anda yakin untuk menghapus forum ini")
+        setisipesan("Apakah anda yakin untuk menghapus Tanya jawab ini")
         toggleModal3()
 
     }

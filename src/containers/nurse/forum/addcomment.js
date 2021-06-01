@@ -93,7 +93,7 @@ function Addcomment(props) {
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
     const forumdiubah = () => {
-        setisipesan("Forum berhasil diubah!")
+        setisipesan("Tanya jawab berhasil diubah!")
         toggleModal()
     }
     const forumdibuat = () => {
@@ -180,7 +180,7 @@ function Addcomment(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView keyboardShouldPersistTaps="handled">
                     <View style={{ flex: 1, padding: 22 }}>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop:0, color: colors.judulforum }]}>Pertanyaan</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop:0, color: colors.judulforum }]}>Pertanyaan/Komentar</Text>
                         {/*
                         <View style={[style.card]}>
                             <RichEditor

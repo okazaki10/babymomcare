@@ -167,7 +167,7 @@ function Beranda(props) {
 
                     </View>
                     <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>{user.name}</Text>
-                    <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Pasien" : ""}{global.status == 2 ? "Perawat" : ""}{global.status == 3 ? "Admin" : ""}{global.status == 4 ? "Super Admin" : ""}</Text>
+                    <Text style={[style.poppinsmedium, { fontSize: 14, textAlign: 'center', color: colors.lightblue }]}>{global.status == 1 ? "Ibu" : ""}{global.status == 2 ? "Perawat" : ""}{global.status == 3 ? "Admin" : ""}{global.status == 4 ? "Super Admin" : ""}</Text>
                     <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                     <View style={{ flex: 0 }}>
 
@@ -186,7 +186,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Lihat hasil survey pasien</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Lihat hasil kuesioner pasien</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {
@@ -244,7 +244,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Perawat (disetujui)</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Perawat Aktif</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => { props.navigation.navigate("Nurse", { approved: 1 }) }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0, flex: 0 }]}>
@@ -252,7 +252,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Perawat (belum disetujui)</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Perawat Dalam Konfirmasi</Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>) : (null)}
@@ -261,7 +261,7 @@ function Beranda(props) {
                                         style={{ height: 65 }}
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Survey</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Daftar Kuesioner</Text>
                                     </View>
                                 </TouchableOpacity>
                                 {global.status == 3 || global.status == 4 ? (<View>
@@ -328,7 +328,7 @@ function Beranda(props) {
                                         style={{ height: 65 }}
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Forum</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Tanya jawab</Text>
                                     </View>
                                 </TouchableOpacity>
                                 {global.status == 3 || global.status == 4 ? (
@@ -354,7 +354,7 @@ function Beranda(props) {
                                         style={{ height: 65 }}
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Faq</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>FAQ</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>

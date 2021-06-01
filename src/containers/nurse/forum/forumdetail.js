@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { formatDistance } from 'date-fns';
 import { id } from 'date-fns/locale';
 import { useIsFocused } from '@react-navigation/native';
+import Dash from 'react-native-dash';
 function Forumdetail(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -69,7 +70,7 @@ function Forumdetail(props) {
     }
 
 
-    
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -91,49 +92,68 @@ function Forumdetail(props) {
                     <View style={{ flex: 1, padding: 23 }}>
 
                         <View style={{ flexDirection: "row" }}>
-                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>{data.title}</Text>
-                            <Ionicons name={'pencil-outline'} size={24} color={colors.grey} />
+                            <Text style={[style.poppinsbold, { fontSize: 20, color: colors.grey, flex: 1 }]}>{data.title}</Text>
                         </View>
 
                         <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
                             <View style={[{ flexDirection: "row" }]}>
-                                <Image
-                                    source={require("../../../assets/image/addpeople.png")}
-                                    style={{ width: 40, height: 40 }}
-                                    resizeMode="contain"
-                                />
+                                <View style={{ marginTop: 5 }}>
+                                    {data.role == "patient" ? (<Image
+                                        source={require("../../../assets/image/addpeople.png")}
+                                        style={{ width: 25, height: 25 }}
+                                        resizeMode="contain"
+                                    />) : (
+                                        <Image
+                                            source={require("../../../assets/image/profilcewe.png")}
+                                            style={{ width: 25, height: 25 }}
+                                            resizeMode="contain"
+                                        />
+                                    )}
+                                </View>
                                 <View style={{ marginLeft: 15 }}>
-                                    <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{data.name}</Text>
-                                    <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>{data.role == "nurse"?"Perawat":data.role == "admin"?"Admin":"Pasien"}</Text>
-                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{data.question}</Text>
+                                    <Text style={[style.poppinsbold, { fontSize: 17, color: colors.grey, paddingRight: 50 }]}>{data.name}</Text>
+                                    <Text style={[style.poppinsmedium, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{data.role == "nurse" ? "Perawat" : data.role == "admin" ? "Admin" : "Pasien"}</Text>
+                                    <Text style={[style.nunitosans, { fontSize: 15, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{data.question}</Text>
                                 </View>
                             </View>
 
                         </View>
-                        <Button title="+ Tambah Komentar" onPress={() => { props.navigation.navigate("Addcomment", { id: data.id }) }} buttonStyle={[style.button, { marginTop: 20 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                        <Button title="+ Tambah Komentar" onPress={() => {
+                            props.navigation.navigate("Addcomment", { id: data.id })
+                            global.add = 1
+                        }} buttonStyle={[style.button, { marginTop: 20 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                         <View style={{ flexDirection: "row", marginTop: 15 }}>
-                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>Komentar</Text>
+                            <Text style={[style.poppinsbold, { fontSize: 20, color: colors.grey, flex: 1 }]}>Komentar</Text>
                         </View>
 
                         <View style={[style.card, { marginTop: 15, elevation: 5 }]}>
-                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, flex: 1 }]}>List Komentar</Text>
+
                             {data.comments.map((item) => (
                                 <View>
 
-                                    <View style={[style.line, { marginBottom: 15 }]}></View>
+
                                     <View style={[{ flexDirection: "row" }]}>
-                                        <Image
-                                            source={require("../../../assets/image/addpeople.png")}
-                                            style={{ width: 40, height: 40 }}
-                                            resizeMode="contain"
-                                        />
-                                        <View style={{ marginLeft: 15 }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{item.user}</Text>
-                                            <Text style={[style.poppinsbold, { fontSize: 12, color: colors.grey, paddingRight: 50 }]}>{item.role == "nurse"?"Perawat":item.role == "admin"?"Admin":"Pasien"}</Text>
-                                            <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
+                                        <View style={{ marginTop: 5 }}>
+                                            {item.role == "patient" ? (<Image
+                                                source={require("../../../assets/image/addpeople.png")}
+                                                style={{ width: 25, height: 25 }}
+                                                resizeMode="contain"
+                                            />) : (
+                                                <Image
+                                                    source={require("../../../assets/image/profilcewe.png")}
+                                                    style={{ width: 25, height: 25 }}
+                                                    resizeMode="contain"
+                                                />
+                                            )}
+                                        </View>
+                                        <View style={{ marginLeft: 15, flex: 1 }}>
+                                            <Text style={[style.poppinsbold, { fontSize: 20, color: colors.grey, paddingRight: 50 }]}>{item.user}</Text>
+                                            <Text style={[style.poppinsmedium, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{item.role == "nurse" ? "Perawat" : item.role == "admin" ? "Admin" : "Ibu"}</Text>
+                                            <Dash style={{ width: 100, height: 1,dashColor:'black' }} />
+                                            <Text style={[style.nunitosans, { fontSize: 18, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
                                         </View>
                                     </View>
-
+                                    <View style={[style.line, { marginBottom: 15 }]}></View>
                                 </View>))}
                             {/*
                             <View style={[{ flexDirection: "row" }]}>

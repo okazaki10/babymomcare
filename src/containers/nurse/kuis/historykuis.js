@@ -50,7 +50,7 @@ function Historykuis(props) {
             ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
         } else {
             toggleModal2()
-            props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice })
+            props.navigation.navigate("Tambahsurvey", { nama: "Ubah Kuesioner", id_survey: id_survey, kuis: kuis, choice_type: choice })
             global.add = 0
         }
     }
@@ -300,7 +300,7 @@ function Historykuis(props) {
                         <View style={{ padding: 3 }}>
                             <View>
                                 {data.map(item => item.quiz_id ? (<TouchableOpacity onPress={() => {
-                                    //props.navigation.navigate("Kerjakankuis", { id: item.quiz_id,lihatquiz:1 })
+                                    props.navigation.navigate("Kerjakankuis", { id: item.quiz_id,lihatquiz:1,mode:1 })
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>Pengerjaan ke {item.order}</Text>

@@ -179,7 +179,7 @@ function Daftarakun(props) {
                 setspinner(false)
             });
     }
-    
+
     useState(() => {
         if (global.add == 0) {
             lihatpasien()
@@ -224,40 +224,44 @@ function Daftarakun(props) {
             </Modal>
 
             <View style={{ flex: 1 }}>
-                <ScrollView>
+                <ScrollView> 
                     <View style={{ flex: 1, padding: 22 }}>
-                        {global.add == 1 ? (<View style={{ alignItems: "center" }}>
-                            <Image
-                                source={require("../../../assets/image/register-pasien-1.png")}
-                                style={{ width: "100%", height: DEVICE_WIDTH * 0.15 }}
-                                resizeMode="stretch"
-                            />
-                        </View>) : (null)}
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Email</Text>
-                        <TextInput value={email} onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="email-address"></TextInput>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>No hp</Text>
-                        <TextInput value={nohp} onChangeText={setnohp} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                        {global.add == 1 ? (
-                            <View>
-                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
-                                <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                        {props.route.params?.mode == "materi" ? (<View>
+                            {global.add == 0 ? (<View style={{ marginTop: 30 }}>
+                                <MultiSelect
+                                    hideTags
+                                    items={items}
+                                    uniqueKey="id"
+                                    ref={referensi}
+                                    onSelectedItemsChange={onSelectedItemsChange}
+                                    selectedItems={selectedItems}
+                                    selectText="Pilih Rekomendasi Materi"
+                                    searchInputPlaceholderText="Pilih Materi..."
+                                    onChangeInput={(text) => console.log(text)}
+                                    submitButtonText="Submit"
+                                />
                             </View>) : (null)}
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
-                        <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]} autoCapitalize="none"></TextInput>
-                        {global.add == 0 ? (<View style={{ marginTop: 30 }}>
-                            <MultiSelect
-                                hideTags
-                                items={items}
-                                uniqueKey="id"
-                                ref={referensi}
-                                onSelectedItemsChange={onSelectedItemsChange}
-                                selectedItems={selectedItems}
-                                selectText="Pilih Rekomendasi Materi"
-                                searchInputPlaceholderText="Pilih Materi..."
-                                onChangeInput={(text) => console.log(text)}
-                                submitButtonText="Submit"
-                            />
-                        </View>) : (null)}
+                        </View>) : (<View>
+                            {global.add == 1 ? (<View style={{ alignItems: "center" }}>
+                                <Image
+                                    source={require("../../../assets/image/register-pasien-1.png")}
+                                    style={{ width: "100%", height: DEVICE_WIDTH * 0.15 }}
+                                    resizeMode="stretch"
+                                />
+                            </View>) : (null)}
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Email</Text>
+                            <TextInput value={email} onChangeText={setemail} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="email-address"></TextInput>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>No hp</Text>
+                            <TextInput value={nohp} onChangeText={setnohp} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                            {global.add == 1 ? (
+                                <View>
+                                    <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
+                                    <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+                                </View>) : (null)}
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
+                            <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]} autoCapitalize="none"></TextInput>
+                        </View>)}
+
 
 
                     </View>
@@ -266,7 +270,7 @@ function Daftarakun(props) {
                 {global.add == 1 ? (
                     <View style={{ padding: 22, flexDirection: "row" }}>
                         <View style={{ flex: 1, marginRight: 10 }}>
-                            <Button title="Batalkan" onPress={()=>{props.navigation.goBack()}} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                            <Button title="Batalkan" onPress={() => { props.navigation.goBack() }} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                         </View>
                         <View style={{ flex: 1, marginLeft: 10 }}>
                             <Button title="Selanjutnya" onPress={lanjut} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>

@@ -207,7 +207,7 @@ function Kerjakansurvey(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     //setdata(json)
-                    setisipesan("Survey telah terisi!")
+                    setisipesan("Kuesioner telah terisi!")
                     toggleModal()
 
                 }
@@ -350,7 +350,7 @@ function Kerjakansurvey(props) {
                         <View style={{ padding: 3 }}>
                             {guide ? (<View>
                                 <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Guide Menyelesaikan Survey :</Text>
+                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Guide Menyelesaikan Kuesioner :</Text>
                                     <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Pilih salah satu jawaban dari skala 0 sampai 4 atau tidak pernah sampai selesai atau jawaban iya dan tidak</Text>
                                 </View>
                                 <View style={{ marginTop: 30 }}>
@@ -427,7 +427,7 @@ function Kerjakansurvey(props) {
                                             </View>
                                         </View>
                                     </View>
-                                    ) : (<Text>Survey belum dibuat</Text>)}
+                                    ) : (<Text>Kuesioner belum dibuat</Text>)}
                                 </View>
                             )}
 

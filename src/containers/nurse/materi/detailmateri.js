@@ -136,18 +136,19 @@ function Detailmateri(props) {
                     <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
                         <Text style={[style.poppinsbold, { fontSize: 17 }]}>{data.title}</Text>
                         <Text style={[style.nunitosans, { fontSize: 12 }]}>{data.date ? format(new Date(data.date), "iii', 'dd' 'MMM', 'yyyy'", { locale: id }) : ""}</Text>
-                        <Image
+                        {data.image?(  <Image
                             source={{ uri: data.image ? data.image : "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" }}
                             style={{ width: "100%", height: 170, marginTop: 15 }}
                             resizeMode="contain"
-                        />
+                        />):(null)}
+                      
                         <HyperLink linkDefault={true} linkStyle={{ color: '#2980b9' }}>
                             <Text style={[style.nunitomateri, { fontSize: 14, marginTop: 15, flex: 1 }]}>{data.content}</Text>
                         </HyperLink>
                     </View>
                     {data.forum ? (
                         <View>
-                            <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Forum Terkait</Text>
+                            <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Tanya jawab Terkait</Text>
                             <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
                                 <View>
                                     <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Forumdetail", { id: data.forum.id }) }}>

@@ -132,6 +132,7 @@ function Tambahmateri(props) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
+                ToastAndroid.show(response.error == "Permissions weren't granted"?"Anda harus mengizinkan/permission pada aplikasi di pengaturan":"", ToastAndroid.SHORT)
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
@@ -145,7 +146,7 @@ function Tambahmateri(props) {
                 // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
             }
-        });
+        })
 
     }
     const nursedibuat = () => {

@@ -109,12 +109,12 @@ function Navigation() {
         <Stack.Screen
           name="Forum"
           component={Forum}
-          options={{ headerTitle: "Forum" }}
+          options={{ headerTitle: "Tanya jawab" }}
         />
         <Stack.Screen
           name="Forumdetail"
           component={Forumdetail}
-          options={{ headerTitle: "Forum" }}
+          options={{ headerTitle: "Tanya jawab" }}
         />
         <Stack.Screen
           name="Addforum"
@@ -169,7 +169,7 @@ function Navigation() {
         <Stack.Screen
           name="Chat"
           component={Chat}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Chat Perawat" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Kontak Perawat" })}
         />
         <Stack.Screen
           name="Menubarpasien"
@@ -189,7 +189,7 @@ function Navigation() {
         <Stack.Screen
           name="Daftarsurvey"
           component={Daftarsurvey}
-          options={{ headerTitle: "Daftar Survey" }}
+          options={{ headerTitle: "Daftar Kuesioner" }}
         />
         <Stack.Screen
           name="Datakontrol"
@@ -224,7 +224,7 @@ function Navigation() {
           <Stack.Screen
           name="Tambahsurvey"
           component={Tambahsurvey}
-          options={{ headerTitle:"Tambah Survey"}}
+          options={{ headerTitle:"Tambah Kuesioner"}}
         />
           <Stack.Screen
           name="Tambahmateri"
@@ -234,7 +234,7 @@ function Navigation() {
        <Stack.Screen
           name="Chartkuis"
           component={Chartkuis}
-          options={{ headerTitle:"Chart Survey"}}
+          options={{ headerTitle:"Chart Kuesioner"}}
         />
           <Stack.Screen
           name="Notifikasi"
@@ -254,7 +254,7 @@ function Navigation() {
          <Stack.Screen
           name="Kategoriforum"
           component={Kategoriforum}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Kategori Forum" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Kategori Tanya jawab" })}
         />
         <Stack.Screen
           name="Kategorikuis"
@@ -264,12 +264,12 @@ function Navigation() {
          <Stack.Screen
           name="Kerjakansurvey"
           component={Kerjakansurvey}
-          options={{ headerTitle:"Kerjakan Survey"}}
+          options={{ headerTitle:"Kerjakan Kuesioner"}}
         />
         <Stack.Screen
           name="Kelolasurvey"
           component={Kelolasurvey}
-          options={{ headerTitle:"Kelola Survey"}}
+          options={{ headerTitle:"Kelola Kuesioner"}}
         />
            <Stack.Screen
           name="Datakontrolpasien"
@@ -294,7 +294,7 @@ function Navigation() {
              <Stack.Screen
           name="Tambahkategori"
           component={Tambahkategori}
-          options={{ headerTitle:"Tambah Kategori"}}
+          options={{ headerTitle:"Tambah Kategori Materi"}}
         />
         <Stack.Screen
           name="Tambahtopik"
@@ -304,7 +304,7 @@ function Navigation() {
         <Stack.Screen
           name="Lihathasilsurvey"
           component={Lihathasilsurvey}
-          options={{ headerTitle:"Lihat hasil survey"}}
+          options={{ headerTitle:"Lihat hasil Kuesioner"}}
         />
         <Stack.Screen
           name="Lihathasilkuis"
@@ -329,7 +329,7 @@ function Navigation() {
         <Stack.Screen
           name="Faq"
           component={Faq}
-          options={{ headerTitle:"Faq"}}
+          options={{ headerTitle:"FAQ"}}
         />
         <Stack.Screen
           name="Historykuis"

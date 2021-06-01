@@ -276,14 +276,14 @@ function Kerjakankuis(props) {
     useEffect(() => {
         if (isFocused) {
             if (props.route.params.mode) {
-                //selesaikuis2()
-                //lihatquizhistory()
-            
+                selesaikuis2()
+                lihatquizhistory()
             } else {
                 lihatkuis()
             }
         }
     }, [isFocused])
+    const [nomor_pertanyaan, setnomor_pertanyaan] = useState(1)
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -352,11 +352,12 @@ function Kerjakankuis(props) {
                                 <View>
                                     <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Hasil</Text>
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        {data2.data.map((item) => (<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                        {data2.data.map((item, index) => (<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",marginBottom:15 }}>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0,flex:0,width:20 }]}>{(index + 1)+"."}</Text>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>{item.question}</Text>
                                             {item.point == 1 ? (<FontAwesomeIcon icon={faThumbsUp} size={22} color={"lightgreen"}></FontAwesomeIcon>
                                             ) : (
-                                                    <FontAwesomeIcon icon={faFrown} size={22} color={"red"}></FontAwesomeIcon>)}
+                                                <FontAwesomeIcon icon={faFrown} size={22} color={"red"}></FontAwesomeIcon>)}
                                         </View>))}
                                         <View style={[style.line, { marginTop: 5, marginBottom: 5 }]}></View>
                                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
@@ -369,55 +370,55 @@ function Kerjakankuis(props) {
                                     </View>
                                 </View>
                             ) : (
-                                    guide ? (
-                                        <View>
-                                            <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Guide Menyelesaikan Kuis :</Text>
-                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Pilih salah satu jawaban yang paling benar dari ketiga jawaban</Text>
-                                            </View>
-                                            <View style={{ marginTop: 30 }}>
-                                                <Button title="Lanjut" onPress={() => { setguide(false) }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                            </View>
-                                        </View>
-                                    ) : (<View>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Pertanyaan {nomor + 1}</Text>
+                                guide ? (
+                                    <View>
                                         <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{data.questions ? data.questions[nomor].question : ""}</Text>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Guide Menyelesaikan Kuis :</Text>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Pilih salah satu jawaban yang paling benar dari ketiga jawaban</Text>
                                         </View>
+                                        <View style={{ marginTop: 30 }}>
+                                            <Button title="Lanjut" onPress={() => { setguide(false) }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                        </View>
+                                    </View>
+                                ) : (<View>
+                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Pertanyaan {nomor + 1}</Text>
+                                    <View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, textAlign: "center" }]}>{data.questions ? data.questions[nomor].question : ""}</Text>
+                                    </View>
 
-                                        <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                            {data.questions ? data.questions[nomor].choice.map((item) => (
-                                                jawaban[nomor] == item.id ? (
-                                                    <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                        <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
-                                                    </TouchableOpacity>
-                                                ) : (
-                                                        <TouchableOpacity onPress={() => { pilih(nomor, item.id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
-                                                            <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
-                                                        </TouchableOpacity>
-                                                    )
-                                            )) : (null)}
+                                    <View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                        {data.questions ? data.questions[nomor].choice.map((item) => (
+                                            jawaban[nomor] == item.id ? (
+                                                <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
+                                                </TouchableOpacity>
+                                            ) : (
+                                                <TouchableOpacity onPress={() => { pilih(nomor, item.id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                    <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
+                                                </TouchableOpacity>
+                                            )
+                                        )) : (null)}
+
+                                    </View>
+                                    <View style={{ flexDirection: "row", marginTop: 20 }}>
+                                        <View style={{ flex: 1, marginRight: 10 }}>
+                                            {nomor > 0 ? (
+                                                <Button title="Kembali" onPress={kurangnomor} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                            ) : (null)}
+                                        </View>
+                                        <Text>{data.length}</Text>
+                                        <View style={{ flex: 1, marginLeft: 10 }}>
+                                            {nomor >= halaman.length - 1 ? (
+                                                <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                            ) : (
+                                                <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
 
                                         </View>
-                                        <View style={{ flexDirection: "row", marginTop: 20 }}>
-                                            <View style={{ flex: 1, marginRight: 10 }}>
-                                                {nomor > 0 ? (
-                                                    <Button title="Kembali" onPress={kurangnomor} buttonStyle={[style.button, { backgroundColor: "#EFF3F7" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
-                                                ) : (null)}
-                                            </View>
-                                            <Text>{data.length}</Text>
-                                            <View style={{ flex: 1, marginLeft: 10 }}>
-                                                {nomor >= halaman.length - 1 ? (
-                                                    <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                                ) : (
-                                                        <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
-
-                                            </View>
-                                        </View>
-                                    </View>)
-                                )}
+                                    </View>
+                                </View>)
+                            )}
 
                         </View>
                     </ScrollView>

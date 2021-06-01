@@ -47,6 +47,11 @@ function Anjuranpasien(props) {
         toggleModal2()
     }
 
+    const ubahanjuranclick = (tindakan) => {
+        props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder", isinya: tindakan })
+        global.add = 0
+    }
+
     const tindakananjuran = () => {
         if (global.status != 1) {
             setisipesan("Pilih tindakan untuk reminder ini")
@@ -232,7 +237,9 @@ function Anjuranpasien(props) {
                                         setidhapus(item.id)
                                         settindakan({ id: item.id, name: item.name, description: item.description, frequency: item.frequency })
                                         tindakananjuran()
-                                    }} onPress={() => { setkolom(index) }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
+                                    }} onPress={() => { 
+                                        ubahanjuranclick({ id: item.id, name: item.name, description: item.description, frequency: item.frequency })
+                                    }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
                                         <Text style={[style.poppinsbold, { fontSize: 15, flex: 1 }]}>{item.name}</Text>
                                         {global.status == 2 ? (
                                             <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -245,12 +252,7 @@ function Anjuranpasien(props) {
 
                                             </View>) : (null)}
                                     </TouchableOpacity>
-                                        {
-                                            collapse[index] == true ? (null) : (
-                                                <View style={[style.card, { marginTop: 5, padding: 17 }]}>
-                                                    <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.description}</Text>
-                                                </View>)
-                                        }
+                                    
 
                                     </View>
                                 ) : (null))}

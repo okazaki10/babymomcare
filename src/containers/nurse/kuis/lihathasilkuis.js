@@ -50,7 +50,7 @@ function Lihathasilkuis(props) {
             ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
         } else {
             toggleModal2()
-            props.navigation.navigate("Tambahsurvey", { nama: "Ubah Survey", id_survey: id_survey, kuis: kuis, choice_type: choice })
+            props.navigation.navigate("Tambahsurvey", { nama: "Ubah Kuesioner", id_survey: id_survey, kuis: kuis, choice_type: choice })
             global.add = 0
         }
     }
