@@ -429,7 +429,7 @@ function Daftarortu(props) {
                             <Picker
                                 selectedValue={pengalamanibu}
                                 onValueChange={(itemValue, itemIndex) => {
-                                    setpendidikanibu(itemValue)
+                                    setpengalamanibu(itemValue)
                                     console.log(itemValue)
                                 }
                                 }

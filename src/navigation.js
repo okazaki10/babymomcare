@@ -99,12 +99,12 @@ function Navigation() {
         <Stack.Screen
           name="Daftarbayi"
           component={Daftarbayi}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Register Pasien" })}
+          options={{ headerTitle: "Daftar Bayi" }}
         />
         <Stack.Screen
           name="Daftarortu"
           component={Daftarortu}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Register Pasien" })}
+          options={{ headerTitle: "Dafta Ortu" }}
         />
         <Stack.Screen
           name="Forum"
