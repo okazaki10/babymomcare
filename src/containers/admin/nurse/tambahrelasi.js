@@ -101,7 +101,7 @@ function Tambahrelasi(props) {
     }
     const detailresume = () => {
         global.mode = "resume"
-        props.navigation.navigate("Detailresumepulang")
+        props.navigation.navigate("Detailresumepulang",{nama: "Detail resume pulang"})
     }
     const [title2, settitle2] = useState("")
     const [description2, setdescription2] = useState("")

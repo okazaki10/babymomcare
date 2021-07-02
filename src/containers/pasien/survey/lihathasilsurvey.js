@@ -239,7 +239,7 @@ function Lihathasilsurvey(props) {
                         <View style={{ padding: 3 }}>
                             <View>
                                 {data.map(item => item.survey_id ? (<TouchableOpacity onPress={() => {
-                                   // props.navigation.navigate("Kerjakansurvey", { id: item.survey_id, id_pasien: props.route.params.id_pasien, order: item.order, choice_type: item.choice_type, lihatsurvey: 1 })
+                                    props.navigation.navigate("Kerjakansurvey", { id: item.survey_id, id_pasien: props.route.params.id_pasien, order: item.order, choice_type: item.choice_type, lihatsurvey: 1 })
 
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>

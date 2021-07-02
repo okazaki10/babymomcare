@@ -378,7 +378,7 @@ function Nurse(props) {
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
-                                        <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.role}</Text>
+                                        <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.role == "nurse"?"perawat":item.role}</Text>
                                         <Text style={[style.nunitosans, { fontSize: 11 }]}>{item.is_approved == true ? "disetujui" : "belum disetujui"}</Text>
                                     </View>
                                 </TouchableOpacity>) : (null))}

@@ -35,6 +35,7 @@ function Anjuranpasien(props) {
     const [kosong, setkosong] = useState(false)
     const tambahanjuran = () => {
         props.navigation.navigate("Tambahanjuran")
+        global.add = 1
     }
     const ubahanjuran = () => {
         props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder" })

@@ -18,7 +18,7 @@ function Forum(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
- 
+
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -244,7 +244,7 @@ function Forum(props) {
                                 }} onPress={() => {
                                     props.navigation.navigate("Forumdetail", { id: item.id, nama: item.user })
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row", elevation: 5 }]}>
-                                  
+
                                     <View style={{ marginLeft: 15 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.judulforum, paddingRight: 50 }]}>{item.title}</Text>
                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 2, paddingRight: 50 }]}>Oleh: {item.user}</Text>
@@ -256,7 +256,7 @@ function Forum(props) {
                                         </View>
                                     </View>
                                 </TouchableOpacity>) : (null))}
-
+                                {data.length == 0 ? (<Text style={{marginTop:15}}>Belum ada tanya jawab</Text>) : (null)}
 
                             </View>
                         </View>

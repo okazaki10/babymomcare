@@ -19,12 +19,14 @@ import { Picker } from '@react-native-picker/picker';
 import ImagePicker from 'react-native-image-picker';
 import { actions, defaultActions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
 import MultiSelect from 'react-native-multiple-select';
+import YoutubePlayer from "react-native-youtube-iframe";
 function Tambahmateri(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [judul, setjudul] = useState("")
     const [pertanyaan, setpertanyaan] = useState("")
+    const [video_url, setvideo_url] = useState("")
     const [topik, settopik] = useState("")
     const textref = createRef()
     const toggleModal = () => {
@@ -92,7 +94,8 @@ function Tambahmateri(props) {
                 content: pertanyaan,
                 base64_image: gambar2,
                 category_id: props.route.params.id,
-                forum_id: forum_id
+                forum_id: forum_id,
+                video_url:video_url
             })
         })
             .then((response) => response.json())
@@ -132,7 +135,7 @@ function Tambahmateri(props) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
-                ToastAndroid.show(response.error == "Permissions weren't granted"?"Anda harus mengizinkan/permission pada aplikasi di pengaturan":"", ToastAndroid.SHORT)
+                ToastAndroid.show(response.error == "Permissions weren't granted" ? "Anda harus mengizinkan/permission pada aplikasi di pengaturan" : "", ToastAndroid.SHORT)
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
@@ -223,6 +226,8 @@ function Tambahmateri(props) {
                 setspinner(false)
             });
     }
+
+
     useState(() => {
         if (props.route.params) {
             if (props.route.params.id_materi) {
@@ -270,6 +275,8 @@ function Tambahmateri(props) {
                         <TextInput value={judul} onChangeText={setjudul} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Deskripsi Materi</Text>
                         <TextInput value={pertanyaan} onChangeText={setpertanyaan} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20, color: colors.judulforum }]}>Url video youtube</Text>
+                        <TextInput value={video_url} onChangeText={setvideo_url} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} multiline={true}></TextInput>
                         <View style={{ marginTop: 30 }}>
                             <MultiSelect
                                 hideTags
@@ -294,7 +301,7 @@ function Tambahmateri(props) {
 
                         <View style={{ flexDirection: "row", marginTop: 30 }}>
                             <View style={{ flex: 1, marginRight: 10 }}>
-                                <Button title="Upload Foto Materi" onPress={gantiprofil} buttonStyle={[style.button, { backgroundColor: "#C4C4C4" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                                <Button title="Upload Foto Cover Materi" onPress={gantiprofil} buttonStyle={[style.button, { backgroundColor: "#C4C4C4" }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
                             </View>
                             <View style={{ flex: 1, marginLeft: 10, justifyContent: "center" }}>
                                 <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Pilih Foto Anda</Text>

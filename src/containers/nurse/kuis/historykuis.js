@@ -307,16 +307,7 @@ function Historykuis(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>Jawaban Benar = {item.point}/{item.total}</Text>
                                         <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0}]}>Nilai = {(100 * (item.point / item.total)).toString().substr(0,4)}</Text>
                                     </View>
-                                    {global.status == 1 ? (null) : (
-                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                            <View style={{ marginRight: 15 }}>
-                                                <Ionicons name={'pencil'} size={24} color={colors.grey} />
-                                            </View>
-                                            <View style={{ marginRight: 15 }}>
-                                                <Ionicons name={'trash'} size={24} color={colors.grey} />
-                                            </View>
-                                        </View>
-                                    )}
+                            
                                 </TouchableOpacity>) : (null))}
                             </View>
                         </View>

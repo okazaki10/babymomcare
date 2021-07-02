@@ -243,7 +243,7 @@ function Judulmateri(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 14 }]}>{item.title}</Text>
                                     </View>
                                 </TouchableOpacity>) : (null))}
-
+                                {data.length == 0 ? (<Text style={{marginTop:15}}>Belum ada judul materi</Text>) : (null)}
 
                             </View>
                         </View>

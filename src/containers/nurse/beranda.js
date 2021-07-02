@@ -186,7 +186,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Lihat hasil kuesioner pasien</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Hasil Kuesioner Pasien</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {
@@ -200,7 +200,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Lihat hasil kuis pasien</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Hasil Kuis Pasien</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {
@@ -233,7 +233,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Mengelola Kuis</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kelola Kuis</Text>
                                             </View>
                                         </TouchableOpacity>
                                     </View>) : (null)}
@@ -274,7 +274,7 @@ function Beranda(props) {
                                             style={{ height: 65 }}
                                         />
                                         <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang Pasien</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang</Text>
                                         </View>
                                     </TouchableOpacity>
 
@@ -286,7 +286,7 @@ function Beranda(props) {
                                             style={{ height: 65 }}
                                         />
                                         <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol pasien</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Data Kontrol</Text>
                                         </View>
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={() => {

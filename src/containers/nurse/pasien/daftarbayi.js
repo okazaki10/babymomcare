@@ -262,6 +262,35 @@ function Daftarbayi(props) {
                                 <Picker.Item label="Perempuan" value="female" />
                             </Picker>
                         </View>
+                 
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Panjang badan lahir</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                            <TextInput value={pjl} onChangeText={setpjl} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <Text style={{ marginLeft: 5 }}>Cm</Text>
+                        </View>
+                        {/*
+                        {global.status != 3 ? (
+                            <View>
+                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Anak Ke</Text>
+                                <TextInput onChangeText={setanak} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
+                            </View>
+                        ) : (null)}
+                        */}
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat badan Lahir</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                            <TextInput value={bbnow} onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <Text style={{ marginLeft: 5 }}>gram</Text>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lingkar kepala lahir</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <Text style={{ marginLeft: 5 }}>Cm</Text>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Usia gestasi (dalam minggu)</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                            <TextInput value={gestas} onChangeText={setgestas} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <Text style={{ marginLeft: 5 }}>Minggu</Text>
+                        </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Apakah diharapkan orang tua?</Text>
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
                             <Picker
@@ -275,35 +304,6 @@ function Daftarbayi(props) {
                                 <Picker.Item label="Ya" value="1" />
                                 <Picker.Item label="Tidak" value="0" />
                             </Picker>
-                        </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Panjang bayi lahir</Text>
-                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={pjl} onChangeText={setpjl} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
-                            <Text style={{ marginLeft: 5 }}>Cm</Text>
-                        </View>
-                        {/*
-                        {global.status != 3 ? (
-                            <View>
-                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Anak Ke</Text>
-                                <TextInput onChangeText={setanak} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                            </View>
-                        ) : (null)}
-                        */}
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>BB Lahir</Text>
-                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={bbnow} onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
-                            <Text style={{ marginLeft: 5 }}>gram</Text>
-                        </View>
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Usia gestasi (dalam minggu)</Text>
-                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={gestas} onChangeText={setgestas} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
-                            <Text style={{ marginLeft: 5 }}>Minggu</Text>
-                        </View>
-
-                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lingkar Kepala</Text>
-                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
-                            <Text style={{ marginLeft: 5 }}>Cm</Text>
                         </View>
                     </View>
                 </ScrollView>

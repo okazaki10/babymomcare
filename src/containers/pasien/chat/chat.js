@@ -176,9 +176,10 @@ function Chat(props) {
                             ) : (
                                     <View style={{ alignItems: "flex-start", marginRight: 15, marginLeft: 15, marginTop: 15 }}>
                                         <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row" }}>
+                                            
                                             {item.role == "patient" ? (
                                                 <Image
-                                                    source={require("../../../assets/image/addpeople.png")}
+                                                    source={require("../../../assets/image/addpseople.png")}
                                                     style={{ width: 50, height: 50, marginRight: 10 }}
                                                     resizeMode="contain"
                                                 />) : (<Image

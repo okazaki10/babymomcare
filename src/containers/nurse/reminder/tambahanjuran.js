@@ -49,7 +49,7 @@ function Tambahanjuran(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setisipesan("Reminder berhasil diubah!")
+                    setisipesan("Anjuran berhasil diubah!")
                     toggleModal()
                 }
                 setspinner(false)
@@ -83,7 +83,7 @@ function Tambahanjuran(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setisipesan("Reminder berhasil dibuat!")
+                    setisipesan("Anjuran berhasil dibuat!")
                     toggleModal()
                 }
                 setspinner(false)

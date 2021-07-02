@@ -273,16 +273,7 @@ function Lihathasilkuis(props) {
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.quiz}</Text>
                                     </View>
-                                    {global.status == 1 ? (null) : (
-                                        <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                            <View style={{ marginRight: 15 }}>
-                                                <Ionicons name={'pencil'} size={24} color={colors.grey} />
-                                            </View>
-                                            <View style={{ marginRight: 15 }}>
-                                                <Ionicons name={'trash'} size={24} color={colors.grey} />
-                                            </View>
-                                        </View>
-                                    )}
+                         
                                 </TouchableOpacity>) : (null))}
 
 

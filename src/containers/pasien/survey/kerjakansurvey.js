@@ -177,6 +177,7 @@ function Kerjakansurvey(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setdata(json)
+          
                 }
                 setspinner(false)
             })
@@ -242,6 +243,7 @@ function Kerjakansurvey(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setdata(json)
+                    setguide(false)
                 }
                 setspinner(false)
             })
@@ -349,10 +351,39 @@ function Kerjakansurvey(props) {
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             {guide ? (<View>
-                                <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Guide Menyelesaikan Kuesioner :</Text>
-                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Pilih salah satu jawaban dari skala 0 sampai 4 atau tidak pernah sampai selesai atau jawaban iya dan tidak</Text>
-                                </View>
+                                {props.route.params.choice_type == "number" ? (
+                                    <View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian:</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang perasaan dan pikiran Ibu selama satu bulan terakhir. Ada lima pilihan yang disediakan untuk setiap pertanyaan</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>0 : tidak pernah</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>1 : hampir tidak pernah (1-2 kali)</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>2 : kadang-kadang (3-4 kali)</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>3 : hampir sering (5-6 kali)</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>4 : sangat sering (lebih dari 6 kali)</Text>
+                                    </View>
+                                ) : (null)}
+
+                                {props.route.params.choice_type == "text" ? (
+                                    <View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian:</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang apa yang dirasakan oleh ibu. Ada lima pilihan yang disediakan untuk setiap pertanyaan</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Tidak pernah		: Tidak sama sekali</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Jarang			: Hampir tidak pernah </Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Kadang-kadang	: Tidak terlalu sering</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Sering			: Beberapa kali</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Selalu			: Sebagian besar waktu</Text>
+                                    </View>
+                                ) : (null)}
+
+                                {props.route.params.choice_type == "yes_no" ? (
+                                    <View style={[style.card, { padding: 22, marginTop: 15 }]}>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian:</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang apa yang dirasakan oleh ibu. Ada dua pilihan yang disediakan untuk setiap pertanyaan</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Iya : iya</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Tidak : tidak</Text>
+                                    </View>
+                                ) : (null)}
+
                                 <View style={{ marginTop: 30 }}>
                                     <Button title="Lanjut" onPress={() => { setguide(false) }} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                 </View>
@@ -383,12 +414,12 @@ function Kerjakansurvey(props) {
                                                         jawaban[nomor] == item ? (
                                                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                                 <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{listjawaban3[index] == "0"?"Tidak":"Iya"}</Text>
+                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{listjawaban3[index] == "0" ? "Tidak" : "Iya"}</Text>
                                                             </TouchableOpacity>
                                                         ) : (
                                                             <TouchableOpacity onPress={() => { pilih(nomor, item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                                 <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{listjawaban3[index] == "0"?"Tidak":"Iya"}</Text>
+                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{listjawaban3[index] == "0" ? "Tidak" : "Iya"}</Text>
                                                             </TouchableOpacity>
                                                         )
                                                     )
@@ -401,7 +432,7 @@ function Kerjakansurvey(props) {
                                                                 <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
                                                             </TouchableOpacity>
                                                         ) : (
-                                                            <TouchableOpacity onPress={() => { pilih(nomor, props.route.params.choice_type == "number"?item+1:item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
+                                                            <TouchableOpacity onPress={() => { pilih(nomor, item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                                 <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
                                                                 <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
                                                             </TouchableOpacity>

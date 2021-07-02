@@ -387,16 +387,16 @@ function Kerjakankuis(props) {
                                     </View>
 
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        {data.questions ? data.questions[nomor].choice.map((item) => (
+                                        {data.questions ? data.questions[nomor].choice.map((item,index) => (
                                             jawaban[nomor] == item.id ? (
                                                 <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                     <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{index == 0?"A":index == 1?"B":"C"}. {item.choice}</Text>
                                                 </TouchableOpacity>
                                             ) : (
                                                 <TouchableOpacity onPress={() => { pilih(nomor, item.id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                     <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{item.choice}</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{index == 0?"A":index == 1?"B":"C"}. {item.choice}</Text>
                                                 </TouchableOpacity>
                                             )
                                         )) : (null)}

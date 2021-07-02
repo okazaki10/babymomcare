@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Input, Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import HyperLink from 'react-native-hyperlink';
 import { useIsFocused } from '@react-navigation/native';
+import YoutubePlayer from "react-native-youtube-iframe";
 function Detailmateri(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -51,6 +52,15 @@ function Detailmateri(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setdata(json.data)
+                    var a = json.data.video_url
+                    if (a != null) {
+                        var b = a.indexOf("youtu.be/")
+                        var sub = a.substring(b + 9)
+                        setvideo_url(sub)
+                        console.log(sub)
+                    }else{
+                        sethidevideo(false)
+                    }
                 }
                 //setspinner(false)
             })
@@ -97,6 +107,7 @@ function Detailmateri(props) {
             });
     }
 
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -104,6 +115,25 @@ function Detailmateri(props) {
             showquiz()
         }
     }, [isFocused])
+
+    const [playing, setPlaying] = useState(false);
+
+    const onStateChange = useCallback((state) => {
+        if (state === "ended") {
+            setPlaying(false);
+            Alert.alert("video has finished playing!");
+        }
+    }, []);
+
+    const togglePlaying = useCallback(() => {
+        setPlaying((prev) => !prev);
+    }, []);
+    const [video_url, setvideo_url] = useState("")
+    const [hidevideo, sethidevideo] = useState(true)
+    useState(() => {
+
+    })
+
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -114,12 +144,13 @@ function Detailmateri(props) {
             />
             <ScrollView>
                 <View style={{ flex: 1, padding: 23 }}>
+
                     {data.quiz ? (global.status == 1 ? (
                         selesai == true ?
                             (<TouchableOpacity onPress={() => {
-                                props.navigation.navigate("Historykuis", { id: data.quiz.id, mode: "review",materi_id:data.id }) 
-                                 //props.navigation.navigate("Kerjakankuis", { id: data.quiz.id, mode: "review",materi_id:data.id }) 
-                                 }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
+                                props.navigation.navigate("Historykuis", { id: data.quiz.id, mode: "review", materi_id: data.id })
+                                //props.navigation.navigate("Kerjakankuis", { id: data.quiz.id, mode: "review",materi_id:data.id }) 
+                            }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
                                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
                                     <View>
@@ -128,7 +159,7 @@ function Detailmateri(props) {
                                         {/*<Text style={[style.poppinsmedium, { fontSize: 12, textDecorationLine: "underline", color: colors.button }]}>Kerjakan Lagi</Text>*/}
                                     </View>
                                 </View>
-                                <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>Nilai = {(100 * (data2.total_point / data2.total_question)).toString().substr(0,4)}</Text>
+                                <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>Nilai = {(100 * (data2.total_point / data2.total_question)).toString().substr(0, 4)}</Text>
                             </TouchableOpacity>
                             ) : (
                                 <Button title="Kerjakan Kuis" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
@@ -136,16 +167,26 @@ function Detailmateri(props) {
                     <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
                         <Text style={[style.poppinsbold, { fontSize: 17 }]}>{data.title}</Text>
                         <Text style={[style.nunitosans, { fontSize: 12 }]}>{data.date ? format(new Date(data.date), "iii', 'dd' 'MMM', 'yyyy'", { locale: id }) : ""}</Text>
-                        {data.image?(  <Image
+                        <View style={[style.line]}></View>
+                        {data.image ? (<Image
                             source={{ uri: data.image ? data.image : "https://thumbs.dreamstime.com/b/creative-illustration-default-avatar-profile-placeholder-isolated-background-art-design-grey-photo-blank-template-mockup-144849704.jpg" }}
-                            style={{ width: "100%", height: 170, marginTop: 15 }}
+                            style={{ width: "100%", height: 170, marginTop: 15, marginBottom: 15 }}
                             resizeMode="contain"
-                        />):(null)}
-                      
+                        />) : (null)}
+
                         <HyperLink linkDefault={true} linkStyle={{ color: '#2980b9' }}>
                             <Text style={[style.nunitomateri, { fontSize: 14, marginTop: 15, flex: 1 }]}>{data.content}</Text>
                         </HyperLink>
                     </View>
+                    {hidevideo ? (<View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
+                        <YoutubePlayer
+                            height={170}
+                            play={playing}
+                            videoId={video_url}
+                            onChangeState={onStateChange}
+                        />
+                    </View>) : (null)}
+
                     {data.forum ? (
                         <View>
                             <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Tanya jawab Terkait</Text>

@@ -173,16 +173,24 @@ function Datapasien(props) {
                                             <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data ? data.baby_name : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>Tanggal Lahir</Text>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Tanggal pengkajian</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data.created_at ? format(new Date(data.created_at), "dd' 'MMMM' 'yyy", { locale: id }) : ""}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Tanggal lahir</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data.baby_birthday ? format(new Date(data.baby_birthday), "dd' 'MMMM' 'yyy", { locale: id }) : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>Jenis Kelamin</Text>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Jenis kelamin</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.baby_gender == "male" ? "Laki-laki":"Perempuan" : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>Panjang bayi lahir</Text>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Panjang badan lahir</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.born_length : ""} cm</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Panjang badan sekarang</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.current_length : ""} cm</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Lingkar kepala lahir</Text>
@@ -193,18 +201,22 @@ function Datapasien(props) {
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.lingkar_kepala_sekarang : ""} cm</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>BB Lahir</Text>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Berat badan lahir</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.born_weight : ""} gram</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>Usia gestas</Text>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Berat badan sekarang</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.current_weight : ""} gram</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Usia gestasi</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.usia_gestas : ""} Minggu</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Apakah diharapkan orang tua?</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.harapan_orangtua == 1 ? "Iya" : "Tidak" : ""}</Text>
                                         </View>
-
+                                     
                                     </TouchableOpacity>
                                 </View>) : (null)}
                                 <View style={{ flex: 1, marginLeft: 5, marginRight: 5, marginTop: 20 }}>
@@ -259,7 +271,7 @@ function Datapasien(props) {
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.jumlah_anak == "kds2" ? "Kurang dari sama dengan 2" : "Lebih dari sama dengan 2" : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Pendapatan keluaraga</Text>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Pendapatan keluarga</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.pendapatan_keluarga == "kd3" ? "Kurang dari 3 jt" : "Lebih dari sama dengan 3 jt" : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>

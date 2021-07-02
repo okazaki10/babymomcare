@@ -301,9 +301,9 @@ function Resumepulang(props) {
                                                         <Ionicons name={'person'} size={17} color={colors.button} />
                                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                     </View>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Berat badan Lahir : {item.born_weight} gram</Text>
 
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Status : {item.status}</Text>
+                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>Posisi : {item.status=="hospital"?"Rumah sakit":"Pulang ke rumah"}</Text>
                                                 </View>
                                             </TouchableOpacity>
                                         ) : (null))}

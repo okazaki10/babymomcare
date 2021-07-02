@@ -16,7 +16,7 @@ function Webview(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
 
-    return <WebView source={{ uri: "https://mobile.temanbunda.com/api" }}
+    return <WebView source={{ uri: "https://mobile.temanbunda.com/register-nurse" }}
      />;
 };
 

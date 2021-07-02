@@ -111,6 +111,8 @@ function Faq(props) {
     const [menuswitch, setmenuswitch] = useState(0)
     const [menuswitch2, setmenuswitch2] = useState(0)
     const [menuswitch3, setmenuswitch3] = useState(0)
+    const [menuswitch4, setmenuswitch4] = useState(0)
+    const [menuswitch5, setmenuswitch5] = useState(0)
     const gantidata = (index) => {
         setmenuswitch(index)
     }
@@ -395,12 +397,45 @@ function Faq(props) {
                             </View>
 
                             <Text style={{ marginTop: 15 }}>Pengingat</Text>
-                            <Text>1.	Apa itu fitur Pengingat?</Text>
-                            <Text>2.	Bagaimana cara saya menggunakan fitur Pengingat?</Text>
-                            <Text>3.	Bagaimana jika notifikasi fitur Pengingat yang muncul terhapus secara tidak sengaja?</Text>
-                            <Text>4.	Apakah saya dapat merubah Pengingat yang dibuat?</Text>
-                            <Text>5.	Berapa lama durasi fitur Pengingat akan mengingatkan lagi jika pengguna mengklik  Snooze/tunda pada button Notifikasi?</Text>
+                            <View style={[style.card, { flex: 1, marginLeft: 5, marginTop: 20 }]}>
+                                {menuswitch4 == 1 ? (
+                                    <Button icon={
+                                        <View style={{marginRight:5}}>
+                                            <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="1.	Apa itu fitur Pengingat?" onPress={() => setmenuswitch4(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                ) : (
+                                    <Button icon={
+                                        <View style={{marginRight:5}}>
+                                            <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="1.	Apa itu fitur Pengingat?" onPress={() => setmenuswitch4(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                )}
 
+                                {menuswitch4 == 1 ? (<Text style={{ marginTop: 15 }}>Fitur pengingat adalah fitur yang memberikan notifikasi berupa saran anjuran kepada pasien setiap hari</Text>) : (null)}
+                            </View>
+                            <View style={[style.card, { flex: 1, marginLeft: 5, marginTop: 20 }]}>
+                                {menuswitch5 == 1 ? (
+                                    <Button icon={
+                                        <View style={{ }}>
+                                            <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="2.	Bagaimana cara saya menggunakan fitur Pengingat?" onPress={() => setmenuswitch5(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                ) : (
+                                    <Button icon={
+                                        <View style={{ }}>
+                                            <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
+                                        </View>
+                                    }
+                                        title="2.	Bagaimana cara saya menggunakan fitur Pengingat?" onPress={() => setmenuswitch5(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                )}
+
+                                {menuswitch5 == 1 ? (<Text style={{ marginTop: 15 }}>Anda dapat menekan tombol berbentuk bell pada beranda di sebelah pojok kanan atas atau melihat notifikasi yang ada pada handphone anda</Text>) : (null)}
+                            </View>
+             
                             <Text style={{ marginTop: 5 }}>Bagaimana privasi data kesehatan anak saya?</Text>
                             <Text style={{ marginTop: 5 }}>Apakah layanan Bicara dengan Perawat?</Text>
                             <Text style={{ marginTop: 5 }}>Bagaimana cara menggunakan fitur Bicara dengan Perawat?</Text>
