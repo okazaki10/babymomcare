@@ -351,7 +351,7 @@ function Nurse(props) {
 
                 <View style={{ flex: 1, padding: 20 }}>
                     <Button title="+ Daftar Perawat" onPress={tambahnurse} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, marginBottom: 15,marginTop:15 }]}>
+                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, marginBottom: 15, marginTop: 15 }]}>
                         <TextInput onChangeText={setcari} placeholder="Cari Perawat" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>
@@ -371,14 +371,19 @@ function Nurse(props) {
                                         props.navigation.navigate("Tabnurse", { nama: "Nurse" })
                                     }
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 0 }]}>
-                                    <Image
+                                    {item.role == "nurse" ? (<Image
                                         source={require("../../../assets/image/profilcewe.png")}
                                         style={{ width: 45, height: 65, marginLeft: 15 }}
                                         resizeMode="contain"
-                                    />
+                                    />) : (<Image
+                                        source={require("../../../assets/image/admin.png")}
+                                        style={{ width: 45, height: 65, marginLeft: 15 }}
+                                        resizeMode="contain"
+                                    />)}
+
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name}</Text>
-                                        <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.role == "nurse"?"perawat":item.role}</Text>
+                                        <Text style={[style.nunitosans, { fontSize: 15 }]}>{item.role == "nurse" ? "perawat" : item.role}</Text>
                                         <Text style={[style.nunitosans, { fontSize: 11 }]}>{item.is_approved == true ? "disetujui" : "belum disetujui"}</Text>
                                     </View>
                                 </TouchableOpacity>) : (null))}

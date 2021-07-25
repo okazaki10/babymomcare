@@ -30,10 +30,12 @@ function Daftarbayi(props) {
     const [lk, setlk] = useState("")
     const [gestas, setgestas] = useState("")
     const [bbnow, setbbnow] = useState("")
+    const [diagnosamedis, setdiagnosamedis] = useState("")
     const [bblater, setbblater] = useState("")
     const [show, setShow] = useState(false);
     const [date, setDate] = useState(new Date());
     const [mode, setMode] = useState('date');
+    const [hospitaldate, sethospitaldate] = useState(new Date());
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -68,6 +70,8 @@ function Daftarbayi(props) {
             global.diharapkan = diharapkan
             global.gestas = gestas
             global.lk = lk
+            global.diagnosa_medis = diagnosamedis
+            global.hospital_entry = hospitaldate
             props.navigation.navigate("Daftarortu", { username: props.route.params.username, password: props.route.params.password, selectedItems: props.route.params.selectedItems })
         } else {
             ToastAndroid.show("Pastikan data tidak ada yang kosong", ToastAndroid.SHORT)
@@ -101,6 +105,7 @@ function Daftarbayi(props) {
                     setdiharapkan(json.data.harapan_orangtua.toString())
                     setgestas(json.data.usia_gestas.toString())
                     setlk(json.data.lingkar_kepala_lahir.toString())
+
                 }
                 setspinner(false)
             })
@@ -129,8 +134,8 @@ function Daftarbayi(props) {
                 baby_gender: jenis_kelamin,
                 usia_gestas: gestas,
                 lingkar_kepala: lk,
-                harapan_orangtua: diharapkan
-
+                harapan_orangtua: diharapkan,
+                hospital_entry:hospitaldate
 
             })
         })
@@ -169,9 +174,26 @@ function Daftarbayi(props) {
     const toggleModal4 = () => {
         setModalVisible4(!isModalVisible4);
     };
+    const [isModalVisible5, setModalVisible5] = useState(false);
+    const toggleModal5 = () => {
+        setModalVisible5(!isModalVisible5);
+    };
     return (
         <View style={style.main}>
 
+            <Modal isVisible={isModalVisible5}
+                onBackdropPress={toggleModal5}
+                onBackButtonPress={toggleModal5}>
+                <View style={style.content}>
+                    <View>
+                        <DatePicker
+                            date={hospitaldate}
+                            onDateChange={sethospitaldate}
+                            mode="date"
+                        />
+                    </View>
+                </View>
+            </Modal>
             <Modal isVisible={isModalVisible4}
                 onBackdropPress={toggleModal4}
                 onBackButtonPress={toggleModal4}>
@@ -231,9 +253,10 @@ function Daftarbayi(props) {
 
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Nama</Text>
                         <TextInput value={nama} onChangeText={setnama} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
+
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tanggal Lahir</Text>
                         <View style={{ flexDirection: "row" }} >
-                            <TouchableOpacity onPress={() => showDatepicker('date')} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
+                            <TouchableOpacity onPress={toggleModal4} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
                                 <View style={{ marginLeft: 10 }}>
                                     <Text style={[style.nunitosansemi, { fontSize: 15, color: "black", textDecorationLine: "underline" }]}>{format(date, "dd'/'MM'/'yyyy'", { locale: id })}</Text>
                                 </View>
@@ -262,10 +285,10 @@ function Daftarbayi(props) {
                                 <Picker.Item label="Perempuan" value="female" />
                             </Picker>
                         </View>
-                 
+
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Panjang badan lahir</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={pjl} onChangeText={setpjl} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={pjl} onChangeText={setpjl} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>Cm</Text>
                         </View>
                         {/*
@@ -278,17 +301,17 @@ function Daftarbayi(props) {
                         */}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat badan Lahir</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={bbnow} onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={bbnow} onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>gram</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lingkar kepala lahir</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>Cm</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Usia gestasi (dalam minggu)</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={gestas} onChangeText={setgestas} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={gestas} onChangeText={setgestas} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>Minggu</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Apakah diharapkan orang tua?</Text>
@@ -304,6 +327,26 @@ function Daftarbayi(props) {
                                 <Picker.Item label="Ya" value="1" />
                                 <Picker.Item label="Tidak" value="0" />
                             </Picker>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Diagnosa medis</Text>
+                        <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
+                            <TextInput value={diagnosamedis} onChangeText={setdiagnosamedis} style={{ padding: 0, marginLeft: 10, flex: 1 }}></TextInput>
+                        </View>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tanggal masuk rumah sakit</Text>
+                        <View style={{ flexDirection: "row" }} >
+                            <TouchableOpacity onPress={toggleModal5} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
+                                <View style={{ marginLeft: 10 }}>
+                                    <Text style={[style.nunitosansemi, { fontSize: 15, color: "black", textDecorationLine: "underline" }]}>{format(hospitaldate, "dd'/'MM'/'yyyy'", { locale: id })}</Text>
+                                </View>
+                                <View style={{ flex: 1, alignItems: "flex-end" }}>
+                                    <Ionicons name={'calendar-outline'} size={24} color="black" />
+                                </View>
+                            </TouchableOpacity>
+                            <View style={{ justifyContent: "flex-end", marginLeft: 10 }}>
+                                <TouchableOpacity onPress={() => sethospitaldate(new Date())}>
+                                    <Text style={[style.nunitosans, { fontSize: 12, textDecorationLine: "underline" }]}>Set as Now</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </ScrollView>

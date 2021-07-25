@@ -64,7 +64,7 @@ function Menubarpasien() {
     <Tab.Navigator
       initialRouteName="Beranda"
       tabBarOptions={{
-        activeTintColor: "#F0BA7D",
+        activeTintColor: "#f1a6ce",
         inactiveTintColor: 'gray',
       }}>
       <Tab.Screen

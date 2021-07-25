@@ -183,9 +183,9 @@ function Daftarperawat(props) {
 
             <View style={{ flex: 1 }}>
                 <View style={{ backgroundColor: "white", height: 69, justifyContent: "center" }}>
-                    <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center",marginTop:5 }]}>{global.status == 1 ? "Daftar Perawat" : "Daftar Pasien"}</Text>
+                    <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 5 }]}>{global.status == 1 ? "Daftar Perawat" : "Daftar Pasien"}</Text>
                 </View>
-           
+
                 <View style={[style.line, { height: 3, backgroundColor: '#ECECEC', marginTop: 0 }]}></View>
                 <View style={{ flex: 1, padding: 20 }}>
 
@@ -204,11 +204,15 @@ function Daftarperawat(props) {
                                             source={require("../../../assets/image/profilcewe.png")}
                                             style={{ width: 45, height: 65, marginLeft: 15 }}
                                             resizeMode="contain"
-                                        />) : (<Image
+                                        />) : (global.status == 2 ? (<Image
                                             source={require("../../../assets/image/addpeople.png")}
                                             style={{ width: 45, height: 65, marginLeft: 15 }}
                                             resizeMode="contain"
-                                        />)}
+                                        />) : (<Image
+                                            source={require("../../../assets/image/admin.png")}
+                                            style={{ width: 45, height: 65, marginLeft: 15 }}
+                                            resizeMode="contain"
+                                        />))}
 
                                         <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                             <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.name ? item.name : item.mother_name}</Text>

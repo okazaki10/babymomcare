@@ -436,9 +436,6 @@ function Faq(props) {
                                 {menuswitch5 == 1 ? (<Text style={{ marginTop: 15 }}>Anda dapat menekan tombol berbentuk bell pada beranda di sebelah pojok kanan atas atau melihat notifikasi yang ada pada handphone anda</Text>) : (null)}
                             </View>
              
-                            <Text style={{ marginTop: 5 }}>Bagaimana privasi data kesehatan anak saya?</Text>
-                            <Text style={{ marginTop: 5 }}>Apakah layanan Bicara dengan Perawat?</Text>
-                            <Text style={{ marginTop: 5 }}>Bagaimana cara menggunakan fitur Bicara dengan Perawat?</Text>
                         </View>
                     </ScrollView>
                 </View>

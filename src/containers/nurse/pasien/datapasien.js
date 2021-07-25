@@ -177,6 +177,10 @@ function Datapasien(props) {
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data.created_at ? format(new Date(data.created_at), "dd' 'MMMM' 'yyy", { locale: id }) : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Tanggal masuk rumah sakit</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data.hospital_entry}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Tanggal lahir</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data.baby_birthday ? format(new Date(data.baby_birthday), "dd' 'MMMM' 'yyy", { locale: id }) : ""}</Text>
                                         </View>
@@ -215,6 +219,10 @@ function Datapasien(props) {
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Apakah diharapkan orang tua?</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.harapan_orangtua == 1 ? "Iya" : "Tidak" : ""}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Diagnosa medis</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.diagnosa_medis : ""}</Text>
                                         </View>
                                      
                                     </TouchableOpacity>

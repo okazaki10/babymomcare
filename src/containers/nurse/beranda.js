@@ -159,11 +159,19 @@ function Beranda(props) {
                             source={require("../../assets/image/addpeople.png")}
                             style={{ width: 100, height: 100 }}
                             resizeMode="contain"
-                        />) : (<Image
+                        />) : (global.status == 2 ? (<Image
                             source={require("../../assets/image/profilcewe.png")}
                             style={{ width: 100, height: 100 }}
                             resizeMode="contain"
-                        />)}
+                        />) : (global.status == 3 ? (<Image
+                            source={require("../../assets/image/admin.png")}
+                            style={{ width: 100, height: 100 }}
+                            resizeMode="contain"
+                        />) : (<Image
+                            source={require("../../assets/image/super_admin.png")}
+                            style={{ width: 100, height: 100 }}
+                            resizeMode="contain"
+                        />)))}
 
                     </View>
                     <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18, marginTop: 15 }]}>{user.name}</Text>

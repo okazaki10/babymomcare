@@ -64,7 +64,7 @@ function Anjuranpasien(props) {
         setisipesan("Apakah anda yakin untuk menghapus reminder ini")
         toggleModal3()
     }
-    const [idhapus,setidhapus] = useState()
+    const [idhapus, setidhapus] = useState()
     const hapusanjuran2 = () => {
         setspinner(true)
         fetch(global.url + '/advice/delete', {
@@ -235,11 +235,15 @@ function Anjuranpasien(props) {
                             <View>
                                 {data.map((item, index) => item.id ? (
                                     <View><TouchableOpacity onLongPress={() => {
-                                        setidhapus(item.id)
-                                        settindakan({ id: item.id, name: item.name, description: item.description, frequency: item.frequency })
-                                        tindakananjuran()
-                                    }} onPress={() => { 
-                                        ubahanjuranclick({ id: item.id, name: item.name, description: item.description, frequency: item.frequency })
+                                        if (global.status != 1) {
+                                            setidhapus(item.id)
+                                            settindakan({ id: item.id, name: item.name, description: item.description, frequency: item.frequency })
+                                            tindakananjuran()
+                                        }
+                                    }} onPress={() => {
+                                        if (global.status != 1) {
+                                            ubahanjuranclick({ id: item.id, name: item.name, description: item.description, frequency: item.frequency })
+                                        }
                                     }} style={[style.card, { marginTop: 15, flexDirection: "row", padding: 17 }]}>
                                         <Text style={[style.poppinsbold, { fontSize: 15, flex: 1 }]}>{item.name}</Text>
                                         {global.status == 2 ? (
@@ -253,7 +257,7 @@ function Anjuranpasien(props) {
 
                                             </View>) : (null)}
                                     </TouchableOpacity>
-                                    
+
 
                                     </View>
                                 ) : (null))}

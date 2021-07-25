@@ -127,7 +127,8 @@ function Daftarortu(props) {
                 jumlah_anak: jumlah_anak,
                 pendapatan_keluarga: pendapatan,
                 pengalaman_merawat: pengalamanibu,
-                tinggal_dengan_suami: suami
+                tinggal_dengan_suami: suami,
+                hospital_entry: global.hospital_entry
 
             })
         })
@@ -182,6 +183,8 @@ function Daftarortu(props) {
                 born_weight: global.born_weight,
                 born_length: global.born_length,
                 baby_gender: global.baby_gender,
+                diagnosa_medis: global.diagnosa_medis,
+                hospital_entry: global.hospital_entry,
                 mother_name: namaibu,
                 mother_birthday: format(date, "yyyy-MM-dd HH:mm:ss"),
                 mother_religion: agamaibu,

@@ -174,29 +174,33 @@ function Chat(props) {
                                     </View>
                                 </View>
                             ) : (
-                                    <View style={{ alignItems: "flex-start", marginRight: 15, marginLeft: 15, marginTop: 15 }}>
-                                        <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row" }}>
-                                            
-                                            {item.role == "patient" ? (
-                                                <Image
-                                                    source={require("../../../assets/image/addpseople.png")}
-                                                    style={{ width: 50, height: 50, marginRight: 10 }}
-                                                    resizeMode="contain"
-                                                />) : (<Image
-                                                    source={require("../../../assets/image/profilcewe.png")}
-                                                    style={{ width: 50, height: 50, marginRight: 10 }}
-                                                    resizeMode="contain"
-                                                />)}
+                                <View style={{ alignItems: "flex-start", marginRight: 15, marginLeft: 15, marginTop: 15 }}>
+                                    <View style={{ flex: 1, justifyContent: "center", alignItems: "flex-end", flexDirection: "row" }}>
 
-                                            <View>
-                                                <Text style={[style.nunitosans, { fontSize: 14, marginLeft: 20 }]}>{item.sender_name}</Text>
-                                                <View style={{ backgroundColor: "#EFF3F7", padding: 20, borderRadius: 25, marginTop: 10 }}>
-                                                    <Text style={[style.poppinsmedium, { fontSize: 14 }]}>{item.text}</Text>
-                                                </View>
+                                        {item.role == "patient" ? (
+                                            <Image
+                                                source={require("../../../assets/image/addpeople.png")}
+                                                style={{ width: 50, height: 50, marginRight: 10 }}
+                                                resizeMode="contain"
+                                            />) : (item.role == "nurse" ? (<Image
+                                                source={require("../../../assets/image/profilcewe.png")}
+                                                style={{ width: 50, height: 50, marginRight: 10 }}
+                                                resizeMode="contain"
+                                            />) : (<Image
+                                                source={require("../../../assets/image/admin.png")}
+                                                style={{ width: 50, height: 50, marginRight: 10 }}
+                                                resizeMode="contain"
+                                            />))}
+
+                                        <View>
+                                            <Text style={[style.nunitosans, { fontSize: 14, marginLeft: 20 }]}>{item.sender_name}</Text>
+                                            <View style={{ backgroundColor: "#EFF3F7", padding: 20, borderRadius: 25, marginTop: 10 }}>
+                                                <Text style={[style.poppinsmedium, { fontSize: 14 }]}>{item.text}</Text>
                                             </View>
                                         </View>
                                     </View>
-                                )}
+                                </View>
+                            )}
 
 
 

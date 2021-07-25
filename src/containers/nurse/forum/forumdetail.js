@@ -102,13 +102,17 @@ function Forumdetail(props) {
                                         source={require("../../../assets/image/addpeople.png")}
                                         style={{ width: 25, height: 25 }}
                                         resizeMode="contain"
-                                    />) : (
+                                    />) : (data.role == "nurse" ? (
                                         <Image
                                             source={require("../../../assets/image/profilcewe.png")}
                                             style={{ width: 25, height: 25 }}
                                             resizeMode="contain"
                                         />
-                                    )}
+                                    ) : (<Image
+                                        source={require("../../../assets/image/admin.png")}
+                                        style={{ width: 25, height: 25 }}
+                                        resizeMode="contain"
+                                    />))}
                                 </View>
                                 <View style={{ marginLeft: 15 }}>
                                     <Text style={[style.poppinsbold, { fontSize: 17, color: colors.grey, paddingRight: 50 }]}>{data.name}</Text>
@@ -138,18 +142,22 @@ function Forumdetail(props) {
                                                 source={require("../../../assets/image/addpeople.png")}
                                                 style={{ width: 25, height: 25 }}
                                                 resizeMode="contain"
-                                            />) : (
+                                            />) : (item.role == "nurse" ? (
                                                 <Image
                                                     source={require("../../../assets/image/profilcewe.png")}
                                                     style={{ width: 25, height: 25 }}
                                                     resizeMode="contain"
                                                 />
-                                            )}
+                                            ) : (<Image
+                                                source={require("../../../assets/image/admin.png")}
+                                                style={{ width: 25, height: 25 }}
+                                                resizeMode="contain"
+                                            />))}
                                         </View>
                                         <View style={{ marginLeft: 15, flex: 1 }}>
                                             <Text style={[style.poppinsbold, { fontSize: 20, color: colors.grey, paddingRight: 50 }]}>{item.user}</Text>
                                             <Text style={[style.poppinsmedium, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{item.role == "nurse" ? "Perawat" : item.role == "admin" ? "Admin" : "Ibu"}</Text>
-                                            <Dash style={{ width: 100, height: 1,dashColor:'black' }} />
+                                            <Dash style={{ width: 100, height: 1, dashColor: 'black' }} />
                                             <Text style={[style.nunitosans, { fontSize: 18, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
                                         </View>
                                     </View>

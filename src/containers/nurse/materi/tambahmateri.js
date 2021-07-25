@@ -59,7 +59,8 @@ function Tambahmateri(props) {
                 title: judul,
                 content: pertanyaan,
                 base64_image: gambar2,
-                category_id: props.route.params.id
+                category_id: props.route.params.id,
+                video_url:video_url
             })
         })
             .then((response) => response.json())
@@ -181,6 +182,7 @@ function Tambahmateri(props) {
                     setjudul(json.data.title)
                     setpertanyaan(json.data.content)
                     setgambar(json.data.image)
+                    setvideo_url(json.data.video_url)
                 }
                 setspinner(false)
             })
