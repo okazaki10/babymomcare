@@ -1,17 +1,16 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import React, { useEffect} from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {  faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog, faClipboardList } from '@fortawesome/free-solid-svg-icons';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import {  faHome,faBookOpen, faComments, faCog, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { View,  ToastAndroid } from 'react-native';
+import {Text} from 'react-native-elements';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { colors } from '../../globalstyles';
+
 import Beranda from '../nurse/beranda';
-import Tabmateri from '../nurse/materi/tabmateri';
+
 import Daftarperawat from '../pasien/chat/daftarperawat';
 import Tabreminder from '../pasien/tabreminder';
 import Pengaturan from '../nurse/pengaturan/pengaturan';
@@ -59,7 +58,7 @@ function Menubaradmin() {
 
   const isFocused = useIsFocused()
 
-  React.useEffect(() => {
+useEffect(() => {
     if (isFocused) {
       getData()
     }

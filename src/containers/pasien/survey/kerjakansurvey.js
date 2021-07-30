@@ -1,111 +1,41 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faFrown, faThumbsUp, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { color } from 'react-native-reanimated';
+
 function Kerjakansurvey(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
+
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
-    const tambahkontrol = () => {
-        global.mode = "kontrol"
-        props.navigation.navigate("Tambahresume", { nama: "Tambah data kontrol" })
-    }
+
     const ubahkontrol = () => {
         global.mode = "kontrol"
         global.add = 0
         props.navigation.navigate("Tambahresume", { nama: "Ubah data kontrol" })
         toggleModal2()
     }
-    const tindakankontrol = () => {
 
-        setisipesan("Pilih tindakan untuk resume ini")
-        toggleModal2()
-
-    }
     const hapuskontrol = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus konten ini")
         toggleModal3()
 
     }
-    const detailkontrol = () => {
-        global.mode = "kontrol"
-        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
+
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -116,19 +46,7 @@ function Kerjakansurvey(props) {
     };
     const [jawaban, setjawaban] = useState([])
     const [id_soal, setid_soal] = useState([])
-    const [kuis, setkuis] = useState([{
-        judul: "bagaimana cara memandikan bayi yang benar",
-        soal1: "a",
-        soal2: "asa",
-        soal3: "sadaa",
-        soal4: "asda"
-    }, {
-        judul: "bagaimaasd asd asandikan bayi yang benar",
-        soal1: "s12aa",
-        soal2: "aa21sasa",
-        soal3: "sa312daa",
-        soal4: "as1122da"
-    }])
+
     const [listjawaban, setlistjawaban] = useState([0, 1, 2, 3, 4])
     const [listjawaban2, setlistjawaban2] = useState(["Tidak Pernah", "Jarang", "Kadang-kadang", "Sering", "Selalu"])
     const [listjawaban3, setlistjawaban3] = useState([0, 1])
@@ -141,11 +59,7 @@ function Kerjakansurvey(props) {
         setid_soal(c)
     }
     const [nomor, setnomor] = useState(0)
-    useState(() => {
-        /*for (var i = 0; i < kuis.length; i++) {
-            setjawaban(index => [...index, ""])
-        }*/
-    })
+
     const tambahnomor = () => {
         setnomor(nomor + 1)
     }
@@ -158,7 +72,7 @@ function Kerjakansurvey(props) {
     }
     const [data, setdata] = useState([{}])
     const lihatsurvey = () => {
-        //setspinner(true)
+
         fetch(global.url + '/survey/show', {
             method: 'POST',
             headers: {
@@ -177,7 +91,7 @@ function Kerjakansurvey(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setdata(json)
-          
+
                 }
                 setspinner(false)
             })
@@ -188,6 +102,16 @@ function Kerjakansurvey(props) {
             });
     }
     const kuisselesai = () => {
+       
+        var jawabarr = []
+        for(var i=0;i<id_soal.length;i++){
+            jawabarr.push({id:id_soal[i],value:jawaban[i]})
+        }
+    
+        var answers = JSON.stringify({
+            answers:jawabarr
+        })
+        console.log(answers)
         setspinner(true)
         fetch(global.url + '/survey/answer/store', {
             method: 'POST',
@@ -196,10 +120,7 @@ function Kerjakansurvey(props) {
                 'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + global.key,
             },
-            body: JSON.stringify({
-                id: id_soal,
-                answers: jawaban
-            })
+            body: answers
         })
             .then((response) => response.json())
             .then((json) => {
@@ -207,7 +128,7 @@ function Kerjakansurvey(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    //setdata(json)
+                
                     setisipesan("Kuesioner telah terisi!")
                     toggleModal()
 
@@ -222,7 +143,7 @@ function Kerjakansurvey(props) {
     }
     const [guide, setguide] = useState(true)
     const lihatsurveypasien = () => {
-        //setspinner(true)
+
         fetch(global.url + '/admin/survey/show', {
             method: 'POST',
             headers: {

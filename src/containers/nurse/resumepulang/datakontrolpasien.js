@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,13 +9,12 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useIsFocused } from '@react-navigation/native';
 function Datakontrolpasien(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
+
     const [isipesan, setisipesan] = useState("")
     const setcari = (key) => {
         if (global.status == 2) {
@@ -72,37 +71,24 @@ function Datakontrolpasien(props) {
     }
 
 
-   
+
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
-    const tambahresume = () => {
-        global.mode = "resume"
-        props.navigation.navigate("Tambahresume")
-    }
+
     const ubahresume = () => {
         global.mode = "resume"
         global.add = 0
         props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang" })
         toggleModal2()
     }
-    const tindakanresume = () => {
 
-        setisipesan("Pilih tindakan untuk resume ini")
-        toggleModal2()
-
-    }
     const hapusresume = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus konten ini")
         toggleModal3()
 
     }
-    const detailresume = () => {
 
-        props.navigation.navigate("Datakontrol")
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -226,32 +212,32 @@ function Datakontrolpasien(props) {
                                 </View>
 
                             </View>) : (
-                                    <View>
-                                        <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
-                                            <Ionicons name={'search-outline'} size={24} color={colors.button} />
-                                            <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
-                                        </View>
+                                <View>
+                                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
+                                        <Ionicons name={'search-outline'} size={24} color={colors.button} />
+                                        <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                                    </View>
 
-                                        {data.map((item) => item.id?(
-                                            <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
-               
-                                                    props.navigation.navigate("Datakontrol", { id: item.id })
-                                      
-                                            }}>
-                                              
-                                                <View style={{ marginLeft: 15 }}>
-                                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
-                                                    <View style={{ flexDirection: "row" }}>
-                                                        <Ionicons name={'person'} size={17} color={colors.button} />
-                                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
-                                                    </View>
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
-                                                  
+                                    {data.map((item) => item.id ? (
+                                        <TouchableOpacity style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
+
+                                            props.navigation.navigate("Datakontrol", { id: item.id })
+
+                                        }}>
+
+                                            <View style={{ marginLeft: 15 }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Ionicons name={'person'} size={17} color={colors.button} />
+                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                 </View>
-                                            </TouchableOpacity>
-                                        ):(null))}
+                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
 
-                                    </View>)}
+                                            </View>
+                                        </TouchableOpacity>
+                                    ) : (null))}
+
+                                </View>)}
                         </View>
                     </ScrollView>
                 </View>

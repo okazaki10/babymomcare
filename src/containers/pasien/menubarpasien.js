@@ -1,12 +1,12 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
+import React, {  useEffect } from 'react';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import {  faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog, faClipboardList } from '@fortawesome/free-solid-svg-icons';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import {  faHome, faBookOpen, faComments, faCog, faClipboardList } from '@fortawesome/free-solid-svg-icons';
+import { View, ToastAndroid } from 'react-native';
+import { Text } from 'react-native-elements';
 
 import Beranda from '../nurse/beranda';
 import Daftarperawat from './chat/daftarperawat';
@@ -21,7 +21,7 @@ const Tab = createBottomTabNavigator();
 function Menubarpasien() {
   const [unread, setunread] = React.useState("")
   const getunread = (key) => {
-    //setspinner(true)
+
     fetch(global.url + '/chat/getunread', {
       method: 'GET',
       headers: {
@@ -38,7 +38,7 @@ function Menubarpasien() {
       .catch((error) => {
         console.error(error)
         ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-        //setspinner(false)
+     
       });
   }
 
@@ -49,13 +49,13 @@ function Menubarpasien() {
         getunread(value)
       }
     } catch (e) {
-      // error reading value
+ 
     }
   }
 
   const isFocused = useIsFocused()
 
-  React.useEffect(() => {
+ useEffect(() => {
     if (isFocused) {
       getData()
     }

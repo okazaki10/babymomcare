@@ -1,284 +1,39 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image,ScrollView, TouchableOpacity,  StatusBar } from 'react-native';
+import {  Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faChevronDown, faChevronUp, faPlusSquare, faRoute, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faChevronDown, faChevronUp,faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 function Faq(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
-    const login = () => {
-        /*
-        setspinner(true)
-        fetch(global.url + '/login', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                device_name: "xavier"
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.role == "colleger") {
-                    global.status = 0
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else if (json.role == "admin") {
-                    global.status = 1
-                    storeData(json.token)
-                    props.navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Menu_bar' }],
-                    });
-                } else {
-                    toggleModal()
-                    setisipesan("Email atau password salah")
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-            */
-    };
+
+
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
-    const ubahpasien = (index) => {
-        if (index == 0) {
-            props.navigation.navigate("Daftarbayi", { nama: "Edit Data Bayi" })
-            global.add = 0
-        } else if (index == 1) {
-            props.navigation.navigate("Daftarortu", { nama: "Ubah Ortu" })
-            global.add = 0
-        } else if (index == 2) {
-            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun" })
-            global.add = 0
-        }
-    }
-    const tindakanpasien = (index) => {
-        if (index == 0) {
-            setisipesan("Pilih tindakan untuk data ini")
-            toggleModal2()
-        } else if (index == 1) {
-            setisipesan("Pilih tindakan untuk data ini")
-            toggleModal2()
-        } else if (index == 2) {
-            setisipesan("Pilih tindakan untuk data ini")
-            toggleModal2()
-        }
-    }
-    const addpasien = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Tanya jawab" })
-    }
-    const forumdetail = () => {
-        props.navigation.navigate("Forumdetail")
-    }
+
     const [menuswitch, setmenuswitch] = useState(0)
     const [menuswitch2, setmenuswitch2] = useState(0)
     const [menuswitch3, setmenuswitch3] = useState(0)
     const [menuswitch4, setmenuswitch4] = useState(0)
     const [menuswitch5, setmenuswitch5] = useState(0)
-    const gantidata = (index) => {
-        setmenuswitch(index)
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
+
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
     };
-    const [anjuran, setanjuran] = useState("")
-    const [note, setnote] = useState("")
-    const [datakontrol, setdatakontrol] = useState("")
-    const add_nurse_note = () => {
-        setspinner(true)
-        fetch(global.url + '/kontrol/nurse_note', {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                id: props.route.params.id,
-                nurse_note: anjuran
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setisipesan("Catatan perawat berhasil diubah!")
-                    toggleModal()
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    const add_note = () => {
-        setspinner(true)
-        fetch(global.url + '/kontrol/patient_note', {
-            method: 'PUT',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                id: props.route.params.id,
-                note: note
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setisipesan("Catatan tambahan berhasil diubah!")
-                    toggleModal()
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    const lihatkontrol = () => {
-        //setspinner(true)
-        fetch(global.url + '/kontrol/show', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                id: props.route.params.id
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setdatakontrol(json.data)
-                    setanjuran(json.data.nurse_note)
-                    setnote(json.data.note)
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    const lihatresume = () => {
-        //setspinner(true)
-        fetch(global.url + '/kontrol/resume', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            }
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    if (json.data) {
-                        setdatakontrol(json.data)
-                        setanjuran(json.data.nurse_note)
-                    }
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    const lihatresume2 = () => {
-        //setspinner(true)
-        fetch(global.url + '/kontrol/resume', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                id: props.route.params.id
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    if (json.data) {
-                        setdatakontrol(json.data)
-                        setanjuran(json.data.nurse_note)
-                    }
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
 
 
     return (

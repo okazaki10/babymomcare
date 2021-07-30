@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,31 +9,19 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import { useIsFocused } from '@react-navigation/native';
+import { Linking } from 'react-native';
 function Kelolasurvey(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
+
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
-    const [materi, setmateri] = useState("")
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
+
 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
+
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -56,7 +44,6 @@ function Kelolasurvey(props) {
         props.navigation.navigate("Tambahsurvey", { halaman: jumlah, choice_type: choice })
         global.add = 1
     }
-
 
     const hapuskuis = () => {
         toggleModal2()
@@ -102,7 +89,7 @@ function Kelolasurvey(props) {
     const [jumlah, setjumlah] = useState("5")
     const [data, setdata] = useState([{}])
     const lihatsurvey = () => {
-        //setspinner(true)
+
         fetch(global.url + '/survey/index', {
             method: 'GET',
             headers: {
@@ -127,6 +114,44 @@ function Kelolasurvey(props) {
                 setspinner(false)
             });
     }
+    const [google_form, setgoogle_form] = useState(false)
+    const [link, setlink] = useState("")
+    const [judul2, setjudul2] = useState("")
+    const tambahkuislink = () => {
+        setspinner(true)
+        fetch(global.url + '/survey/store', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                title: judul2,
+                url: link,
+                choice_type: choice
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setisipesan("Data kuis berhasil dibuat!")
+                    toggleModal()
+                    lihatsurvey()
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
@@ -136,6 +161,10 @@ function Kelolasurvey(props) {
     }, [isFocused])
     const [kuis, setkuis] = useState("")
     const [choice, setchoice] = useState("text")
+    const [isModalVisible, setModalVisible] = useState(false);
+    const toggleModal = () => {
+        setModalVisible(!isModalVisible);
+    };
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -144,6 +173,31 @@ function Kelolasurvey(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
+            <Modal isVisible={isModalVisible}
+                onBackdropPress={toggleModal}
+                onBackButtonPress={toggleModal}>
+                <View style={style.content}>
+                    <View>
+                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal}>
+                            <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
+                        </TouchableOpacity>
+                        <View style={{ alignItems: "center" }}>
+                            <Image
+                                source={require("../../../assets/image/check.png")}
+                                style={{ width: 100, height: 100 }}
+                                resizeMode="contain"
+                            />
+                        </View>
+                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
+                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
+                        <View style={{ marginTop: 15, marginRight: 30, marginLeft: 30 }}>
+                            <Button title="Ok" onPress={() => {
+                                toggleModal()
+                            }} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: colors.button2 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]}></Button>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             <Modal isVisible={isModalVisible3}
                 onBackdropPress={toggleModal3}
                 onBackButtonPress={toggleModal3}>
@@ -200,34 +254,56 @@ function Kelolasurvey(props) {
 
                 <View style={{ flex: 1, padding: 20 }}>
                     {global.status == 1 ? (null) : (
+
                         <View>
                             <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tipe Pertanyaan</Text>
                             <View style={[style.card, { elevation: 5, padding: 0, flex: 0, marginTop: 15 }]}>
                                 <Picker
                                     selectedValue={choice}
-                                    onValueChange={(itemValue, itemIndex) =>
+                                    onValueChange={(itemValue, itemIndex) => {
                                         setchoice(itemValue)
+                                        if (itemValue == "link") {
+                                            setgoogle_form(true)
+                                        } else {
+                                            setgoogle_form(false)
+                                        }
+                                    }
                                     }
                                     mode="dropdown">
                                     <Picker.Item label="Text" value="text" />
                                     <Picker.Item label="Angka" value="number" />
                                     <Picker.Item label="Iya/tidak" value="yes_no" />
+                                    <Picker.Item label="Google Form" value="link" />
                                 </Picker>
                             </View>
-                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Jumlah Halaman</Text>
+                            {google_form ? (<View>
+                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Judul kuis</Text>
+                                <TextInput onChangeText={setjudul2} value={judul2} placeholder="Judul" style={[style.card, { flex: 0, elevation: 5, marginTop: 15 }]}></TextInput>
+                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Link google form</Text>
+                                <TextInput onChangeText={setlink} value={link} placeholder="Link" autoCapitalize="none" style={[style.card, { flex: 0, elevation: 5, marginTop: 15 }]}></TextInput>
 
-                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                <View style={{ flex: 1, marginRight: 15 }}>
-                                    <TextInput onChangeText={setjumlah} value={jumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
+
+                                <Button title="+ Tambah Kuesioner" onPress={tambahkuislink} buttonStyle={[style.button, { marginTop: 25, marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+
+
+                            </View>) : (
+                                <View>
+                                    <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 15 }]}>Jumlah Halaman</Text>
+
+                                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                        <View style={{ flex: 1, marginRight: 15 }}>
+                                            <TextInput onChangeText={setjumlah} value={jumlah} placeholder="Total Halaman" autoCapitalize="none" style={[style.card, { elevation: 5 }]} keyboardType="numeric"></TextInput>
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <Button title="+ Tambah Kuesioner" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                        </View>
+                                    </View>
                                 </View>
-                                <View style={{ flex: 1 }}>
-                                    <Button title="+ Tambah Kuesioner" onPress={tambahkuis} buttonStyle={[style.button, { marginBottom: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                </View>
-                            </View>
+                            )}
                             <View style={[style.line]}></View>
                         </View>
                     )}
-  
+
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
@@ -236,7 +312,17 @@ function Kelolasurvey(props) {
                                     setjudul_kuis(item.title)
                                     tindakankuis()
                                 }} onPress={() => {
+                                    if (item.url){
+                                        Linking.canOpenURL(item.url).then(supported => {
+                                            if (supported) {
+                                              Linking.openURL(item.url);
+                                            } else {
+                                                ToastAndroid.show("Tidak bisa membuka url", ToastAndroid.SHORT)
+                                            }
+                                          });
+                                    }else{
                                     props.navigation.navigate("Kerjakansurvey", { id: item.id, choice_type: item.choice_type })
+                                    }
 
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>

@@ -1,43 +1,19 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import React, { useEffect,useState } from 'react';
+import { View, Image, ScrollView, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
 import style from '../../../globalstyles';
-import Modal from 'react-native-modal';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { formatDistance } from 'date-fns';
-import { id } from 'date-fns/locale';
+
 import { useIsFocused } from '@react-navigation/native';
 import Dash from 'react-native-dash';
 function Forumdetail(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
-
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
-    const timeelapsed = (time) => {
-        return formatDistance(new Date(), time, { includeSeconds: true, locale: id })
-    }
+ 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
+
     const [data, setdata] = useState({ comments: [] })
     const lihatforum = () => {
         //setspinner(true)
@@ -163,25 +139,7 @@ function Forumdetail(props) {
                                     </View>
                                     <View style={[style.line, { marginBottom: 15 }]}></View>
                                 </View>))}
-                            {/*
-                            <View style={[{ flexDirection: "row" }]}>
-                                <Image
-                                    source={require("../../../assets/image/empty.png")}
-                                    style={{ width: 40, height: 40 }}
-                                    resizeMode="contain"
-                                />
-                                <View style={{ marginLeft: 15 }}>
-                                    <Text style={[style.poppinsbold, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>Reza Artamevia</Text>
-                                   
-                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                        <Ionicons name={'time-outline'} size={18} color={colors.button} style={{ marginRight: 5 }} />
-                                        <Text style={[style.poppinsbold, { fontSize: 11, color: colors.grey, paddingRight: 50 }]}>{timeelapsed(new Date())} yang lalu</Text>
-                                    </View>
-                                   
-                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Anak saya saat ini sedang mengalami berat badan rendah, saya sangat khawatir</Text>
-                                </View>
-                            </View>
- */}
+                
                         </View>
                     </View>
 

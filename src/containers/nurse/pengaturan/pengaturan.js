@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image,ScrollView,TouchableOpacity,  StatusBar } from 'react-native';
+import {  Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlusSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 function Pengaturan(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
+
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
+
     const storeData = () => {
         setspinner(true)
         fetch(global.url + "/logout", {
@@ -58,33 +56,20 @@ function Pengaturan(props) {
     }
 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
 
-    const forumdetail = () => {
-        props.navigation.navigate("Forumdetail")
-    }
-    const tambahforum = () => {
-        props.navigation.navigate("Addforum", { nama: "Buat Tanya jawab" })
-    }
     const ubahforum = () => {
         props.navigation.navigate("Addforum", { nama: "Ubah Tanya jawab" })
         global.add = 0
         toggleModal2()
     }
-    const tindakanforum = () => {
 
-        setisipesan("Pilih tindakan untuk Tanya jawab ini")
-        toggleModal2()
-
-    }
     const hapusforum = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus Tanya jawab ini")
         toggleModal3()
 
     }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
+
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -93,9 +78,7 @@ function Pengaturan(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-    const logout = () => {
-        props.navigation.navigate("Login")
-    }
+
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

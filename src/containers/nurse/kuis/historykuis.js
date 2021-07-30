@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,41 +9,19 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Picker } from '@react-native-picker/picker';
+
 import { useIsFocused } from '@react-navigation/native';
 function Historykuis(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
+
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
-    const [materi, setmateri] = useState("")
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
+
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
     };
-    const tindakankuis = () => {
-        if (global.status != 1) {
-            setisipesan("Pilih tindakan untuk data ini")
-            toggleModal2()
-        }
-    }
+
     const [id_survey, setid_survey] = useState("")
     const ubahkuis = () => {
         if (kuis == "") {
@@ -55,14 +33,6 @@ function Historykuis(props) {
         }
     }
 
-    const tambahkuis = () => {
-        if (kuis == "") {
-            ToastAndroid.show("Masukkan judul kuisioner", ToastAndroid.SHORT)
-        } else {
-            props.navigation.navigate("Tambahsurvey", { halaman: jumlah, kuis: kuis, choice_type: choice })
-            global.add = 1
-        }
-    }
 
 
     const hapuskuis = () => {
@@ -134,64 +104,8 @@ function Historykuis(props) {
                 setspinner(false)
             });
     }
-    const lihatsurveypasien = () => {
-        //setspinner(true)
-        fetch(global.url + '/admin/survey/list', {
-            method: 'POST   ',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                patient_id: props.route.params.id_pasien,
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setdata(json.data)
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    const lihatquizpasien = () => {
-        //setspinner(true)
-        fetch(global.url + '/admin/quiz/list', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                patient_id: props.route.params.id_pasien
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setdata(json)
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
+
+  
 
     const lihatquizhistory = () => {
         //setspinner(true)

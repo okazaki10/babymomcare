@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,15 +9,12 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { Picker } from '@react-native-picker/picker';
 function Pendaftarannurse(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [nama, setnama] = useState("")
@@ -26,29 +23,15 @@ function Pendaftarannurse(props) {
     const [password, setpassword] = useState("")
     const [alamat, setalamat] = useState("1")
     const [nomortelepon, setnomortelepon] = useState("")
-    const [tempatrumahsakit, settempatrumahsakit] = useState("")
+
     const [lamabekerja, setlamabekerja] = useState("")
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
-
-    const daftar = () => {
-
-
-
-    };
     const [spinner, setspinner] = useState(false)
-    const [nilai, setnilai] = useState("")
+
     const nursediubah = () => {
         setspinner(true)
         fetch(global.url + '/nurse/data/update', {
@@ -246,8 +229,7 @@ function Pendaftarannurse(props) {
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Nomor Telepon</Text>
                         <TextInput value={nomortelepon} onChangeText={setnomortelepon} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                        {/*<Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tempat Rumah Sakit</Text>
-                        <TextInput onChangeText={settempatrumahsakit} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>*/}
+
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lama Bekerja (dalam tahun)</Text>
                         <TextInput value={lamabekerja} onChangeText={setlamabekerja} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
 

@@ -1,21 +1,19 @@
 import 'react-native-gesture-handler';
-import * as React from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import React, { useEffect, useState } from 'react';
+import { View,  ToastAndroid } from 'react-native';
+import {  Text} from 'react-native-elements';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog } from '@fortawesome/free-solid-svg-icons';
+import { faHome,faBookOpen, faComments, faCommentDots, faCog } from '@fortawesome/free-solid-svg-icons';
 
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { colors } from '../../globalstyles';
 import Beranda from './beranda';
-import Forum from './forum/forum';
+
 import Materiedukasi from './materi/materiedukasi';
-import Listpasien from './pasien/listpasien';
+
 import Daftarperawat from '../pasien/chat/daftarperawat';
-import { Settings } from 'react-native';
+
 import Pengaturan from './pengaturan/pengaturan';
 import Kategoriforum from './forum/kategoriforum';
 import { useIsFocused } from '@react-navigation/native';
@@ -24,7 +22,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const Tab = createBottomTabNavigator();
 
 function Menubar() {
-  const [unread, setunread] = React.useState("")
+  const [unread, setunread] = useState("")
   const getunread = (key) => {
     //setspinner(true)
     fetch(global.url + '/chat/getunread', {
@@ -60,7 +58,7 @@ function Menubar() {
 
   const isFocused = useIsFocused()
 
-  React.useEffect(() => {
+useEffect(() => {
     if (isFocused) {
       getData()
     }

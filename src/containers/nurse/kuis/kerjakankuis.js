@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image,  ScrollView,TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import {Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,51 +9,29 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faFrown, faThumbsUp, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { color } from 'react-native-reanimated';
+
 import { useIsFocused } from '@react-navigation/native';
 function Kerjakankuis(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
 
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
+    const [isipesan, setisipesan] = useState("")
+
 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
-    const tambahkontrol = () => {
-        global.mode = "kontrol"
-        props.navigation.navigate("Tambahresume", { nama: "Tambah data kontrol" })
-    }
+
     const ubahkontrol = () => {
         global.mode = "kontrol"
         global.add = 0
         props.navigation.navigate("Tambahresume", { nama: "Ubah data kontrol" })
         toggleModal2()
     }
-    const tindakankontrol = () => {
 
-        setisipesan("Pilih tindakan untuk resume ini")
-        toggleModal2()
-
-    }
     const hapuskontrol = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus konten ini")
         toggleModal3()
 
     }
-    const detailkontrol = () => {
-        global.mode = "kontrol"
-        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
+
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -63,48 +41,15 @@ function Kerjakankuis(props) {
         setModalVisible3(!isModalVisible3);
     };
     const [jawaban, setjawaban] = useState([])
-    const [kuis, setkuis] = useState([{
-        judul: "bagaimana cara memandikan bayi yang benar",
-        soal1: "a",
-        soal2: "asa",
-        soal3: "sadaa",
-        soal4: "asda"
-    }, {
-        judul: "bagaimaasd asd asandikan bayi yang benar",
-        soal1: "s12aa",
-        soal2: "aa21sasa",
-        soal3: "sa312daa",
-        soal4: "as1122da"
-    }])
-    const [kuis2, setkuis2] = useState({
-        "question_id": 1,
-        "question": "fsadfsafaadasf",
-        "choice": [
-            {
-                "id": 1,
-                "answer": "dfafsafa"
-            },
-            {
-                "id": 2,
-                "answer": "fasdfafdsa"
-            },
-            {
-                "id": 3,
-                "answer": "fdafsa"
-            }
-        ]
-    })
+
+  
     const pilih = (index, value) => {
         const s = [...jawaban]
         s[index] = value
         setjawaban(s)
     }
     const [nomor, setnomor] = useState(0)
-    useState(() => {
-        /*for (var i = 0; i < kuis.length; i++) {
-            setjawaban(index => [...index, ""])
-        }*/
-    })
+ 
     const tambahnomor = () => {
         setnomor(nomor + 1)
     }
@@ -283,7 +228,7 @@ function Kerjakankuis(props) {
             }
         }
     }, [isFocused])
-    const [nomor_pertanyaan, setnomor_pertanyaan] = useState(1)
+
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />

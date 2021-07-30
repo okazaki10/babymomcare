@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import {  Text, Button } from 'react-native-elements';
 
 import { colors } from '../../globalstyles';
 
@@ -9,38 +9,17 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import HyperLink from 'react-native-hyperlink';
+
 import { id } from 'date-fns/locale';
 import { format } from 'date-fns';
 function Notifikasi(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
 
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
+    const [isipesan, setisipesan] = useState("")
+
+
 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
-    const tindakanpasien = () => {
-
-        setisipesan("Pilih tindakan untuk data ini")
-        toggleModal2()
-
-    }
+ 
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);

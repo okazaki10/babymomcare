@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, Dimensions, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,13 +9,9 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Picker } from '@react-native-picker/picker';
+
 import { useIsFocused } from '@react-navigation/native';
 function Tambahsurvey(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
@@ -37,36 +33,7 @@ function Tambahsurvey(props) {
         s[index] = value
         setjudul(s)
     }
-    const setchoiced = (index, value) => {
-        const s = [...choice]
-        s[index] = value
-        setchoice(s)
-    }
-    const setopsid = (index, value) => {
-        const s = [...opsi]
-        s[index] = value
-        setopsi(s)
-    }
-    const setopsi2d = (index, value) => {
-        const s = [...opsi2]
-        s[index] = value
-        setopsi2(s)
-    }
-    const setopsi3d = (index, value) => {
-        const s = [...opsi3]
-        s[index] = value
-        setopsi3(s)
-    }
-    const setopsi4d = (index, value) => {
-        const s = [...opsi4]
-        s[index] = value
-        setopsi4(s)
-    }
-    const setjawabanbenar2d = (index, value) => {
-        const s = [...jawabanbenar]
-        s[index] = value
-        setjawabanbenar(s)
-    }
+
     const [nomor, setnomor] = useState(0)
     const [kuis, setkuis] = useState([{}])
     useState(() => {
@@ -109,31 +76,13 @@ function Tambahsurvey(props) {
     const kurangnomor = () => {
         setnomor(nomor - 1)
     }
-    const [selesai, setselesai] = useState(false)
-    const kuisselesai = () => {
-        setselesai(true)
-    }
 
     const [spinner, setspinner] = useState(false)
-    const [nilai, setnilai] = useState("")
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
-
-
-    const login = () => {
-        props.navigation.navigate("Mainpage")
-
-    };
     const [kuis2, setkuis2] = useState("")
     const kuisdiubah = () => {
         setspinner(true)
@@ -202,9 +151,9 @@ function Tambahsurvey(props) {
             });
 
     }
-    const [id, setid] = useState("")
+
     const lihatkuis = () => {
-        //setspinner(true)
+   
         fetch(global.url + '/survey/show', {
             method: 'POST',
             headers: {

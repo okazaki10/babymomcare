@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, Dimensions, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import {Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,7 +9,7 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
@@ -29,17 +29,16 @@ function Daftarortu(props) {
     const [namaayah, setnamaayah] = useState("")
     const [agamaayah, setagamaayah] = useState("jawa")
     const [pendidikanayah, setpendidikanayah] = useState("SMA")
-    const [pengalamanayah, setpengalamanayah] = useState("")
+
     const [pekerjaanayah, setpekerjaanayah] = useState("")
     const [jumlah_anak, setjumlah_anak] = useState("")
     const [pendapatan, setpendapatan] = useState("kd3")
     const [suami, setsuami] = useState("1")
-    const [show, setShow] = useState(false);
+
     const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
-    const [show2, setShow2] = useState(false);
+
     const [date2, setDate2] = useState(new Date());
-    const [mode2, setMode2] = useState('date');
+ 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -76,7 +75,7 @@ function Daftarortu(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    //setdata(json.data)
+               
                     setnamaibu(json.data.mother_name)
 
                     setagamaibu(json.data.mother_religion)
@@ -218,13 +217,7 @@ function Daftarortu(props) {
                 } else {
                     setisipesan("Data pasien berhasil dibuat!")
                     toggleModal()
-                    /*
-                    if (props.route.params.selectedItems) {
-                        assignmateri(json.id)
-                    } else {
-                        setisipesan("Data pasien berhasil dibuat!")
-                        toggleModal()
-                    }*/
+               
                 }
                 setspinner(false)
             })
@@ -236,38 +229,6 @@ function Daftarortu(props) {
 
     }
 
-    /*const assignmateri = (id_pasien) => {
-        setspinner(true)
-        fetch(global.url + '/register/materi', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                id: id_pasien,
-                materis: props.route.params.selectedItems
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setisipesan("Data pasien berhasil dibuat!")
-                    toggleModal()
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
-    */
     const kembali = () => {
         props.navigation.navigate("Listpasien")
         toggleModal()

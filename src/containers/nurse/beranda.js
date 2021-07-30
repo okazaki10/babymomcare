@@ -1,23 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import {  Text } from 'react-native-elements';
 
 import { colors } from '../../globalstyles';
 
 import style from '../../globalstyles';
-import Modal from 'react-native-modal';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
+
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import messaging from '@react-native-firebase/messaging';
 function Beranda(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
+
     const [user, setuser] = useState({})
     useEffect(() => {
 
@@ -49,12 +44,6 @@ function Beranda(props) {
             });
     }, []);
 
-    useEffect(() => {
-        const unsubscribe = messaging().onMessage(async remoteMessage => {
-
-        })
-        return unsubscribe;
-    }, [])
     useState(() => {
         messaging()
             .getToken()
@@ -63,9 +52,7 @@ function Beranda(props) {
                 console.log(token)
             });
     })
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
+
 
     const send_fcm = (fcm_token) => {
 
@@ -119,7 +106,7 @@ function Beranda(props) {
     }
 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
+
     const resumepulang = () => {
         if (global.status == 1) {
             global.mode = "resume"

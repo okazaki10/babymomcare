@@ -1,15 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, Dimensions, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faRoute, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
-import DateTimePicker from '@react-native-community/datetimepicker';
+
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -25,10 +25,9 @@ function Tambahresume(props) {
     const [pb, setpb] = useState("")
     const [lk, setlk] = useState("")
     const [suhu, setsuhu] = useState("")
-    const [ayd, setayd] = useState([""])
-    const [show, setShow] = useState(false);
+
     const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
+
     const [hasil_penunjang,sethasil_penunjang] = useState("")
     const [terapi_pulang,setterapi_pulang] = useState("")
 
@@ -45,25 +44,8 @@ function Tambahresume(props) {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
-    const onChange = (event, selectedDate) => {
-        const currentDate = selectedDate || date;
-        setShow(Platform.OS === 'ios');
-        setDate(currentDate);
-    };
 
-    const showDatepicker = (tipe) => {
-        setMode(tipe);
-        setShow(true);
-    };
 
     const [spinner, setspinner] = useState(false)
     const [gambar, setgambar] = useState("")
@@ -77,9 +59,7 @@ function Tambahresume(props) {
         },
         quality: 0.5
     })
-    const tambahanjuran = () => {
-        setayd(index => [...index, ""])
-    }
+ 
     const [anjuran, setanjuran] = useState("")
     const [id_resume, setid_resume] = useState("")
     const resumediubah = () => {

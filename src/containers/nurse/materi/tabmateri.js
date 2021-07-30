@@ -1,17 +1,12 @@
 import 'react-native-gesture-handler';
 import * as React from 'react';
 
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faHome, faCalendarAlt, faBell, faBook, faBookOpen, faComments, faCommentsDollar, faCommentDots, faCog, faClipboardList } from '@fortawesome/free-solid-svg-icons';
-
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../../globalstyles';
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View } from 'react-native';
+import {  Text} from 'react-native-elements';
 import style from '../../../globalstyles';
 import Materiedukasi from './materiedukasi';
 import Rekomendasimateri from './rekomendasimateri';

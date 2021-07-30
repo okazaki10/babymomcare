@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, Dimensions, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 
 import style from '../../../globalstyles';
@@ -8,7 +8,7 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
 
 import { format } from 'date-fns';
@@ -21,9 +21,7 @@ function Daftarbayi(props) {
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [nama, setnama] = useState("")
-    const [tgllahir, settgllahir] = useState("")
-    const [gestasi, setgestasi] = useState("")
-    const [anak, setanak] = useState("")
+
     const [jenis_kelamin, setjenis_kelamin] = useState("male")
     const [diharapkan, setdiharapkan] = useState("1")
     const [pjl, setpjl] = useState("")
@@ -31,35 +29,22 @@ function Daftarbayi(props) {
     const [gestas, setgestas] = useState("")
     const [bbnow, setbbnow] = useState("")
     const [diagnosamedis, setdiagnosamedis] = useState("")
-    const [bblater, setbblater] = useState("")
-    const [show, setShow] = useState(false);
+
     const [date, setDate] = useState(new Date());
-    const [mode, setMode] = useState('date');
+
     const [hospitaldate, sethospitaldate] = useState(new Date());
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
 
 
-    const showDatepicker = (tipe) => {
-        toggleModal4()
-    };
+
+  
 
     const [spinner, setspinner] = useState(false)
 
 
-    const pasiendibuat = () => {
-        setisipesan("Data bayi berhasil dibuat!")
-        toggleModal()
-    }
+
     const lanjut = () => {
         if (nama && bbnow && pjl && jenis_kelamin && diharapkan && gestas && lk) {
             global.baby_name = nama
@@ -291,14 +276,7 @@ function Daftarbayi(props) {
                             <TextInput value={pjl} onChangeText={setpjl} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>Cm</Text>
                         </View>
-                        {/*
-                        {global.status != 3 ? (
-                            <View>
-                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Anak Ke</Text>
-                                <TextInput onChangeText={setanak} style={[style.card, { elevation: 5, marginTop: 10 }]} keyboardType="numeric"></TextInput>
-                            </View>
-                        ) : (null)}
-                        */}
+                    
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat badan Lahir</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
                             <TextInput value={bbnow} onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>

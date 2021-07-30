@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import React, { useState } from 'react';
+import { View, Image, Dimensions, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,11 +9,11 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
-import MultiSelect from 'react-native-multiple-select';
+
 function Changepassword(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
     const [password, setpassword] = useState("")
@@ -23,27 +23,11 @@ function Changepassword(props) {
         setModalVisible(!isModalVisible);
     };
 
-    const [items, setitems] = useState([{}])
-    const [selectedItems, setselectedItems] = useState([])
 
-    const onSelectedItemsChange = (selectedItems) => {
-        setselectedItems(selectedItems)
-        console.log(selectedItems)
-    };
 
-    const referensi = useRef()
     const [spinner, setspinner] = useState(false)
 
-    const pasiendiubah = () => {
-        setisipesan("Data pasien berhasil diubah!")
-        toggleModal()
-    }
-    const pasiendibuat = () => {
-        setisipesan("Data pasien berhasil dibuat!")
-        toggleModal()
-    }
-    const [data, setdata] = useState([{}])
-    
+
     const gantipassword = () => {
         if (new_password == confirm){
         setspinner(true)

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image,  ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,19 +9,16 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { TextInput } from 'react-native-gesture-handler';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { Picker } from '@react-native-picker/picker';
 import { useIsFocused } from '@react-navigation/native';
 function Tambahkuis(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
+
     const [isModalVisible, setModalVisible] = useState(false);
     const [isipesan, setisipesan] = useState("")
-    const [materi, setmateri] = useState("")
+
     const [halaman, sethalaman] = useState(props.route.params ? props.route.params.halaman : 5)
     const [id, setid] = useState("")
     const [judul, setjudul] = useState([])
@@ -169,7 +166,6 @@ function Tambahkuis(props) {
 
     }
 
-    const [data, setdata] = useState({})
     const lihatkuis = () => {
         //setspinner(true)
         fetch(global.url + '/quiz/show', {
@@ -326,15 +322,7 @@ function Tambahkuis(props) {
                                 <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                     </View>
                 </View>
-                {/*
-                <View style={{ padding: 22 }}>
-                    {global.add == 1 ? (
-                        <Button title="Simpan" onPress={kuisdibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    ) : (
-                            <Button title="Simpan" onPress={kuisdiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                        )}
-                </View>
-                    */}
+          
 
             </View>
 

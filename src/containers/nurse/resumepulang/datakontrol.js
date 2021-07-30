@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -9,29 +9,11 @@ import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { useIsFocused } from '@react-navigation/native';
 function Datakontrol(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
+
     const [isipesan, setisipesan] = useState("")
-    const [cari, setcari] = useState("")
-
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
-    const storeData = async (key) => {
-        try {
-            await AsyncStorage.setItem('key', key)
-            global.key = key
-        } catch (e) {
-            // saving error
-        }
-    }
-
-
 
     const [spinner, setspinner] = useState(false)
     const [kosong, setkosong] = useState(false)
@@ -62,8 +44,7 @@ function Datakontrol(props) {
         global.mode = "kontrol"
         props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol", id: id })
     }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
+
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -257,38 +238,34 @@ function Datakontrol(props) {
                                     <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                                 ) : (null)}
                             </View>) : (
-                                    <View>
-                                        {global.status == 1 ? (
-                                            <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                        ) : (null)}
-                                        {datakontrol.map((item) => item.id ? (<TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={() => {
-                                            setidd(item.id)
-                                            tindakankontrol()/*
-                                           if (global.status != 1) {
-                                                setidd(item.id)
-                                                tindakankontrol()
-                                            }*/
-                                        }} onPress={() => { detailkontrol(item.id) }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kontrol Ke-{item.order}</Text>
-                                            <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Tanggal kontrol</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>: {item.date}</Text>
-                                            </View>
+                                <View>
+                                    {global.status == 1 ? (
+                                        <Button title="+ Tambah Data Kontrol" onPress={tambahkontrol} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                    ) : (null)}
+                                    {datakontrol.map((item) => item.id ? (<TouchableOpacity style={[style.card, { padding: 22, marginTop: 15 }]} onLongPress={() => {
+                                        setidd(item.id)
+                                        tindakankontrol()
+                                    }} onPress={() => { detailkontrol(item.id) }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Kontrol Ke-{item.order}</Text>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Tanggal kontrol</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {item.date}</Text>
+                                        </View>
 
-                                            <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Catatan Tambahan</Text>
-                                                <Text style={{ marginTop: 15 }}>: </Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>{item.note}</Text>
-                                            </View>
-                                            <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
-                                                <Text style={{ marginTop: 15 }}>: </Text>
-                                                <Text style={[style.nunitosans, style.datapasien2]}>{item.nurse_note}</Text>
-                                            </View>
-                                            <Text style={[style.nunitosans, style.datapasien, { textAlign: "right", textDecorationLine: "underline" }]}>Lihat Selengkapnya</Text>
-                                        </TouchableOpacity>) : (null))}
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Catatan Tambahan</Text>
+                                            <Text style={{ marginTop: 15 }}>: </Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>{item.note}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
+                                            <Text style={{ marginTop: 15 }}>: </Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>{item.nurse_note}</Text>
+                                        </View>
+                                        <Text style={[style.nunitosans, style.datapasien, { textAlign: "right", textDecorationLine: "underline" }]}>Lihat Selengkapnya</Text>
+                                    </TouchableOpacity>) : (null))}
 
-                                    </View>)}
+                                </View>)}
                         </View>
                     </ScrollView>
                 </View>

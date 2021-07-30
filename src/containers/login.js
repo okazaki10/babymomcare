@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import {  Text, Button } from 'react-native-elements';
 
 import { colors } from '../globalstyles';
 
@@ -30,18 +30,7 @@ function Login(props) {
     }
 
     const login = () => {
-        /*
-        if (username == "a") {
-            props.navigation.navigate("Menubarpasien")
-            global.status = 1
-        }else if (username == "b") {
-            props.navigation.navigate("Menubar")
-            global.status = 2
-        } else if (username == "c") {
-            props.navigation.navigate("Menubaradmin")
-            global.status = 3
-        }
-     */
+  
         setspinner(true)
         fetch(global.url + '/login', {
             method: 'POST',

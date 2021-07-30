@@ -1,55 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image,  ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { useIsFocused } from '@react-navigation/native'
 function Rekomendasimateri(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
 
-    const [cari, setcari] = useState("")
 
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
+
     const [isipesan, setisipesan] = useState("")
-    const tambahmateri = () => {
-        global.add = 1
-        props.navigation.navigate("Tambahmateri")
-    }
+
 
     const ubahmateri = () => {
         global.add = 0
         props.navigation.navigate("Tambahmateri", { nama: "Ubah materi" })
         toggleModal2()
     }
-    const tindakankontrol = () => {
-        setisipesan("Pilih tindakan untuk materi ini")
-        toggleModal2()
-
-    }
+  
     const hapusmateri = () => {
         toggleModal2()
         setisipesan("Apakah anda yakin untuk menghapus materi ini")
         toggleModal3()
 
     }
-    const detailmateri = () => {
-        props.navigation.navigate("Detailresumepulang", { nama: "Detail data kontrol" })
-    }
-    const [title2, settitle2] = useState("")
-    const [description2, setdescription2] = useState("")
+
     const [isModalVisible2, setModalVisible2] = useState(false);
     const toggleModal2 = () => {
         setModalVisible2(!isModalVisible2);
@@ -158,12 +139,7 @@ function Rekomendasimateri(props) {
                 </View>) : (null)}
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    {/*
-                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, backgroundColor: "#F3F4F6", marginBottom: 15 }]}>
-                        <TextInput onChangeText={setcari} placeholder="Cari Materi Edukasi" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
-                        <Ionicons name={'search-outline'} size={24} color={colors.grey} />
-                    </View>
-                    */}
+         
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>

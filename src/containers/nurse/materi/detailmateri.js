@@ -1,35 +1,21 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image,ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
-import Modal from 'react-native-modal';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
 import Spinner from 'react-native-loading-spinner-overlay';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { TextInput } from 'react-native-gesture-handler';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import HyperLink from 'react-native-hyperlink';
 import { useIsFocused } from '@react-navigation/native';
 import YoutubePlayer from "react-native-youtube-iframe";
 function Detailmateri(props) {
-    const { width: DEVICE_WIDTH } = Dimensions.get('window');
-    const [isModalVisible, setModalVisible] = useState(false);
-    const [isipesan, setisipesan] = useState("")
-    const [email, setemail] = useState("")
-    const [password, setpassword] = useState("")
-    const toggleModal = () => {
-        setModalVisible(!isModalVisible);
-    };
+
 
     const [spinner, setspinner] = useState(false)
-    const [kosong, setkosong] = useState(false)
-    const kerjakankuis = () => {
-        props.navigation.navigate("Kerjakankuis")
-    }
+
     const [selesai, setselesai] = useState(false)
     const [data, setdata] = useState({})
     const lihatdetailmateri = () => {
@@ -125,9 +111,7 @@ function Detailmateri(props) {
         }
     }, []);
 
-    const togglePlaying = useCallback(() => {
-        setPlaying((prev) => !prev);
-    }, []);
+
     const [video_url, setvideo_url] = useState("")
     const [hidevideo, sethidevideo] = useState(true)
     useState(() => {
@@ -149,14 +133,14 @@ function Detailmateri(props) {
                         selesai == true ?
                             (<TouchableOpacity onPress={() => {
                                 props.navigation.navigate("Historykuis", { id: data.quiz.id, mode: "review", materi_id: data.id })
-                                //props.navigation.navigate("Kerjakankuis", { id: data.quiz.id, mode: "review",materi_id:data.id }) 
+
                             }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
                                 <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
                                     <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
                                     <View>
                                         <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>{data2 ? data2.total_point : ""}/{data2 ? data2.total_question : ""}</Text>
 
-                                        {/*<Text style={[style.poppinsmedium, { fontSize: 12, textDecorationLine: "underline", color: colors.button }]}>Kerjakan Lagi</Text>*/}
+                                     
                                     </View>
                                 </View>
                                 <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>Nilai = {(100 * (data2.total_point / data2.total_question)).toString().substr(0, 4)}</Text>
@@ -195,7 +179,7 @@ function Detailmateri(props) {
                                     <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Forumdetail", { id: data.forum.id }) }}>
                                         <View style={{ marginLeft: 15 }}>
                                             <Text style={[style.poppinsbold, { fontSize: 12 }]}>{data.forum.title}</Text>
-                                            {/*<Text style={[style.nunitosans, { fontSize: 11, color: colors.grey }]}>Oleh: Raffi Ahmad</Text>*/}
+                                      
                                         </View>
                                     </TouchableOpacity>
                                 </View>

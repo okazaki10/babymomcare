@@ -1,6 +1,6 @@
 import React, { createRef, useState } from 'react';
-import { View, Image, Dimensions, ScrollView, ImageBackground, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import { Input, Text, Button } from 'react-native-elements';
+import { View, Image, Dimensions, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import {Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -11,13 +11,9 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { TextInput } from 'react-native-gesture-handler';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { format } from 'date-fns';
-import { id } from 'date-fns/locale';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Picker } from '@react-native-picker/picker';
+
 import ImagePicker from 'react-native-image-picker';
-import { actions, defaultActions, RichEditor, RichToolbar } from 'react-native-pell-rich-editor';
+
 function Tambahkategori(props) {
     const { width: DEVICE_WIDTH } = Dimensions.get('window');
     const [isModalVisible, setModalVisible] = useState(false);
@@ -143,9 +139,7 @@ function Tambahkategori(props) {
         });
 
     }
-    const nursedibuat = () => {
 
-    }
     const kembali = () => {
         props.navigation.goBack()
         toggleModal()
