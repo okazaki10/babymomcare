@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image,ScrollView,TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
@@ -290,9 +290,13 @@ function Kelolakuis(props) {
                                         props.navigation.navigate("Kerjakankuis", { id: item.quiz.id, lihatquiz: 1, id_pasien: props.route.params.id_pasien })
                                     } else {
                                         if (item.quiz) {
-                                            props.navigation.navigate("Kerjakankuis", { id: item.quiz.id })
+                                            if (global.status == 1) {
+                                                props.navigation.navigate("Kerjakankuis", { id: item.quiz.id })
+                                            }
                                         } else if (item.materi_id) {
-                                            props.navigation.navigate("Kerjakankuis", { id: item.id })
+                                            if (global.status == 1) {
+                                                props.navigation.navigate("Kerjakankuis", { id: item.id })
+                                            }
                                         } else {
                                             global.add = 1
                                             props.navigation.navigate("Tambahkuis", { halaman: jumlah, id: item.id })

@@ -326,7 +326,7 @@ function Listpasien(props) {
                                                 if (props.route.params?.mode == "kontrol") {
                                                     props.navigation.navigate("Datakontrol", { id: item.id })
                                                 } else if (props.route.params?.mode == "resume") {
-                                                    props.navigation.navigate("Detailresumepulang", { nama: "Resume pulang",id: item.id })
+                                                    props.navigation.navigate("Detailresumepulang", { nama: "Ringkasan Pulang",id: item.id })
                                                 } else if (props.route.params?.quiz) {
                                                     props.navigation.navigate("Lihathasilkuis", { id_pasien: item.id, lihatquiz: 1 })
                                                 } else if (props.route.params?.survey) {

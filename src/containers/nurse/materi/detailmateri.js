@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, Image,ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar, Linking, AppState } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
@@ -44,7 +44,7 @@ function Detailmateri(props) {
                         var sub = a.substring(b + 9)
                         setvideo_url(sub)
                         console.log(sub)
-                    }else{
+                    } else {
                         sethidevideo(false)
                     }
                 }
@@ -114,10 +114,22 @@ function Detailmateri(props) {
 
     const [video_url, setvideo_url] = useState("")
     const [hidevideo, sethidevideo] = useState(true)
-    useState(() => {
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
-    })
+    useEffect(() => {
+        AppState.addEventListener("change", _handleAppStateChange);
 
+        return () => {
+            AppState.removeEventListener("change", _handleAppStateChange);
+        };
+    }, []);
+
+    const _handleAppStateChange = (nextAppState) => {
+
+        appState.current = nextAppState
+        console.log(nextAppState)
+    };
     return (
         <View style={style.main}>
             <StatusBar backgroundColor={colors.primary} />
@@ -140,7 +152,7 @@ function Detailmateri(props) {
                                     <View>
                                         <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>{data2 ? data2.total_point : ""}/{data2 ? data2.total_question : ""}</Text>
 
-                                     
+
                                     </View>
                                 </View>
                                 <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>Nilai = {(100 * (data2.total_point / data2.total_question)).toString().substr(0, 4)}</Text>
@@ -158,18 +170,19 @@ function Detailmateri(props) {
                             resizeMode="contain"
                         />) : (null)}
 
-                        <HyperLink linkDefault={true} linkStyle={{ color: '#2980b9' }}>
+                        <HyperLink onPress={(url, text) => Linking.openURL(url)} linkStyle={{ color: '#2980b9' }}>
                             <Text style={[style.nunitomateri, { fontSize: 14, marginTop: 15, flex: 1 }]}>{data.content}</Text>
                         </HyperLink>
                     </View>
-                    {hidevideo ? (<View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
+                    {appState.current == "active" ? (hidevideo ? (<View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
                         <YoutubePlayer
                             height={170}
                             play={playing}
                             videoId={video_url}
                             onChangeState={onStateChange}
                         />
-                    </View>) : (null)}
+                    </View>) : (null)) : (null)}
+
 
                     {data.forum ? (
                         <View>
@@ -179,7 +192,7 @@ function Detailmateri(props) {
                                     <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Forumdetail", { id: data.forum.id }) }}>
                                         <View style={{ marginLeft: 15 }}>
                                             <Text style={[style.poppinsbold, { fontSize: 12 }]}>{data.forum.title}</Text>
-                                      
+
                                         </View>
                                     </TouchableOpacity>
                                 </View>
@@ -187,7 +200,7 @@ function Detailmateri(props) {
                         </View>
                     ) : (null)}
                 </View>
-            </ScrollView>
+            </ScrollView >
         </View >
     );
 };

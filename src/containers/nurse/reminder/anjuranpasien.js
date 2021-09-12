@@ -18,12 +18,12 @@ function Anjuranpasien(props) {
 
 
     const [spinner, setspinner] = useState(false)
-   
+
     const tambahanjuran = () => {
         props.navigation.navigate("Tambahanjuran")
         global.add = 1
     }
-   
+
     const [tindakan, settindakan] = useState({})
     const ubahanjuran2 = () => {
         props.navigation.navigate("Tambahanjuran", { nama: "Ubah Reminder", isinya: tindakan })
@@ -134,12 +134,43 @@ function Anjuranpasien(props) {
             });
     }
 
+    const lihatanjuran2 = () => {
+        //setspinner(true)
+        fetch(global.url + '/advice/patient/list', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
 
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
-            lihatanjuran()
+            if (global.status == 1) {
+                lihatanjuran2()
+            } else {
+                lihatanjuran()
+            }
         }
     }, [isFocused])
     return (

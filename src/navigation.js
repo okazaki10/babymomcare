@@ -134,12 +134,12 @@ function Navigation() {
         <Stack.Screen
           name="Resumepulang"
           component={Resumepulang}
-          options={{ headerTitle: "Resume Pulang" }}
+          options={{ headerTitle: "Ringkasan Pulang" }}
         />
         <Stack.Screen
           name="Tambahresume"
           component={Tambahresume}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Tambah Resume Pulang" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Tambah Ringkasan Pulang" })}
         />
         <Stack.Screen
           name="Anjuranpasien"
@@ -159,7 +159,7 @@ function Navigation() {
         <Stack.Screen
           name="Detailresumepulang"
           component={Detailresumepulang}
-          options={({ route }) => ({ title: route.params ? route.params.nama : "Resume Pulang" })}
+          options={({ route }) => ({ title: route.params ? route.params.nama : "Ringkasan Pulang" })}
         />
         <Stack.Screen
           name="Tambahkuis"
@@ -329,7 +329,7 @@ function Navigation() {
         <Stack.Screen
           name="Faq"
           component={Faq}
-          options={{ headerTitle:"FAQ"}}
+          options={{ headerTitle:"Pertanyaan Umum"}}
         />
         <Stack.Screen
           name="Historykuis"

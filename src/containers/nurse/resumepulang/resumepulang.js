@@ -88,13 +88,13 @@ function Resumepulang(props) {
     const tambahresume = (id) => {
         global.mode = "resume"
         global.add = 1
-        props.navigation.navigate("Tambahresume", { nama:"Tambah resume pulang",id: id })
+        props.navigation.navigate("Tambahresume", { nama:"Tambah Ringkasan Pulang",id: id })
     }
     const ubahresume = () => {
         toggleModal2()
         global.mode = "resume"
         global.add = 0
-        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang", id: id })
+        props.navigation.navigate("Tambahresume", { nama: "Ubah Ringkasan Pulang", id: id })
 
     }
     const tindakanresume = () => {
@@ -268,7 +268,7 @@ function Resumepulang(props) {
                                         style={{ width: 100, height: 100 }}
                                         resizeMode="contain"
                                     />
-                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki resume pulang</Text>
+                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki Ringkasan Pulang</Text>
                                 </View>
 
                             </View>) : (
@@ -283,7 +283,7 @@ function Resumepulang(props) {
                                                     tambahresume(item.id)
                                                 } else {
                                                     global.mode = "resume"
-                                                    props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang", id: item.id })
+                                                    props.navigation.navigate("Detailresumepulang", { nama: "Ringkasan Pulang", id: item.id })
                                                 }
                                             }}
                                                 onLongPress={() => {

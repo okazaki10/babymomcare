@@ -282,7 +282,7 @@ function Relasipasien(props) {
                                         style={{ width: 100, height: 100 }}
                                         resizeMode="contain"
                                     />
-                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki resume pulang</Text>
+                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki Ringkasan Pulang</Text>
                                 </View>
                                 <Button title="+ Tambah Relasi Pasien" onPress={() => { props.navigation.navigate("Tambahrelasi",{selectedItems:selectedItems}) }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                             </View>) : (

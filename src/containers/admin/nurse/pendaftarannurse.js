@@ -19,7 +19,7 @@ function Pendaftarannurse(props) {
     const [isipesan, setisipesan] = useState("")
     const [nama, setnama] = useState("")
     const [username, setusername] = useState("")
-    const [pendidikanibu, setpendidikanibu] = useState("sarjana")
+    const [pendidikanibu, setpendidikanibu] = useState("D3")
     const [password, setpassword] = useState("")
     const [alamat, setalamat] = useState("1")
     const [nomortelepon, setnomortelepon] = useState("")
@@ -223,8 +223,11 @@ function Pendaftarannurse(props) {
 
                                 }
                                 mode="dropdown">
-                                <Picker.Item label="Diploma" value="diploma" />
-                                <Picker.Item label="Sarjana" value="sarjana" />
+                                <Picker.Item label="D3" value="D3" />
+                                <Picker.Item label="Ners" value="Ners" />
+                                <Picker.Item label="Spesialis" value="Spesialis" />
+                                
+                          
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Nomor Telepon</Text>

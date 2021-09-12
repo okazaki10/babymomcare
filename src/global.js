@@ -1,4 +1,4 @@
-var url = "https://backend.hmti-its.com/api";
+var url = "";
 var initialroute = "";
 var key = "";
 var user_id = "";

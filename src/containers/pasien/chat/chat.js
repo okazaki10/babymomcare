@@ -121,17 +121,17 @@ function Chat(props) {
 
     const [time3, settime3] = useState(0)
     useEffect(() => {
-        /*
+    
         const timeout3 = () => setTimeout(() => {
             settime3(time3 + 1)
             settime3(time3 - 1)
             show()
-        }, 500);
+        }, 3000);
         const timeout4 = timeout3()
         return () => {
             clearTimeout(timeout4);
         };
-        */
+  
     }, [time3]);
     const scrollViewRef = useRef()
     const handleScrollTo = (w, h) => {

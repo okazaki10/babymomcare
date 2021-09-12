@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import {  Text } from 'react-native-elements';
+import { Text } from 'react-native-elements';
 
 import { colors } from '../../globalstyles';
 
@@ -110,7 +110,7 @@ function Beranda(props) {
     const resumepulang = () => {
         if (global.status == 1) {
             global.mode = "resume"
-            props.navigation.navigate("Detailresumepulang", { nama: "Resume Pulang" })
+            props.navigation.navigate("Detailresumepulang", { nama: "Ringkasan Pulang" })
         } else if (global.status == 2) {
             props.navigation.navigate("Resumepulang")
         }
@@ -269,7 +269,7 @@ function Beranda(props) {
                                             style={{ height: 65 }}
                                         />
                                         <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Ringkasan Pulang</Text>
                                         </View>
                                     </TouchableOpacity>
 
@@ -301,7 +301,7 @@ function Beranda(props) {
                                             style={{ height: 65 }}
                                         />
                                         <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Resume Pulang</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 15 }]}>Ringkasan Pulang</Text>
                                         </View>
                                     </TouchableOpacity>
 
@@ -349,7 +349,7 @@ function Beranda(props) {
                                         style={{ height: 65 }}
                                     />
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>FAQ</Text>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Pertanyaan Umum</Text>
                                     </View>
                                 </TouchableOpacity>
                             </View>

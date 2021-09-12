@@ -92,7 +92,7 @@ function Tambahresume(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setisipesan("Resume Pulang berhasil diubah!")
+                    setisipesan("Ringkasan Pulang berhasil diubah!")
                     toggleModal()
                 }
                 setspinner(false)
@@ -134,7 +134,7 @@ function Tambahresume(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setisipesan("Resume Pulang berhasil dibuat!")
+                    setisipesan("Ringkasan Pulang berhasil dibuat!")
                     toggleModal()
                 }
                 setspinner(false)
@@ -178,7 +178,7 @@ function Tambahresume(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setisipesan("Resume Pulang berhasil dibuat!")
+                    setisipesan("Ringkasan Pulang berhasil dibuat!")
                     toggleModal()
                 }
                 setspinner(false)

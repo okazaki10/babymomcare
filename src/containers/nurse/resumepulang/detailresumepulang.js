@@ -419,7 +419,7 @@ function Detailresumepulang(props) {
 
 
                                 </View>
-                            ) : (<Text>Tidak ada resume pulang</Text>)}
+                            ) : (<Text>Tidak ada Ringkasan Pulang</Text>)}
                         </View>
                     </ScrollView>
                 </View>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image,  ScrollView,TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import {Text, Button } from 'react-native-elements';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -42,14 +42,14 @@ function Kerjakankuis(props) {
     };
     const [jawaban, setjawaban] = useState([])
 
-  
+
     const pilih = (index, value) => {
         const s = [...jawaban]
         s[index] = value
         setjawaban(s)
     }
     const [nomor, setnomor] = useState(0)
- 
+
     const tambahnomor = () => {
         setnomor(nomor + 1)
     }
@@ -297,8 +297,8 @@ function Kerjakankuis(props) {
                                 <View>
                                     <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Hasil</Text>
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        {data2.data.map((item, index) => (<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",marginBottom:15 }}>
-                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0,flex:0,width:20 }]}>{(index + 1)+"."}</Text>
+                                        {data2.data.map((item, index) => (<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom: 15 }}>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, flex: 0, width: 20 }]}>{(index + 1) + "."}</Text>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>{item.question}</Text>
                                             {item.point == 1 ? (<FontAwesomeIcon icon={faThumbsUp} size={22} color={"lightgreen"}></FontAwesomeIcon>
                                             ) : (
@@ -332,16 +332,16 @@ function Kerjakankuis(props) {
                                     </View>
 
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        {data.questions ? data.questions[nomor].choice.map((item,index) => (
+                                        {data.questions ? data.questions[nomor].choice.map((item, index) => (
                                             jawaban[nomor] == item.id ? (
                                                 <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                     <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{index == 0?"A":index == 1?"B":"C"}. {item.choice}</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{index == 0 ? "A" : index == 1 ? "B" : "C"}. {item.choice}</Text>
                                                 </TouchableOpacity>
                                             ) : (
                                                 <TouchableOpacity onPress={() => { pilih(nomor, item.id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                     <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{index == 0?"A":index == 1?"B":"C"}. {item.choice}</Text>
+                                                    <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{index == 0 ? "A" : index == 1 ? "B" : "C"}. {item.choice}</Text>
                                                 </TouchableOpacity>
                                             )
                                         )) : (null)}
@@ -356,9 +356,13 @@ function Kerjakankuis(props) {
                                         <Text>{data.length}</Text>
                                         <View style={{ flex: 1, marginLeft: 10 }}>
                                             {nomor >= halaman.length - 1 ? (
-                                                <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                            ) : (
-                                                <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                                                jawaban[nomor] == null ? (null) : (
+                                                    <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                                )) : (
+                                                jawaban[nomor] == null ? (null) : (
+                                                    <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                                )
+                                            )}
 
                                         </View>
                                     </View>

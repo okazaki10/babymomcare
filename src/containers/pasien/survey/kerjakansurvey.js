@@ -90,7 +90,7 @@ function Kerjakansurvey(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setdata(json)
+                    setdata(json.data)
 
                 }
                 setspinner(false)
@@ -102,14 +102,14 @@ function Kerjakansurvey(props) {
             });
     }
     const kuisselesai = () => {
-       
+
         var jawabarr = []
-        for(var i=0;i<id_soal.length;i++){
-            jawabarr.push({id:id_soal[i],value:jawaban[i]})
+        for (var i = 0; i < id_soal.length; i++) {
+            jawabarr.push({ id: id_soal[i], value: jawaban[i] })
         }
-    
+
         var answers = JSON.stringify({
-            answers:jawabarr
+            answers: jawabarr
         })
         console.log(answers)
         setspinner(true)
@@ -128,7 +128,7 @@ function Kerjakansurvey(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                
+
                     setisipesan("Kuesioner telah terisi!")
                     toggleModal()
 
@@ -164,7 +164,7 @@ function Kerjakansurvey(props) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
                     setdata(json)
-                    setguide(false)
+
                 }
                 setspinner(false)
             })
@@ -176,6 +176,7 @@ function Kerjakansurvey(props) {
     }
     useState(() => {
         if (props.route.params.lihatsurvey) {
+            setguide(false)
             lihatsurveypasien()
         } else {
             lihatsurvey()
@@ -274,34 +275,34 @@ function Kerjakansurvey(props) {
                             {guide ? (<View>
                                 {props.route.params.choice_type == "number" ? (
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian:</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang perasaan dan pikiran Ibu selama satu bulan terakhir. Ada lima pilihan yang disediakan untuk setiap pertanyaan</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>0 : tidak pernah</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>1 : hampir tidak pernah (1-2 kali)</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>2 : kadang-kadang (3-4 kali)</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>3 : hampir sering (5-6 kali)</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>4 : sangat sering (lebih dari 6 kali)</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian: </Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang perasaan dan pikiran Ibu selama satu bulan terakhir.Ada lima pilihan yang disediakan untuk setiap pertanyaan</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>0: tidak pernah</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>1: hampir tidak pernah (1-2 kali)</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>2: kadang-kadang (3-4 kali)</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>3: hampir sering (5-6 kali)</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>4: sangat sering (lebih dari 6 kali)</Text>
                                     </View>
                                 ) : (null)}
 
                                 {props.route.params.choice_type == "text" ? (
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian:</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang apa yang dirasakan oleh ibu. Ada lima pilihan yang disediakan untuk setiap pertanyaan</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Tidak pernah		: Tidak sama sekali</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Jarang			: Hampir tidak pernah </Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Kadang-kadang	: Tidak terlalu sering</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Sering			: Beberapa kali</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Selalu			: Sebagian besar waktu</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian: </Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang apa yang dirasakan oleh ibu.Ada lima pilihan yang disediakan untuk setiap pertanyaan</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Tidak pernah: Tidak sama sekali</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Jarang: Hampir tidak pernah </Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Kadang-kadang: Tidak terlalu sering</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Sering: Beberapa kali</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Selalu: Sebagian besar waktu</Text>
                                     </View>
                                 ) : (null)}
 
                                 {props.route.params.choice_type == "yes_no" ? (
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian:</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang apa yang dirasakan oleh ibu. Ada dua pilihan yang disediakan untuk setiap pertanyaan</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Iya : iya</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Tidak : tidak</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian: </Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang apa yang dirasakan oleh ibu.Ada dua pilihan yang disediakan untuk setiap pertanyaan</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Iya: iya</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Tidak: tidak</Text>
                                     </View>
                                 ) : (null)}
 
@@ -371,10 +372,15 @@ function Kerjakansurvey(props) {
                                             <View style={{ flex: 1, marginLeft: 10 }}>
                                                 {nomor >= data.length - 1 ? (
                                                     props.route.params.lihatsurvey ? (null) : (
-                                                        <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                                    )
+                                                        jawaban[nomor] == null ? (null) : (
+                                                            <Button title="Selesai" onPress={kuisselesai} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                                        ))
                                                 ) : (
-                                                    <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                                                    props.route.params.lihatsurvey ? (<Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>) : (
+                                                        jawaban[nomor] == null ? (null) : (
+                                                            <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                                                        ))
+                                                )}
 
                                             </View>
                                         </View>
@@ -386,8 +392,8 @@ function Kerjakansurvey(props) {
                         </View>
                     </ScrollView>
                 </View>
-            </View>
-        </View>
+            </View >
+        </View >
     );
 };
 

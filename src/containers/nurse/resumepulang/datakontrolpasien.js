@@ -78,7 +78,7 @@ function Datakontrolpasien(props) {
     const ubahresume = () => {
         global.mode = "resume"
         global.add = 0
-        props.navigation.navigate("Tambahresume", { nama: "Ubah resume pulang" })
+        props.navigation.navigate("Tambahresume", { nama: "Ubah Ringkasan Pulang" })
         toggleModal2()
     }
 
@@ -208,7 +208,7 @@ function Datakontrolpasien(props) {
                                         style={{ width: 100, height: 100 }}
                                         resizeMode="contain"
                                     />
-                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki resume pulang</Text>
+                                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 14, marginTop: 15 }]}>Anda belum memiliki Ringkasan Pulang</Text>
                                 </View>
 
                             </View>) : (

@@ -90,7 +90,7 @@ function Faq(props) {
 
                     <ScrollView>
                         <View style={{ padding: 3 }}>
-                            <Text>Frequently Asked Question</Text>
+                            <Text>Pertanyaan Umum</Text>
                             <Text>Akun</Text>
                             <Text></Text>
                             <View style={[style.card, { flex: 1, marginLeft: 5 }]}>
@@ -100,17 +100,17 @@ function Faq(props) {
                                             <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
                                         </View>
                                     }
-                                        title="1.	Bagaimana cara daftar akun Catatan Bunda?" onPress={() => setmenuswitch(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                        title="1.	Bagaimana cara daftar akun Teman Bunda?" onPress={() => setmenuswitch(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
                                 ) : (
                                     <Button icon={
                                         <View style={{ marginRight: 5 }}>
                                             <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
                                         </View>
                                     }
-                                        title="1.	Bagaimana cara daftar akun Catatan Bunda?" onPress={() => setmenuswitch(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                        title="1.	Bagaimana cara daftar akun Teman Bunda?" onPress={() => setmenuswitch(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
                                 )}
 
-                                {menuswitch == 1 ? (<Text style={{ marginTop: 15 }}>Untuk mendaftar akun catatan bunda, dapat menghubungi perawat yang bersangkutan agar didaftarkan</Text>) : (null)}
+                                {menuswitch == 1 ? (<Text style={{ marginTop: 15 }}>Untuk mendaftar akun Teman bunda, dapat menghubungi perawat yang bersangkutan agar didaftarkan</Text>) : (null)}
                             </View>
                             <View style={[style.card, { flex: 1, marginLeft: 5, marginTop: 20 }]}>
                                 {menuswitch2 == 1 ? (
@@ -138,14 +138,14 @@ function Faq(props) {
                                             <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
                                         </View>
                                     }
-                                        title="3.	Apa yang harus dilakukan jika lupa password akun Catatan Bunda?" onPress={() => setmenuswitch3(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                        title="3.	Apa yang harus dilakukan jika lupa password akun Teman Bunda?" onPress={() => setmenuswitch3(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
                                 ) : (
                                     <Button icon={
                                         <View style={{ }}>
                                             <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
                                         </View>
                                     }
-                                        title="3.	Apa yang harus dilakukan jika lupa password akun Catatan Bunda?" onPress={() => setmenuswitch3(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                        title="3.	Apa yang harus dilakukan jika lupa password akun Teman Bunda?" onPress={() => setmenuswitch3(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2,padding:15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
                                 )}
 
                                 {menuswitch3 == 1 ? (<Text style={{ marginTop: 15 }}>Anda dapat menghubungi perawat yang bersangkutan untuk ganti password lama anda jika lupa</Text>) : (null)}
