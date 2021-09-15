@@ -30,7 +30,7 @@ function Tabreminder() {
             name="Hariini"
             component={Anjuranpasien}
             options={{
-              tabBarLabel: "Anjuran yang disarankan",
+              tabBarLabel: "Perawatan di rumah yang disarankan",
             }}
           />
      

@@ -150,7 +150,9 @@ function Anjuranpasien(props) {
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
-                    setdata(json.data)
+                    if (json.data) {
+                        setdata(json.data)
+                    }
                 }
                 setspinner(false)
             })
@@ -236,7 +238,7 @@ function Anjuranpasien(props) {
 
                 <View style={{ flex: 1, padding: 20 }}>
                     {global.status == 1 ? (null) :
-                        (<Button title="+ Buat Anjuran Pasien" onPress={tambahanjuran} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
+                        (<Button title="+ Buat Perawatan di rumah" onPress={tambahanjuran} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
                     }
 
                     <ScrollView>

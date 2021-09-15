@@ -104,7 +104,7 @@ function Navigation() {
         <Stack.Screen
           name="Daftarortu"
           component={Daftarortu}
-          options={{ headerTitle: "Dafta Ortu" }}
+          options={{ headerTitle: "Daftar Ortu" }}
         />
         <Stack.Screen
           name="Forum"
@@ -144,7 +144,7 @@ function Navigation() {
         <Stack.Screen
           name="Anjuranpasien"
           component={Anjuranpasien}
-          options={{ headerTitle: "Anjuran Pasien" }}
+          options={{ headerTitle: "Perawatan di rumah" }}
         />
         <Stack.Screen
           name="Tambahanjuran"

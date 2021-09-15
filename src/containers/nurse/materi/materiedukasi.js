@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
@@ -175,20 +175,19 @@ function Materiedukasi(props) {
                 </View>
             </Modal>
             <View style={{ flex: 1 }}>
+
                 {global.status == 2 || global.status == 3 || global.status == 4 ? (<View>
                     <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Kategori Materi</Text>
                     <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 </View>) : (null)}
+                <ScrollView>
+                    <View style={{ flex: 0, padding: 22 }}>
+                        {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori Materi" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            <View style={[style.line, { marginTop: 0, marginBottom: 15 }]}></View>
+                        </View>)}
 
-                <View style={{ flex: 0, padding: 20 }}>
-                    {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori Materi" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    <View style={[style.line,{marginTop:0,marginBottom:15}]}></View>
-                    </View>)}
-
-                  
-                    <ScrollView>
-                        <View style={{ padding: 3 }}>
-                            <View>
+        
+                            <View style={{ flex: 1 }}>
 
                                 {data.map((item) => item.id ? (<TouchableOpacity onPress={() => { props.navigation.navigate("Judulmateri", { id: item.id }) }}
                                     onLongPress={() => {
@@ -197,7 +196,7 @@ function Materiedukasi(props) {
                                         setgambar(item.image)
                                         tindakankontrol()
                                     }}
-                                    style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button,flex: 0 }]} >
+                                    style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button, flex: 0 }]} >
                                     <Image
                                         source={{ uri: item.image ? item.image : "https://nameproscdn.com/a/2018/05/106343_82907bfea9fe97e84861e2ee7c5b4f5b.png" }}
                                         style={{ width: 35, height: 35, borderRadius: 50 }}
@@ -209,10 +208,12 @@ function Materiedukasi(props) {
                                 </TouchableOpacity>) : (null))}
 
                             </View>
-                        </View>
-                    </ScrollView>
-                </View>
+
+
+                    </View>
+                </ScrollView>
             </View>
+
         </View>
     );
 };

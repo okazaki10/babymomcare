@@ -129,7 +129,8 @@ function Login(props) {
                         />
                     </View>
                     <View style={{ flex: 1, marginTop: 10, padding: 22 }}>
-                        <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 18 }]}>Aplikasi Perencanaan Pulang BBLR</Text>
+                    <Text style={[style.poppinsbold, { textAlign: "center", fontSize: 24 }]}>Teman Bunda</Text>
+                        <Text style={[style.poppinsmedium, { textAlign: "center", fontSize: 16 }]}>Aplikasi Perencanaan Pulang BBLR</Text>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Username</Text>
                         <TextInput onChangeText={setusername} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>

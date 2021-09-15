@@ -257,11 +257,13 @@ function Datakontrol(props) {
                                             <Text style={{ marginTop: 15 }}>: </Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>{item.note}</Text>
                                         </View>
+                                        {/*
                                         <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.nunitosans, style.datapasien]}>Catatan dari perawat</Text>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Masalah Keperawatan</Text>
                                             <Text style={{ marginTop: 15 }}>: </Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>{item.nurse_note}</Text>
                                         </View>
+                                        */}
                                         <Text style={[style.nunitosans, style.datapasien, { textAlign: "right", textDecorationLine: "underline" }]}>Lihat Selengkapnya</Text>
                                     </TouchableOpacity>) : (null))}
 

@@ -14,7 +14,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useIsFocused } from '@react-navigation/native';
 function Listpasien(props) {
- 
+
     const [isipesan, setisipesan] = useState("")
 
 
@@ -226,10 +226,13 @@ function Listpasien(props) {
         if (isFocused) {
             if (props.route.params?.idls) {
                 lihatpasien2()
+                console.log("a")
             } else if (props.route.params?.idadmin) {
                 lihatpasienadmin()
+                console.log("b")
             } else {
                 lihatpasien()
+                console.log("c")
             }
         }
     }, [isFocused])
@@ -309,47 +312,48 @@ function Listpasien(props) {
                                     props.navigation.navigate("Daftarakun")
                                 }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                             </View>) : (
-                                    <View>
-                                        <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
-                                            <Ionicons name={'search-outline'} size={24} color={colors.button} />
-                                            <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
-                                        </View>
-                                        <Button title="+ Tambah Pasien Baru" onPress={() => {
-                                            global.add = 1
-                                            props.navigation.navigate("Daftarakun")
-                                        }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                        {datapasien.map((item) => item.id ? (
-                                            <TouchableOpacity onLongPress={() => {
-                                                setidpasien(item.id)
-                                                tindakanpasien()
-                                            }} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
-                                                if (props.route.params?.mode == "kontrol") {
-                                                    props.navigation.navigate("Datakontrol", { id: item.id })
-                                                } else if (props.route.params?.mode == "resume") {
-                                                    props.navigation.navigate("Detailresumepulang", { nama: "Ringkasan Pulang",id: item.id })
-                                                } else if (props.route.params?.quiz) {
-                                                    props.navigation.navigate("Lihathasilkuis", { id_pasien: item.id, lihatquiz: 1 })
-                                                } else if (props.route.params?.survey) {
-                                                    props.navigation.navigate("Lihathasilsurvey", { id_pasien: item.id, lihatsurvey: 1 })
-                                                } else {
-                                                    props.navigation.navigate("Datapasien", { id: item.id })
-                                                }
-                                            }}>
+                                <View>
+                                    <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0 }]}>
+                                        <Ionicons name={'search-outline'} size={24} color={colors.button} />
+                                        <TextInput onChangeText={setcari} placeholder="Cari Pasien" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                                    </View>
+                                    {props.route.params?.survey || props.route.params?.quiz ? (null) : (<Button title="+ Tambah Pasien Baru" onPress={() => {
+                                        global.add = 1
+                                        props.navigation.navigate("Daftarakun")
+                                    }} buttonStyle={[style.button, { marginTop: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
+                                    }
+                                    {datapasien.map((item) => item.id ? (
+                                        <TouchableOpacity onLongPress={() => {
+                                            setidpasien(item.id)
+                                            tindakanpasien()
+                                        }} style={[style.card, { marginTop: 15, flexDirection: "row" }]} onPress={() => {
+                                            if (props.route.params?.mode == "kontrol") {
+                                                props.navigation.navigate("Datakontrol", { id: item.id })
+                                            } else if (props.route.params?.mode == "resume") {
+                                                props.navigation.navigate("Detailresumepulang", { nama: "Ringkasan Pulang", id: item.id })
+                                            } else if (props.route.params?.quiz) {
+                                                props.navigation.navigate("Lihathasilkuis", { id_pasien: item.id, lihatquiz: 1 })
+                                            } else if (props.route.params?.survey) {
+                                                props.navigation.navigate("Lihathasilsurvey", { id_pasien: item.id, lihatsurvey: 1 })
+                                            } else {
+                                                props.navigation.navigate("Datapasien", { id: item.id })
+                                            }
+                                        }}>
 
-                                                <View style={{ marginLeft: 15 }}>
-                                                    <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
-                                                    <View style={{ flexDirection: "row" }}>
-                                                        <Ionicons name={'person'} size={17} color={colors.button} />
-                                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
-                                                    </View>
-
-                                                    <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
+                                            <View style={{ marginLeft: 15 }}>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>{item.baby_name}</Text>
+                                                <View style={{ flexDirection: "row" }}>
+                                                    <Ionicons name={'person'} size={17} color={colors.button} />
+                                                    <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginLeft: 1 }]}>Ibu {item.mother_name}</Text>
                                                 </View>
-                                            </TouchableOpacity>
-                                        ) : (null))}
+
+                                                <Text style={[style.nunitosans, { fontSize: 11, color: colors.grey, marginTop: 5 }]}>BB Lahir : {item.born_weight} gram</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    ) : (null))}
 
 
-                                    </View>)}
+                                </View>)}
                         </View>
                     </ScrollView>
                 </View>

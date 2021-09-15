@@ -48,7 +48,7 @@ function Kerjakansurvey(props) {
     const [id_soal, setid_soal] = useState([])
 
     const [listjawaban, setlistjawaban] = useState([0, 1, 2, 3, 4])
-    const [listjawaban2, setlistjawaban2] = useState(["Tidak Pernah", "Jarang", "Kadang-kadang", "Sering", "Selalu"])
+    const [listjawaban2, setlistjawaban2] = useState(["Tidak Pernah", "Hampir tidak pernah", "Kadang-kadang", "Hampir sering", "Sangat sering"])
     const [listjawaban3, setlistjawaban3] = useState([0, 1])
     const pilih = (index, value, id) => {
         const s = [...jawaban]
@@ -290,7 +290,7 @@ function Kerjakansurvey(props) {
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>Petunjuk pengisian: </Text>
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Kuesioner ini adalah menyatakan tentang apa yang dirasakan oleh ibu.Ada lima pilihan yang disediakan untuk setiap pertanyaan</Text>
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 15 }]}>Tidak pernah: Tidak sama sekali</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Jarang: Hampir tidak pernah </Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Hampir tidak pernah: Hampir tidak pernah </Text>
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Kadang-kadang: Tidak terlalu sering</Text>
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Sering: Beberapa kali</Text>
                                         <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 14, marginTop: 0 }]}>Selalu: Sebagian besar waktu</Text>
@@ -351,12 +351,12 @@ function Kerjakansurvey(props) {
                                                         jawaban[nomor] == item ? (
                                                             <TouchableOpacity style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                                 <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: colors.primary, borderWidth: 1, borderColor: colors.button }}></View>
-                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
+                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item+" : "+listjawaban2[index] : listjawaban2[index]}</Text>
                                                             </TouchableOpacity>
                                                         ) : (
                                                             <TouchableOpacity onPress={() => { pilih(nomor, item, data[nomor].id) }} style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginTop: 15 }}>
                                                                 <View style={{ width: 15, height: 15, borderRadius: 50, backgroundColor: "white", borderWidth: 1, borderColor: colors.button }}></View>
-                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item : listjawaban2[index]}</Text>
+                                                                <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0 }]}>{props.route.params.choice_type == "number" ? item+" : "+listjawaban2[index] : listjawaban2[index]}</Text>
                                                             </TouchableOpacity>
                                                         )
                                                     )

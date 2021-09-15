@@ -111,7 +111,7 @@ useEffect(() => {
         name="Reminder"
         component={Tabreminder}
         options={{
-          tabBarLabel: 'Anjuran',
+          tabBarLabel: 'Perawatan',
           tabBarIcon: ({color, size}) => (
             <FontAwesomeIcon icon={faClipboardList} size={28} color={color}></FontAwesomeIcon>
           ),

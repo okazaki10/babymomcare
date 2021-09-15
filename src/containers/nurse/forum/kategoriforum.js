@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import {  Text, Button } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
 import Modal from 'react-native-modal';
@@ -43,7 +43,7 @@ function Kategoriforum(props) {
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
-  
+
     const [data, setdata] = useState([{}])
     const lihatkategori = () => {
         //setspinner(true)
@@ -169,15 +169,15 @@ function Kategoriforum(props) {
                     <Text style={[style.poppinsbold, { fontSize: 20, marginTop: 20, textAlign: "center" }]}>Kategori Topik</Text>
                     <View style={[style.line, { height: 3, backgroundColor: '#ECECEC' }]}></View>
                 </View>) : (null)}
-                <View style={{ flex: 1, padding: 20 }}>
-                    {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori Topik" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                    <View style={[style.line,{marginTop:0,marginBottom:15}]}></View>
-                    </View>)}
+                <ScrollView>
+                    <View style={{ flex: 1, padding: 22 }}>
+                        {global.status == 1 ? (null) : (<View><Button title="+ Tambah Kategori Topik" onPress={tambahmateri} buttonStyle={[style.button, { marginTop: 0, marginBottom: 15 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            <View style={[style.line, { marginTop: 0, marginBottom: 15 }]}></View>
+                        </View>)}
 
-              
 
-                    <ScrollView>
-                        <View style={{ padding: 3 }}>
+
+
                             <View>
                                 {data.map((item) => item.id ? (<TouchableOpacity onPress={() => { props.navigation.navigate("Forum", { id: item.id }) }}
                                     onLongPress={() => {
@@ -185,7 +185,7 @@ function Kategoriforum(props) {
                                         tindakankontrol()
                                     }
                                     } style={[style.card, { marginBottom: 15, flexDirection: "row", backgroundColor: colors.button }]} >
-                                    
+
                                     <View style={{ marginLeft: 15, justifyContent: "center" }}>
                                         <Text style={[style.poppinsbold, { fontSize: 14, color: "white" }]}>{item.name}</Text>
                                     </View>
@@ -193,9 +193,10 @@ function Kategoriforum(props) {
 
 
                             </View>
-                        </View>
-                    </ScrollView>
-                </View>
+                  
+
+                    </View>
+                </ScrollView>
             </View>
         </View>
     );

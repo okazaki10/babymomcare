@@ -77,8 +77,30 @@ function Beranda(props) {
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
 
             });
-
     }
+    const [unread, setunread] = useState(0)
+    const getunread = (key) => {
+        //setspinner(true)
+        fetch(global.url + '/advice/unread-notification', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json.data)
+                setunread(json.data)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                //setspinner(false)
+            });
+    }
+
     const authorize = (key) => {
         fetch(global.url + "/user", {
             method: 'GET',
@@ -91,6 +113,7 @@ function Beranda(props) {
             .then((json) => {
                 console.log(json.data)
                 setuser(json.data)
+
             })
             .catch((error) => console.error(error));
     };
@@ -99,6 +122,7 @@ function Beranda(props) {
             const value = await AsyncStorage.getItem('key')
             if (value !== null) {
                 authorize(value)
+                getunread(value)
             }
         } catch (e) {
             // error reading value
@@ -139,6 +163,11 @@ function Beranda(props) {
                     <View style={{ alignItems: "flex-end", padding: 22 }}>
                         <TouchableOpacity onPress={() => { props.navigation.navigate("Notifikasi") }} style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, elevation: 10 }]}>
                             <Ionicons name={'notifications-outline'} size={24} color="#92B1CD" />
+                            {unread && unread != "0" ? (
+                                <View style={{ position: "absolute", top: -5, right: -3, zIndex: 100, backgroundColor: "red", width: 18, height: 18, justifyContent: "center", alignItems: "center", borderRadius: 50 }}>
+                                    <Text style={{ fontSize: 12, color: "white" }}>{unread <= 99 ? unread : "99+"}</Text>
+                                </View>
+                            ) : (null)}
                         </TouchableOpacity>
                     </View>
                     <View style={{ width: "100%", justifyContent: "center", alignItems: 'center' }}>
@@ -195,7 +224,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Hasil Kuis Pasien</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Hasil Kuis Materi</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {
@@ -217,7 +246,7 @@ function Beranda(props) {
                                                 style={{ height: 65 }}
                                             />
                                             <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Anjuran Pasien</Text>
+                                                <Text style={[style.poppinsbold, { fontSize: 15 }]}>Perawatan di rumah</Text>
                                             </View>
                                         </TouchableOpacity>
                                         <TouchableOpacity onPress={() => {

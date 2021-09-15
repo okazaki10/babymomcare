@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, Image, Dimensions, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { View, Image, Dimensions, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 import style from '../../../globalstyles';
@@ -28,8 +28,10 @@ function Tambahresume(props) {
 
     const [date, setDate] = useState(new Date());
 
-    const [hasil_penunjang,sethasil_penunjang] = useState("")
-    const [terapi_pulang,setterapi_pulang] = useState("")
+    const [hasil_penunjang, sethasil_penunjang] = useState("")
+    const [terapi_pulang, setterapi_pulang] = useState("")
+    const [intervensi_keperawatan, setintervensi_keperawatan] = useState("")
+
 
     const [items, setitems] = useState([{}])
     const [selectedItems, setselectedItems] = useState([])
@@ -40,7 +42,48 @@ function Tambahresume(props) {
     };
 
     const referensi = useRef()
-    
+
+    const [items2, setitems2] = useState([
+        { id: 1, name: "Bersihan jalan napas tidak efektif" },
+        { id: 2, name: "Gangguan pertukaran gas" },
+        { id: 3, name: "Pola napas tidak efektif" },
+        { id: 4, name: "Ikterik Neonatus" },
+        { id: 5, name: "Menyusui tidak efektif" },
+        { id: 6, name: "Risiko defisit nutrisi" },
+        { id: 7, name: "Risiko ikterik neonatus" },
+        { id: 8, name: "Gangguan integritas kulit/ jaringan" },
+        { id: 9, name: "Hipotermia" },
+        { id: 10, name: "Risiko gangguan integritas kulit/ jaringan" },
+        { id: 11, name: "Risiko hipotermia" },
+        { id: 12, name: "Risiko infeksi" },
+        { id: 13, name: "Risiko termoregulasi tidak efektif" },
+        { id: 14, name: "Termoregulasi tidak efektif" },
+        { id: 15, name: "Tuliskan sendiri..." }
+    ])
+    const [selectedItems2, setselectedItems2] = useState([])
+    const [showmk, setshowmk] = useState(false)
+    const onSelectedItemsChange2 = (selectedItems) => {
+        if (selectedItems.includes(15)) {
+            setshowmk(true)
+        } else {
+            setshowmk(false)
+        }
+        var masalah = ""
+        for (var i = 0; i < selectedItems.length; i++) {
+            if (selectedItems[i] != 15) {
+                masalah = masalah + items2[selectedItems[i] - 1].name
+                if (i != selectedItems.length - 1) {
+                    masalah = masalah + ", "
+                }
+            }
+        }
+        setanjuran(masalah)
+        setselectedItems2(selectedItems)
+        console.log(masalah)
+    };
+
+    const referensi2 = useRef()
+
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -59,7 +102,7 @@ function Tambahresume(props) {
         },
         quality: 0.5
     })
- 
+
     const [anjuran, setanjuran] = useState("")
     const [id_resume, setid_resume] = useState("")
     const resumediubah = () => {
@@ -123,7 +166,7 @@ function Tambahresume(props) {
                 temperature: suhu,
                 base64_img: gambar2,
                 note: anjuran,
-        
+                intervensi_keperawatan: intervensi_keperawatan,
                 mode: "resume",
                 patient_id: props.route.params.id
             })
@@ -165,9 +208,10 @@ function Tambahresume(props) {
                 temperature: suhu,
                 base64_img: gambar2,
                 nurse_note: anjuran,
-                hasil_penunjang:hasil_penunjang,
-                terapi_pulang:terapi_pulang,
-                advices:selectedItems,
+                hasil_penunjang: hasil_penunjang,
+                terapi_pulang: terapi_pulang,
+                advices: selectedItems,
+                intervensi_keperawatan: intervensi_keperawatan,
                 mode: "resume",
                 patient_id: props.route.params.id
             })
@@ -283,7 +327,7 @@ function Tambahresume(props) {
                 console.log('User cancelled image picker');
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
-                ToastAndroid.show(response.error == "Permissions weren't granted"?"Anda harus mengizinkan/permission pada aplikasi di pengaturan":"", ToastAndroid.SHORT)
+                ToastAndroid.show(response.error == "Permissions weren't granted" ? "Anda harus mengizinkan/permission pada aplikasi di pengaturan" : "", ToastAndroid.SHORT)
             } else if (response.customButton) {
                 console.log('User tapped custom button: ', response.customButton);
             } else {
@@ -507,7 +551,7 @@ function Tambahresume(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tanggal Kontrol Selanjutnya</Text>
+                        <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tanggal Kontrol Sekarang</Text>
                         <View style={{ flexDirection: "row" }} >
                             <TouchableOpacity onPress={toggleModal4} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
                                 <View style={{ marginLeft: 10 }}>
@@ -530,34 +574,53 @@ function Tambahresume(props) {
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat Badan</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={bb} onChangeText={setbb} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={bb} onChangeText={setbb} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>gram</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Panjang Badan</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={pb} onChangeText={setpb} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={pb} onChangeText={setpb} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>cm</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Lingkar Kepala</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={lk} onChangeText={setlk} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>cm</Text>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Suhu</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
-                            <TextInput value={suhu} onChangeText={setsuhu} style={{ padding: 0, marginLeft: 10,flex:1 }} keyboardType="numeric"></TextInput>
+                            <TextInput value={suhu} onChangeText={setsuhu} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>celcius</Text>
                         </View>
                         {global.status == 1 ? (<View>
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan tambahan</Text>
                             <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
                         </View>) : (<View>
-                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan dari perawat</Text>
-                            <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                            <View style={{ marginTop: 15 }}>
+                                <MultiSelect
+                                    hideTags
+                                    items={items2}
+                                    uniqueKey="id"
+                                    ref={referensi2}
+                                    onSelectedItemsChange={onSelectedItemsChange2}
+                                    selectedItems={selectedItems2}
+                                    selectText="Masalah Keperawatan"
+                                    searchInputPlaceholderText="Pilih Masalah Keperawatan..."
+                                    onChangeInput={(text) => console.log(text)}
+                                    submitButtonText="Submit"
+                                />
+                            </View>
+                            {showmk ? (<View>
+                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tulis Masalah Keperawatan</Text>
+                                <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                            </View>) : (null)}
+
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Hasil Penunjang</Text>
                             <TextInput value={hasil_penunjang} onChangeText={sethasil_penunjang} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Terapi Pulang</Text>
-                            <TextInput value={terapi_pulang} onChangeText={setterapi_pulang} style={[style.card, { elevation: 5, marginTop: 15,marginBottom:22 }]} multiline={true}></TextInput>
+                            <TextInput value={terapi_pulang} onChangeText={setterapi_pulang} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Intervensi Keperawatan</Text>
+                            <TextInput value={intervensi_keperawatan} onChangeText={setintervensi_keperawatan} style={[style.card, { elevation: 5, marginTop: 15, marginBottom: 22 }]} multiline={true}></TextInput>
                             <MultiSelect
                                 hideTags
                                 items={items}
