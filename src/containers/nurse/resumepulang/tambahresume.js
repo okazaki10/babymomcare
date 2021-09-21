@@ -551,7 +551,9 @@ function Tambahresume(props) {
             <View style={{ flex: 1 }}>
                 <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
-                        <Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tanggal Kontrol Sekarang</Text>
+                        {global.mode == "kontrol" ? (<Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tanggal Kontrol Sekarang</Text>) :
+                            (<Text style={[style.poppinsmedium, { fontSize: 14 }]}>Tanggal Kontrol Selanjutnya</Text>)}
+
                         <View style={{ flexDirection: "row" }} >
                             <TouchableOpacity onPress={toggleModal4} style={[style.card, { flexDirection: "row", alignItems: "center", marginTop: 20, elevation: 5 }]}>
                                 <View style={{ marginLeft: 10 }}>
@@ -596,7 +598,7 @@ function Tambahresume(props) {
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Catatan tambahan</Text>
                             <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
                         </View>) : (<View>
-                            <View style={{ marginTop: 15 }}>
+                            <View style={{ marginTop: 30 }}>
                                 <MultiSelect
                                     hideTags
                                     items={items2}
@@ -604,14 +606,14 @@ function Tambahresume(props) {
                                     ref={referensi2}
                                     onSelectedItemsChange={onSelectedItemsChange2}
                                     selectedItems={selectedItems2}
-                                    selectText="Masalah Keperawatan"
+                                    selectText="Pilih Masalah Keperawatan"
                                     searchInputPlaceholderText="Pilih Masalah Keperawatan..."
                                     onChangeInput={(text) => console.log(text)}
-                                    submitButtonText="Submit"
+                                    submitButtonText="Pilih"
                                 />
                             </View>
                             {showmk ? (<View>
-                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Tulis Masalah Keperawatan</Text>
+                                <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Masalah Keperawatan</Text>
                                 <TextInput value={anjuran} onChangeText={setanjuran} style={[style.card, { elevation: 5, marginTop: 15 }]} multiline={true}></TextInput>
                             </View>) : (null)}
 
@@ -631,7 +633,7 @@ function Tambahresume(props) {
                                 selectText="Pilih Saran Anjuran"
                                 searchInputPlaceholderText="Pilih Anjuran..."
                                 onChangeInput={(text) => console.log(text)}
-                                submitButtonText="Submit"
+                                submitButtonText="Pilih"
                             />
                         </View>)}
                         <View>

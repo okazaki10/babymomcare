@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
-import {  Text, Button } from 'react-native-elements';
+import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
 
@@ -22,7 +22,7 @@ function Nurse(props) {
 
 
     const [spinner, setspinner] = useState(false)
- 
+
     const tambahnurse = () => {
         global.add = 1
         props.navigation.navigate("Pendaftarannurse")
@@ -32,7 +32,7 @@ function Nurse(props) {
         props.navigation.navigate("Pendaftarannurse", { nama: "Nurse", id_nurse: id })
         toggleModal2()
     }
- 
+
     const tindakannurse = () => {
         setisipesan("Pilih tindakan untuk nurse ini")
         toggleModal2()
@@ -148,6 +148,7 @@ function Nurse(props) {
                 setspinner(false)
             });
     }
+
     const approve = () => {
         setspinner(true)
         fetch(global.url + '/admin/approve-nurse', {
@@ -228,6 +229,32 @@ function Nurse(props) {
                 console.error(error)
                 ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
                 setspinner(false)
+            });
+    }
+    const cari2 = (key) => {
+        fetch(global.url + '/admin/search-nurse', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                keyword: key,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(json)
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
             });
     }
     const isFocused = useIsFocused()
@@ -338,7 +365,7 @@ function Nurse(props) {
                 <View style={{ flex: 1, padding: 20 }}>
                     <Button title="+ Daftar Perawat" onPress={tambahnurse} buttonStyle={[style.button, { marginBottom: 5 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     <View style={[style.card, { flexDirection: "row", alignItems: "center", marginRight: 3, marginLeft: 3, flex: 0, marginBottom: 15, marginTop: 15 }]}>
-                        <TextInput onChangeText={setcari} placeholder="Cari Perawat" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
+                        <TextInput onChangeText={cari2} placeholder="Cari Perawat" style={{ flex: 1, padding: 0, marginLeft: 10 }}></TextInput>
                         <Ionicons name={'search-outline'} size={24} color={colors.grey} />
                     </View>
                     <ScrollView>

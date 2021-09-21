@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, Image, Dimensions, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { View, Image, Dimensions, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
@@ -20,6 +20,7 @@ function Daftarakun(props) {
     const [nohp, setnohp] = useState("")
     const [username, setusername] = useState("")
     const [password, setpassword] = useState("")
+    const [konfirmasi_password, setkonfirmasi_password] = useState("")
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
@@ -35,13 +36,17 @@ function Daftarakun(props) {
     const referensi = useRef()
     const [spinner, setspinner] = useState(false)
     const lanjut = () => {
-        if (username && password) {
-            global.emaild = email
-            global.nohpd = nohp
-            global.rekomendasi = selectedItems
-            props.navigation.navigate("Daftarbayi", { username: username, password: password, selectedItems: selectedItems })
+        if (password != konfirmasi_password) {
+            ToastAndroid.show("Konfirmasi password tidak sama", ToastAndroid.SHORT)
         } else {
-            ToastAndroid.show("Pastikan data tidak ada yang kosong", ToastAndroid.SHORT)
+            if (username && password) {
+                global.emaild = email
+                global.nohpd = nohp
+                global.rekomendasi = selectedItems
+                props.navigation.navigate("Daftarbayi", { username: username, password: password, selectedItems: selectedItems })
+            } else {
+                ToastAndroid.show("Pastikan data tidak ada yang kosong", ToastAndroid.SHORT)
+            }
         }
     }
     const pasiendiubah = () => {
@@ -221,7 +226,7 @@ function Daftarakun(props) {
             </Modal>
 
             <View style={{ flex: 1 }}>
-                <ScrollView> 
+                <ScrollView>
                     <View style={{ flex: 1, padding: 22 }}>
                         {props.route.params?.mode == "materi" ? (<View>
                             {global.add == 0 ? (<View style={{ marginTop: 30 }}>
@@ -257,6 +262,8 @@ function Daftarakun(props) {
                                 </View>) : (null)}
                             <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
                             <TextInput onChangeText={setpassword} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]} autoCapitalize="none"></TextInput>
+                            <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Konfirmasi Password</Text>
+                            <TextInput onChangeText={setkonfirmasi_password} secureTextEntry={true} style={[style.card, { elevation: 5, marginTop: 10 }]} autoCapitalize="none"></TextInput>
                         </View>)}
 
 

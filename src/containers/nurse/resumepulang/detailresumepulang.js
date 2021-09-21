@@ -274,7 +274,11 @@ function Detailresumepulang(props) {
                                             <Text style={{ marginTop: 15 }}>: </Text>
                                             <Text style={[style.nunitosans, style.datapasien2, { marginTop: 15 }]}>{format(new Date(datakontrol.date), "dd' 'MMMM' 'yyy", { locale: id })}</Text>
                                         </View>
-                                    ) : (null)}
+                                    ) : (<View style={{ flexDirection: "row" }}>
+                                        <Text style={[style.poppinsbold, style.datapasien, { marginTop: 15 }]}>Tanggal Kontrol Selanjutnya</Text>
+                                        <Text style={{ marginTop: 15 }}>: </Text>
+                                        <Text style={[style.nunitosans, style.datapasien2, { marginTop: 15 }]}>{format(new Date(datakontrol.date), "dd' 'MMMM' 'yyy", { locale: id })}</Text>
+                                    </View>)}
                                     <View style={{ flexDirection: "row" }}>
                                         <Text style={[style.poppinsbold, style.datapasien]}>Tempat Kontrol</Text>
                                         <Text style={{ marginTop: 15 }}>: </Text>
@@ -363,17 +367,7 @@ function Detailresumepulang(props) {
                                                 </View>
                                             ) : ""}
                                         </View>)}
-                                        <View style={{ flexDirection: "row" }}>
-                                            <Text style={[style.poppinsbold, style.datapasien]}>Intervensi Keperawatan</Text>
-                                        </View>
-                                        <View style={[{ marginTop: 10, flexDirection: "row", padding: 0, flex: 0, borderColor: colors.grey, borderWidth: 1, borderRadius: 10 }]}>
-                                            <View
-                                                style={{ height: 65 }}
-                                            />
-                                            <View style={{ marginLeft: 15, justifyContent: "center" }}>
-                                                <Text style={[style.nunitosans, { fontSize: 15 }]}>{datakontrol.intervensi_keperawatan}</Text>
-                                            </View>
-                                        </View>
+      
                                         <View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.poppinsbold, style.datapasien]}> {global.mode == "kontrol" ? ("Catatan dari perawat") : ("Masalah Keperawatan")}</Text>

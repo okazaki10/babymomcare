@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
@@ -21,6 +21,7 @@ function Pendaftarannurse(props) {
     const [username, setusername] = useState("")
     const [pendidikanibu, setpendidikanibu] = useState("D3")
     const [password, setpassword] = useState("")
+    const [konfirmasi_password, setkonfirmasi_password] = useState("")
     const [alamat, setalamat] = useState("1")
     const [nomortelepon, setnomortelepon] = useState("")
 
@@ -44,7 +45,7 @@ function Pendaftarannurse(props) {
             body: JSON.stringify({
                 id: props.route.params.id_nurse,
                 name: nama,
-                password:password,
+                password: password,
                 working_exp: lamabekerja,
                 education: pendidikanibu,
                 phone: nomortelepon,
@@ -71,41 +72,46 @@ function Pendaftarannurse(props) {
 
     }
     const nursedibuat = () => {
-        setspinner(true)
-        fetch(global.url + '/register', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                role: "nurse",
-                username: username,
-                password: password,
-                nurse_name: nama,
-                working_exp: lamabekerja,
-                education: pendidikanibu,
-                phone: nomortelepon,
-                hospital_id: alamat
+        if (password != konfirmasi_password) {
+            ToastAndroid.show("Konfirmasi password tidak sama", ToastAndroid.SHORT)
+
+        } else {
+            setspinner(true)
+            fetch(global.url + '/register', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + global.key,
+                },
+                body: JSON.stringify({
+                    role: "nurse",
+                    username: username,
+                    password: password,
+                    nurse_name: nama,
+                    working_exp: lamabekerja,
+                    education: pendidikanibu,
+                    phone: nomortelepon,
+                    hospital_id: alamat
+                })
             })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setisipesan("Data nurse berhasil dibuat!")
-                    toggleModal()
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
+                .then((response) => response.json())
+                .then((json) => {
+                    console.log(json)
+                    if (json.errors) {
+                        ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                    } else {
+                        setisipesan("Data nurse berhasil dibuat!")
+                        toggleModal()
+                    }
+                    setspinner(false)
+                })
+                .catch((error) => {
+                    console.error(error)
+                    ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                    setspinner(false)
+                });
+        }
     }
     const kembali = () => {
         props.navigation.goBack()
@@ -195,6 +201,8 @@ function Pendaftarannurse(props) {
                         </View>) : (null)}
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Password</Text>
                         <TextInput onChangeText={setpassword} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} secureTextEntry={true}></TextInput>
+                        <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Konfirmasi Password</Text>
+                        <TextInput onChangeText={setkonfirmasi_password} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]} secureTextEntry={true}></TextInput>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Alamat Rumah Sakit</Text>
 
                         <View style={[style.card, { elevation: 5, padding: 0 }]}>
@@ -226,8 +234,8 @@ function Pendaftarannurse(props) {
                                 <Picker.Item label="D3" value="D3" />
                                 <Picker.Item label="Ners" value="Ners" />
                                 <Picker.Item label="Spesialis" value="Spesialis" />
-                                
-                          
+
+
                             </Picker>
                         </View>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Nomor Telepon</Text>
@@ -244,7 +252,7 @@ function Pendaftarannurse(props) {
                     {global.add == 1 ? (
                         <Button title="Daftar" onPress={nursedibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                     ) : (
-                            <Button title="Simpan" onPress={nursediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                        <Button title="Simpan" onPress={nursediubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
 
                 </View>
             </View>

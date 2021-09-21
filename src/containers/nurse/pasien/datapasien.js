@@ -321,9 +321,13 @@ function Datapasien(props) {
                                     </View>
                                     <TouchableOpacity onPress={() => { ubahpasien(2) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View>
+                                        <View style={{ flexDirection: "row" }}>
+                                                <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Rumah sakit</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data ? data.hospital : ""}</Text>
+                                            </View>
                                             <View style={{ flexDirection: "row" }}>
-                                                <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Email</Text>
-                                                <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data ? data.email : ""}</Text>
+                                                <Text style={[style.nunitosans, style.datapasien]}>Email</Text>
+                                                <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.email : ""}</Text>
                                             </View>
                                             <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien]}>No Hp</Text>

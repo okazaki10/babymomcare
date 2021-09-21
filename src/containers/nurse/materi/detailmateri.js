@@ -13,7 +13,6 @@ import { useIsFocused } from '@react-navigation/native';
 import YoutubePlayer from "react-native-youtube-iframe";
 function Detailmateri(props) {
 
-
     const [spinner, setspinner] = useState(false)
 
     const [selesai, setselesai] = useState(false)
@@ -107,9 +106,14 @@ function Detailmateri(props) {
     const onStateChange = useCallback((state) => {
         if (state === "ended") {
             setPlaying(false);
-            Alert.alert("video has finished playing!");
+
         }
+
     }, []);
+
+    const onerror = (error) => {
+        ToastAndroid.show("video tidak dapat diputar, mohon cek kembali koneksi internet", ToastAndroid.SHORT)
+    }
 
 
     const [video_url, setvideo_url] = useState("")
@@ -141,25 +145,7 @@ function Detailmateri(props) {
             <ScrollView>
                 <View style={{ flex: 1, padding: 23 }}>
 
-                    {data.quiz ? (global.status == 1 ? (
-                        selesai == true ?
-                            (<TouchableOpacity onPress={() => {
-                                props.navigation.navigate("Historykuis", { id: data.quiz.id, mode: "review", materi_id: data.id })
 
-                            }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
-                                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                                    <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
-                                    <View>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>{data2 ? data2.total_point : ""}/{data2 ? data2.total_question : ""}</Text>
-
-
-                                    </View>
-                                </View>
-                                <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>Nilai = {(100 * (data2.total_point / data2.total_question)).toString().substr(0, 4)}</Text>
-                            </TouchableOpacity>
-                            ) : (
-                                <Button title="Kerjakan Kuis" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
-                    ) : (null)) : (null)}
                     <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
                         <Text style={[style.poppinsbold, { fontSize: 17 }]}>{data.title}</Text>
                         <Text style={[style.nunitosans, { fontSize: 12 }]}>{data.date ? format(new Date(data.date), "iii', 'dd' 'MMM', 'yyyy'", { locale: id }) : ""}</Text>
@@ -180,13 +166,14 @@ function Detailmateri(props) {
                             play={playing}
                             videoId={video_url}
                             onChangeState={onStateChange}
+                            onError={onerror}
                         />
                     </View>) : (null)) : (null)}
 
 
                     {data.forum ? (
                         <View>
-                            <Text style={[style.poppinsbold, { fontSize: 17, marginTop: 15 }]}>Tanya jawab Terkait</Text>
+                            <Text style={[style.poppinsbold, { fontSize: 17 }]}>Tanya jawab Terkait</Text>
                             <View style={[style.card, { elevation: 10, padding: 19, marginTop: 15 }]}>
                                 <View>
                                     <TouchableOpacity style={[{ flexDirection: "row" }]} onPress={() => { props.navigation.navigate("Forumdetail", { id: data.forum.id }) }}>
@@ -199,6 +186,27 @@ function Detailmateri(props) {
                             </View>
                         </View>
                     ) : (null)}
+                    <View style={{ marginTop: 15 }}>
+                        {data.quiz ? (global.status == 1 ? (
+                            selesai == true ?
+                                (<TouchableOpacity onPress={() => {
+                                    props.navigation.navigate("Historykuis", { id: data.quiz.id, mode: "review", materi_id: data.id })
+
+                                }} style={[style.card, { marginTop: 0, elevation: 5, padding: 20 }]}>
+                                    <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                                        <Text style={[style.poppinsbold, style.datapasien, { marginTop: 0 }]}>Review Kuis</Text>
+                                        <View>
+                                            <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>{data2 ? data2.total_point : ""}/{data2 ? data2.total_question : ""}</Text>
+
+
+                                        </View>
+                                    </View>
+                                    <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0, textAlign: "right" }]}>Nilai = {(100 * (data2.total_point / data2.total_question)).toString().substr(0, 4)}</Text>
+                                </TouchableOpacity>
+                                ) : (
+                                    <Button title="Kerjakan Kuis" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: data.quiz.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)
+                        ) : (null)) : (null)}
+                    </View>
                 </View>
             </ScrollView >
         </View >

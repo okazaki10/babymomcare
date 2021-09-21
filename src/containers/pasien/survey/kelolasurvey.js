@@ -312,16 +312,12 @@ function Kelolasurvey(props) {
                                     setjudul_kuis(item.title)
                                     tindakankuis()
                                 }} onPress={() => {
-                                    if (item.url){
-                                        Linking.canOpenURL(item.url).then(supported => {
-                                            if (supported) {
-                                              Linking.openURL(item.url);
-                                            } else {
-                                                ToastAndroid.show("Tidak bisa membuka url", ToastAndroid.SHORT)
-                                            }
-                                          });
-                                    }else{
-                                    props.navigation.navigate("Kerjakansurvey", { id: item.id, choice_type: item.choice_type })
+                                    if (item.url) {
+
+                                        Linking.openURL(item.url);
+
+                                    } else {
+                                        props.navigation.navigate("Kerjakansurvey", { id: item.id, choice_type: item.choice_type })
                                     }
 
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>

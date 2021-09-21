@@ -62,7 +62,7 @@ function Login(props) {
                         index: 0,
                         routes: [{ name: 'Menubar' }],
                     });
-                } else if (json.role == "admin") {
+                } else if (json.role == "koordinator_perawat") {
                     global.status = 3
                     storeData(json.token)
                     props.navigation.reset({

@@ -131,10 +131,10 @@ function Forumdetail(props) {
                                             />))}
                                         </View>
                                         <View style={{ marginLeft: 15, flex: 1 }}>
-                                            <Text style={[style.poppinsbold, { fontSize: 20, color: colors.grey, paddingRight: 50 }]}>{item.user}</Text>
+                                            <Text style={[style.poppinsbold, { fontSize: 16, color: colors.grey, paddingRight: 50 }]}>{item.user}</Text>
                                             <Text style={[style.poppinsmedium, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{item.role == "nurse" ? "Perawat" : item.role == "admin" ? "Admin" : "Ibu"}</Text>
                                             <Dash style={{ width: 100, height: 1, dashColor: 'black' }} />
-                                            <Text style={[style.nunitosans, { fontSize: 18, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
+                                            <Text style={[style.nunitosans, { fontSize: 16, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
                                         </View>
                                     </View>
                                     <View style={[style.line, { marginBottom: 15 }]}></View>
