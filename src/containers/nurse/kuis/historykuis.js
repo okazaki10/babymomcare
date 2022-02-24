@@ -42,70 +42,16 @@ function Historykuis(props) {
 
     }
 
-    const hapus2 = () => {
-        setspinner(true)
-        fetch(global.url + '/survey/delete', {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            },
-            body: JSON.stringify({
-                id: id_survey,
-            })
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    toggleModal3()
-                    lihatsurvey()
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
+
     const [isModalVisible3, setModalVisible3] = useState(false);
     const toggleModal3 = () => {
         setModalVisible3(!isModalVisible3);
     };
     const [jumlah, setjumlah] = useState("5")
     const [data, setdata] = useState([{}])
-    const lihatsurvey = () => {
-        //setspinner(true)
-        fetch(global.url + '/survey/index', {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + global.key,
-            }
-        })
-            .then((response) => response.json())
-            .then((json) => {
-                console.log(json)
-                if (json.errors) {
-                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
-                } else {
-                    setdata(json)
-                }
-                setspinner(false)
-            })
-            .catch((error) => {
-                console.error(error)
-                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
-                setspinner(false)
-            });
-    }
 
-  
+
+
 
     const lihatquizhistory = () => {
         //setspinner(true)
@@ -137,11 +83,47 @@ function Historykuis(props) {
             });
     }
 
+    const showpatientquiz = () => {
+        //setspinner(true)
+        fetch(global.url + '/quiz/history', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            },
+            body: JSON.stringify({
+                patient_id: props.route.params.id_pasien,
+                quiz_id: props.route.params.id,
+            })
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(JSON.stringify(json))
+                console.log('pasien')
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
-            lihatquizhistory()
+            if (props.route.params?.id_pasien) {
+                showpatientquiz()
+            } else {
+                lihatquizhistory()
+            }
         }
     }, [isFocused])
     const [kuis, setkuis] = useState("")
@@ -154,37 +136,7 @@ function Historykuis(props) {
                 textContent={'Loading...'}
                 textStyle={{ color: '#FFF' }}
             />
-            <Modal isVisible={isModalVisible3}
-                onBackdropPress={toggleModal3}
-                onBackButtonPress={toggleModal3}>
-                <View style={style.content}>
-                    <View>
-                        <TouchableOpacity style={{ alignItems: "flex-end" }} onPress={toggleModal3}>
-                            <FontAwesomeIcon icon={faTimes} size={22} color={"black"}></FontAwesomeIcon>
-                        </TouchableOpacity>
-                        <View style={{ alignItems: "center" }}>
-                            <Image
-                                source={require("../../../assets/image/exit.png")}
-                                style={{ width: 100, height: 100 }}
-                                resizeMode="contain"
-                            />
-                        </View>
-                        <Text style={[style.poppinsbold, { fontSize: 20, textAlign: "center", marginTop: 15, color: colors.grey }]}>{isipesan}</Text>
-                        <Text style={[style.nunitosans, { fontSize: 14, textAlign: "center", marginTop: 5, color: colors.grey }]}>Kembali ke <Text style={[style.poppinsbold, { fontSize: 14 }]}>Beranda</Text></Text>
 
-                        <View style={{ marginTop: 15, marginRight: 15, marginLeft: 15, flexDirection: "row" }}>
-                            <View style={{ flex: 1, marginRight: 15 }}>
-                                <Button onPress={hapus2} title="Iya" titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "red" }]}></Button>
-                            </View>
-
-                            <View style={{ flex: 1, marginLeft: 15 }}>
-                                <Button onPress={toggleModal3} title="Tidak" titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 15 }]} buttonStyle={[style.button, { backgroundColor: colors.button2, borderWidth: 2, borderColor: "red", backgroundColor: "white" }]}>
-                                </Button>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
             <Modal isVisible={isModalVisible2}
                 onBackdropPress={toggleModal2}
                 onBackButtonPress={toggleModal2}>
@@ -209,19 +161,19 @@ function Historykuis(props) {
             <View style={{ flex: 1 }}>
 
                 <View style={{ flex: 1, padding: 20 }}>
-                    {props.route.params?.admin == 1?(null):(<Button title="Kerjakan Lagi" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: props.route.params.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                    {props.route.params?.admin == 1 ? (null) : (<Button title="Kerjakan Lagi" onPress={() => { props.navigation.navigate("Kerjakankuis", { id: props.route.params.id }) }} buttonStyle={[style.button, { marginTop: 0 }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                     <ScrollView>
                         <View style={{ padding: 3 }}>
                             <View>
                                 {data.map(item => item.quiz_id ? (<TouchableOpacity onPress={() => {
-                                    props.navigation.navigate("Kerjakankuis", { id: item.quiz_id,lihatquiz:1,mode:1 })
+                                    props.navigation.navigate("Kerjakankuis", { id: item.quiz_id, lihatquiz: 1, mode: 1 })
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>Pengerjaan ke {item.order}</Text>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>Jawaban Benar = {item.point}/{item.total}</Text>
-                                        <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0}]}>Nilai = {(100 * (item.point / item.total)).toString().substr(0,4)}</Text>
+                                        <Text style={[style.poppinsbold, style.datapasien2, { marginTop: 0 }]}>Nilai = {(100 * (item.point / item.total)).toString().substr(0, 4)}</Text>
                                     </View>
-                            
+
                                 </TouchableOpacity>) : (null))}
                             </View>
                         </View>

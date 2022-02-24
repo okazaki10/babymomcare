@@ -261,6 +261,15 @@ function Beranda(props) {
                                             </View>
                                         </TouchableOpacity>
                                     </View>) : (null)}
+                                {global.status == 1 ? (<TouchableOpacity onPress={() => { props.navigation.navigate("Datapasien") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0 }]}>
+                                    <View
+                                        style={{ height: 65 }}
+                                    />
+                                    <View style={{ marginLeft: 15, justifyContent: "center" }}>
+                                        <Text style={[style.poppinsbold, { fontSize: 15 }]}>Profil</Text>
+                                    </View>
+                                </TouchableOpacity>) : (null)}
+
                                 {global.status == 3 || global.status == 4 ? (
                                     <View>
                                         <TouchableOpacity onPress={() => { props.navigation.navigate("Nurse") }} style={[style.card, { marginTop: 30, flexDirection: "row", padding: 0, flex: 0 }]}>

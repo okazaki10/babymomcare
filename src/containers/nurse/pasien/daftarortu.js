@@ -11,7 +11,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import { TextInput } from 'react-native-gesture-handler';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
@@ -57,7 +57,7 @@ function Daftarortu(props) {
     const [spinner, setspinner] = useState(false)
     const [nilai, setnilai] = useState("")
     const lihatpasien = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/nurse/show', {
             method: 'POST',
             headers: {
@@ -77,13 +77,13 @@ function Daftarortu(props) {
                 } else {
                
                     setnamaibu(json.data.mother_name)
-
+                    setDate(parseISO(json.data.mother_birthday))
                     setagamaibu(json.data.mother_religion)
                     setpendidikanibu(json.data.mother_education)
                     setpekerjaanibu(json.data.mother_job)
                     setparitas(json.data.paritas)
                     setnamaayah(json.data.father_name)
-
+                    setDate2(parseISO(json.data.father_birthday))
                     setagamaayah(json.data.father_religion)
                     setpendidikanayah(json.data.father_job)
                     setpekerjaanayah(json.data.father_job)

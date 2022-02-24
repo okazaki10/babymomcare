@@ -10,7 +10,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import { TextInput } from 'react-native-gesture-handler';
 
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ImagePicker from 'react-native-image-picker';
@@ -124,7 +124,11 @@ function Tambahresume(props) {
                 lingkar_kepala: lk,
                 temperature: suhu,
                 base64_img: gambar2,
-                note: anjuran,
+                nurse_note: anjuran,
+                hasil_penunjang: hasil_penunjang,
+                terapi_pulang: terapi_pulang,
+                advices: selectedItems,
+                intervensi_keperawatan: intervensi_keperawatan,
                 mode: "resume",
                 patient_id: props.route.params.id
             })
@@ -345,7 +349,7 @@ function Tambahresume(props) {
 
     }
     const lihatkontrol = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/kontrol/show', {
             method: 'POST',
             headers: {
@@ -371,7 +375,8 @@ function Tambahresume(props) {
                     setpb(json.data.length.toString())
                     setsuhu(json.data.temperature.toString())
                     setgambar(json.data.image)
-                    setanjuran(json.data.nurse_note)
+                    setanjuran(json.data.note)
+                    setDate(parseISO(json.data.date))
                 }
                 setspinner(false)
             })
@@ -382,7 +387,7 @@ function Tambahresume(props) {
             });
     }
     const lihatresume = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/kontrol/resume', {
             method: 'POST',
             headers: {
@@ -407,6 +412,7 @@ function Tambahresume(props) {
                         setsuhu(json.data.temperature.toString())
                         setgambar(json.data.image)
                         setanjuran(json.data.nurse_note)
+                        setDate(parseISO(json.data.date))
                     }
                 }
                 setspinner(false)
@@ -418,7 +424,7 @@ function Tambahresume(props) {
             });
     }
     const lihatresume2 = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/kontrol/resume', {
             method: 'POST',
             headers: {
@@ -446,6 +452,12 @@ function Tambahresume(props) {
                         setsuhu(json.data.temperature.toString())
                         setgambar(json.data.image)
                         setanjuran(json.data.nurse_note)
+                        setintervensi_keperawatan(json.data.intervensi_keperawatan)
+                        setterapi_pulang(json.data.terapi_pulang)
+                        sethasil_penunjang(json.data.hasil_penunjang)
+                        setselectedItems(json.data.advices)
+                        setDate(parseISO(json.data.date))
+                      
                     }
                 }
                 setspinner(false)

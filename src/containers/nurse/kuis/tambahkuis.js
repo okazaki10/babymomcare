@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Image,  ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { View, Image, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
@@ -85,7 +85,7 @@ function Tambahkuis(props) {
         setModalVisible(!isModalVisible);
     };
 
-    const [title, settitle] = useState("")
+    const [title, settitle] = useState(props.route.params?.judul_kuis ? props.route.params.judul_kuis : "")
     const kuisdibuat = () => {
         setspinner(true)
         fetch(global.url + '/quiz/store', {
@@ -215,7 +215,7 @@ function Tambahkuis(props) {
                     setopsiid(soal1id)
                     setopsi2id(soal2id)
                     setopsi3id(soal3id)
-                    settitle(json.data.title)
+                  
                 }
                 setspinner(false)
             })
@@ -276,7 +276,7 @@ function Tambahkuis(props) {
                     <TextInput placeholder={"Judul Kuis"} onChangeText={settitle} value={title} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10, flex: 0 }]}></TextInput>
                 </View>
                 <ScrollView>
-                <Text style={[style.poppinsbold, { fontSize: 17, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
+                    <Text style={[style.poppinsbold, { fontSize: 17, textAlign: "center" }]}>Pertanyaan ke {nomor + 1}</Text>
                     <View style={{ flex: 1, padding: 22 }}>
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 0 }]}>Judul Pertanyaan</Text>
                         <TextInput onChangeText={(item) => { setjuduld(nomor, item) }} value={judul[nomor]} autoCapitalize="none" style={[style.card, { elevation: 5, marginTop: 10 }]}></TextInput>
@@ -316,13 +316,13 @@ function Tambahkuis(props) {
                             global.add == 1 ? (
                                 <Button title="Selesai" onPress={kuisdibuat} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
                             ) : (
-                                    <Button title="Selesai" onPress={kuisdiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
-                                )
+                                <Button title="Selesai" onPress={kuisdiubah} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>
+                            )
                         ) : (
-                                <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
+                            <Button title="Selanjutnya" onPress={tambahnomor} buttonStyle={[style.button, { backgroundColor: "#92B1CD" }]} titleStyle={[style.poppinsbutton, { color: "white", fontSize: 15 }]}></Button>)}
                     </View>
                 </View>
-          
+
 
             </View>
 

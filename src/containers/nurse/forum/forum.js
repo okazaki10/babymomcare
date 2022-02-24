@@ -230,6 +230,7 @@ function Forum(props) {
                                         <Text style={[style.poppinsbold, { fontSize: 15, color: colors.judulforum, paddingRight: 50 }]}>{item.title}</Text>
                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 2, paddingRight: 50 }]}>Oleh: {item.user}</Text>
                                         <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.question}</Text>
+                                        <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>Rumah sakit: {item.hospital}</Text>
                                         <View style={{ flexDirection: "row", alignItems: "center", marginTop: 5 }}>
                                             <Ionicons name={'chatbox-outline'} size={24} color={colors.grey} style={{ marginRight: 5 }} />
                                             <Text style={[style.nunitosans, { fontSize: 13, color: colors.grey, marginRight: 5 }]}>{item.total_comment}</Text>

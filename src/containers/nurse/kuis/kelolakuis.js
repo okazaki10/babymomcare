@@ -29,10 +29,11 @@ function Kelolakuis(props) {
         toggleModal2()
     }
     const [id_kuis, setid_kuis] = useState("")
+    const [judul_kuis,setjudul_kuis] = useState("")
     const ubahkuis = () => {
         toggleModal2()
         global.add = 0
-        props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis", id_kuis: id_kuis })
+        props.navigation.navigate("Tambahkuis", { nama: "Ubah kuis", id_kuis: id_kuis,judul_kuis:judul_kuis })
 
     }
 
@@ -60,6 +61,11 @@ function Kelolakuis(props) {
             .then((response) => response.json())
             .then((json) => {
                 console.log(json)
+                if (props.route.params?.lihatkuis) {
+                    lihatquiz()
+                } else {
+                    lihatkategori()
+                }
                 if (json.errors) {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT)
                 } else {
@@ -283,8 +289,11 @@ function Kelolakuis(props) {
                                 {data.map((item) => item.id ? (<TouchableOpacity onLongPress={() => {
                                     if (item.quiz) {
                                         setid_kuis(item.quiz.id)
-                                        tindakankuis()
+                                    } else if (props.route.params?.lihatkuis) {
+                                        setid_kuis(item.id)
                                     }
+                                    setjudul_kuis(item.title)
+                                    tindakankuis()
                                 }} onPress={() => {
                                     if (props.route.params.lihatquiz) {
                                         props.navigation.navigate("Kerjakankuis", { id: item.quiz.id, lihatquiz: 1, id_pasien: props.route.params.id_pasien })

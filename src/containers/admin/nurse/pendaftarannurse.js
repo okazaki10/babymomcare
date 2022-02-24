@@ -75,6 +75,9 @@ function Pendaftarannurse(props) {
         if (password != konfirmasi_password) {
             ToastAndroid.show("Konfirmasi password tidak sama", ToastAndroid.SHORT)
 
+        } else if (username.includes(' ')) {
+            ToastAndroid.show("username tidak boleh ada spasi", ToastAndroid.SHORT)
+
         } else {
             setspinner(true)
             fetch(global.url + '/register', {

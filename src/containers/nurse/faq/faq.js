@@ -119,17 +119,17 @@ function Faq(props) {
                                             <FontAwesomeIcon icon={faChevronUp} size={16} color={colors.grey}></FontAwesomeIcon>
                                         </View>
                                     }
-                                        title="2.	Bagaimana cara saya menggunakan fitur Pengingat?" onPress={() => setmenuswitch2(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton, padding: 15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                        title="2.	Bagaimana cara saya mengubah profil?" onPress={() => setmenuswitch2(0)} buttonStyle={[style.button, { backgroundColor: colors.menubutton, borderWidth: 2, borderColor: colors.menubutton, padding: 15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
                                 ) : (
                                     <Button icon={
                                         <View style={{}}>
                                             <FontAwesomeIcon icon={faChevronDown} size={16} color={colors.grey}></FontAwesomeIcon>
                                         </View>
                                     }
-                                        title="2.	Bagaimana cara saya menggunakan fitur Pengingat?" onPress={() => setmenuswitch2(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2, padding: 15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
+                                        title="2.	Bagaimana cara saya mengubah profil?" onPress={() => setmenuswitch2(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2, padding: 15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
                                 )}
 
-                                {menuswitch2 == 1 ? (<Text style={{ marginTop: 15 }}>Untuk mengubah profil yang telat dibuat, dapat menguhubungi perawat yang bersangkutan</Text>) : (null)}
+                                {menuswitch2 == 1 ? (<Text style={{ marginTop: 15 }}>Untuk mengubah profil yang telah dibuat, dapat menghubungi perawat yang bersangkutan</Text>) : (null)}
                             </View>
                             <View style={[style.card, { flex: 1, marginLeft: 5, marginTop: 20 }]}>
                                 {menuswitch3 == 1 ? (
@@ -149,7 +149,7 @@ function Faq(props) {
                                         title="3.	Apa yang harus dilakukan jika lupa password akun Teman Bunda?" onPress={() => setmenuswitch3(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2, padding: 15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
                                 )}
 
-                                {menuswitch3 == 1 ? (<Text style={{ marginTop: 15 }}>Anda dapat menghubungi perawat yang bersangkutan untuk ganti password lama anda jika lupa</Text>) : (null)}
+                                {menuswitch3 == 1 ? (<Text style={{ marginTop: 15 }}>Anda dapat menghubungi perawat yang bersangkutan untuk ganti password lama Anda jika lupa</Text>) : (null)}
                             </View>
 
                             <Text style={{ marginTop: 15 }}>Pengingat</Text>
@@ -190,7 +190,7 @@ function Faq(props) {
                                         title="2.	Bagaimana cara saya menggunakan fitur Pengingat?" onPress={() => setmenuswitch5(1)} buttonStyle={[style.button, { backgroundColor: "white", borderColor: colors.menubutton, borderWidth: 2, padding: 15 }]} titleStyle={[style.poppinsbutton, { color: colors.grey, fontSize: 12 }]}></Button>
                                 )}
 
-                                {menuswitch5 == 1 ? (<Text style={{ marginTop: 15 }}>Anda dapat menekan tombol berbentuk bell pada beranda di sebelah pojok kanan atas atau melihat notifikasi yang ada pada handphone anda</Text>) : (null)}
+                                {menuswitch5 == 1 ? (<Text style={{ marginTop: 15 }}>Anda dapat menekan tombol berbentuk bell pada beranda di sebelah pojok kanan atas atau melihat notifikasi yang ada pada handphone Anda</Text>) : (null)}
                             </View>
 
                         </View>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, Dimensions, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import { View, Image, Dimensions, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import { colors } from '../../../globalstyles';
 
@@ -11,7 +11,7 @@ import Spinner from 'react-native-loading-spinner-overlay';
 
 import { TextInput } from 'react-native-gesture-handler';
 
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
@@ -39,7 +39,7 @@ function Daftarbayi(props) {
 
 
 
-  
+
 
     const [spinner, setspinner] = useState(false)
 
@@ -63,7 +63,7 @@ function Daftarbayi(props) {
         }
     }
     const lihatpasien = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/nurse/show', {
             method: 'POST',
             headers: {
@@ -83,7 +83,8 @@ function Daftarbayi(props) {
                 } else {
                     //setdata(json.data)
                     setnama(json.data.baby_name)
-
+                    setDate(parseISO(json.data.baby_birthday))
+                    sethospitaldate(parseISO(json.data.hospital_entry))
                     setbbnow(json.data.born_weight.toString())
                     setpjl(json.data.born_length.toString())
                     setjenis_kelamin(json.data.baby_gender)
@@ -120,7 +121,7 @@ function Daftarbayi(props) {
                 usia_gestas: gestas,
                 lingkar_kepala: lk,
                 harapan_orangtua: diharapkan,
-                hospital_entry:hospitaldate
+                hospital_entry: hospitaldate
 
             })
         })
@@ -276,7 +277,7 @@ function Daftarbayi(props) {
                             <TextInput value={pjl} onChangeText={setpjl} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>
                             <Text style={{ marginLeft: 5 }}>Cm</Text>
                         </View>
-                    
+
                         <Text style={[style.poppinsmedium, { fontSize: 14, marginTop: 20 }]}>Berat badan Lahir</Text>
                         <View style={[style.card, { flexDirection: "row", alignItems: "center", elevation: 5 }]}>
                             <TextInput value={bbnow} onChangeText={setbbnow} style={{ padding: 0, marginLeft: 10, flex: 1 }} keyboardType="numeric"></TextInput>

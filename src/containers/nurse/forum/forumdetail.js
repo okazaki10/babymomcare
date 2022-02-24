@@ -92,7 +92,7 @@ function Forumdetail(props) {
                                 </View>
                                 <View style={{ marginLeft: 15 }}>
                                     <Text style={[style.poppinsbold, { fontSize: 17, color: colors.grey, paddingRight: 50 }]}>{data.name}</Text>
-                                    <Text style={[style.poppinsmedium, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{data.role == "nurse" ? "Perawat" : data.role == "admin" ? "Admin" : "Pasien"}</Text>
+                                    <Text style={[style.poppinsmedium, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{data.role == "nurse" ? "Perawat" : data.role == "admin"||data.role=="super_admin" ? "Koordinator Perawat" : "Pasien"}</Text>
                                     <Text style={[style.nunitosans, { fontSize: 15, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{data.question}</Text>
                                 </View>
                             </View>
@@ -132,7 +132,7 @@ function Forumdetail(props) {
                                         </View>
                                         <View style={{ marginLeft: 15, flex: 1 }}>
                                             <Text style={[style.poppinsbold, { fontSize: 16, color: colors.grey, paddingRight: 50 }]}>{item.user}</Text>
-                                            <Text style={[style.poppinsmedium, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{item.role == "nurse" ? "Perawat" : item.role == "admin" ? "Admin" : "Ibu"}</Text>
+                                            <Text style={[style.poppinsmedium, { fontSize: 15, color: colors.grey, paddingRight: 50 }]}>{item.role == "nurse" ? "Perawat" : item.role == "admin"||item.role == "super_admin" ? "Koordinator Perawat" : "Ibu"}</Text>
                                             <Dash style={{ width: 100, height: 1, dashColor: 'black' }} />
                                             <Text style={[style.nunitosans, { fontSize: 16, color: colors.grey, marginTop: 5, paddingRight: 50 }]}>{item.text}</Text>
                                         </View>

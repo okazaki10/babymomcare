@@ -297,12 +297,14 @@ function Kerjakankuis(props) {
                                 <View>
                                     <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginLeft: 15, marginTop: 0, textAlign: "center", color: colors.button }]}>Hasil</Text>
                                     <View style={[style.card, { padding: 22, marginTop: 15 }]}>
-                                        {data2.data.map((item, index) => (<View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center", marginBottom: 15 }}>
+                                        {data2.data.map((item, index) => (<View style={{ flexDirection: "row", marginBottom: 15 }}>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0, flex: 0, width: 20 }]}>{(index + 1) + "."}</Text>
                                             <Text style={[style.poppinsbold, style.datapasien2, { fontSize: 15, marginTop: 0 }]}>{item.question}</Text>
-                                            {item.point == 1 ? (<FontAwesomeIcon icon={faThumbsUp} size={22} color={"lightgreen"}></FontAwesomeIcon>
-                                            ) : (
-                                                <FontAwesomeIcon icon={faFrown} size={22} color={"red"}></FontAwesomeIcon>)}
+                                            <View style={{alignItems:"center",justifyContent:"center"}}>
+                                                {item.point == 1 ? (<FontAwesomeIcon icon={faThumbsUp} size={22} color={"lightgreen"}></FontAwesomeIcon>
+                                                ) : (
+                                                    <FontAwesomeIcon icon={faFrown} size={22} color={"red"}></FontAwesomeIcon>)}
+                                            </View>
                                         </View>))}
                                         <View style={[style.line, { marginTop: 5, marginBottom: 5 }]}></View>
                                         <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>

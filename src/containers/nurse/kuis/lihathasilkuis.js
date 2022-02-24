@@ -210,7 +210,7 @@ function Lihathasilkuis(props) {
                         <View style={{ padding: 3 }}>
                             <View>
                                 {data.map(item => item.quiz_id ? (<TouchableOpacity onPress={() => {
-                                    props.navigation.navigate("Historykuis", { id: item.quiz_id,admin:1 })
+                                    props.navigation.navigate("Historykuis", { id: item.quiz_id,admin:1,id_pasien:props.route.params.id_pasien })
                                 }} style={[style.card, { marginTop: 15, flexDirection: "row" }]}>
                                     <View style={{ marginLeft: 15, justifyContent: "center", flex: 1 }}>
                                         <Text style={[style.poppinsbold, { fontSize: 12 }]}>{item.quiz}</Text>

@@ -38,7 +38,9 @@ function Daftarakun(props) {
     const lanjut = () => {
         if (password != konfirmasi_password) {
             ToastAndroid.show("Konfirmasi password tidak sama", ToastAndroid.SHORT)
-        } else {
+        } else if (username.includes(" ")) {
+            ToastAndroid.show("Username tidak boleh ada spasi", ToastAndroid.SHORT)
+        } else{
             if (username && password) {
                 global.emaild = email
                 global.nohpd = nohp
@@ -120,7 +122,7 @@ function Daftarakun(props) {
             });
     }
     const lihatpasien = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/nurse/show', {
             method: 'POST',
             headers: {

@@ -1,5 +1,5 @@
-import React, { useEffect,  useState } from 'react';
-import { View, ScrollView,  TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, ScrollView, TouchableOpacity, ToastAndroid, StatusBar } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 
 import { colors } from '../../../globalstyles';
@@ -15,6 +15,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 import format from 'date-fns/format';
 import { id } from 'date-fns/locale';
+import { parseISO } from 'date-fns';
 
 function Datapasien(props) {
 
@@ -26,20 +27,22 @@ function Datapasien(props) {
     const [spinner, setspinner] = useState(false)
 
     const ubahpasien = (index) => {
-        if (index == 0) {
-            props.navigation.navigate("Daftarbayi", { nama: "Edit Data Bayi", id: props.route.params.id })
-            global.add = 0
-        } else if (index == 1) {
-            props.navigation.navigate("Daftarortu", { nama: "Ubah Ortu", id: props.route.params.id })
-            global.add = 0
-        }
-        else if (index == 2) {
-            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun", id: props.route.params.id })
-            global.add = 0
-        }
-        else if (index == 3) {
-            props.navigation.navigate("Daftarakun", { nama: "Ubah Akun", id: props.route.params.id, mode: "materi" })
-            global.add = 0
+        if (global.status != 1) {
+            if (index == 0) {
+                props.navigation.navigate("Daftarbayi", { nama: "Edit Data Bayi", id: props.route.params.id })
+                global.add = 0
+            } else if (index == 1) {
+                props.navigation.navigate("Daftarortu", { nama: "Ubah Ortu", id: props.route.params.id })
+                global.add = 0
+            }
+            else if (index == 2) {
+                props.navigation.navigate("Daftarakun", { nama: "Ubah Akun", id: props.route.params.id })
+                global.add = 0
+            }
+            else if (index == 3) {
+                props.navigation.navigate("Daftarakun", { nama: "Ubah Akun", id: props.route.params.id, mode: "materi" })
+                global.add = 0
+            }
         }
     }
 
@@ -57,7 +60,7 @@ function Datapasien(props) {
     };
     const [data, setdata] = useState([{}])
     const lihatpasien = () => {
-        //setspinner(true)
+        setspinner(true)
         fetch(global.url + '/nurse/show', {
             method: 'POST',
             headers: {
@@ -86,11 +89,42 @@ function Datapasien(props) {
             });
     }
 
+    const lihatpasien2 = () => {
+        setspinner(true)
+        fetch(global.url + '/patient/data', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + global.key,
+            }
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                console.log(JSON.stringify(json))
+                if (json.errors) {
+                    ToastAndroid.show(json.message, ToastAndroid.SHORT)
+                } else {
+                    setdata(json.data)
+                }
+                setspinner(false)
+            })
+            .catch((error) => {
+                console.error(error)
+                ToastAndroid.show(error.message == "Network request failed" ? "Mohon nyalakan internet" : error.message, ToastAndroid.SHORT)
+                setspinner(false)
+            });
+    }
+
     const isFocused = useIsFocused()
 
     useEffect(() => {
         if (isFocused) {
-            lihatpasien()
+            if (global.status == 1) {
+                lihatpasien2()
+            } else {
+                lihatpasien()
+            }
         }
     }, [isFocused])
     return (
@@ -158,7 +192,11 @@ function Datapasien(props) {
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Tanggal masuk rumah sakit</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data.hospital_entry}</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data.hospital_entry ? format(parseISO(data.hospital_entry), "dd' 'MMMM' 'yyy", { locale: id }) : ''}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: "row" }}>
+                                            <Text style={[style.nunitosans, style.datapasien]}>Tanggal pulang dari rumah sakit</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data.return_date ? format(parseISO(data.return_date), "dd' 'MMMM' 'yyy", { locale: id }) : ''}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Tanggal lahir</Text>
@@ -166,7 +204,7 @@ function Datapasien(props) {
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Jenis kelamin</Text>
-                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.baby_gender == "male" ? "Laki-laki":"Perempuan" : ""}</Text>
+                                            <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.baby_gender == "male" ? "Laki-laki" : "Perempuan" : ""}</Text>
                                         </View>
                                         <View style={{ flexDirection: "row" }}>
                                             <Text style={[style.nunitosans, style.datapasien]}>Panjang badan lahir</Text>
@@ -204,7 +242,7 @@ function Datapasien(props) {
                                             <Text style={[style.nunitosans, style.datapasien]}>Diagnosa medis</Text>
                                             <Text style={[style.nunitosans, style.datapasien2]}>: {data ? data.diagnosa_medis : ""}</Text>
                                         </View>
-                                     
+
                                     </TouchableOpacity>
                                 </View>) : (null)}
                                 <View style={{ flex: 1, marginLeft: 5, marginRight: 5, marginTop: 20 }}>
@@ -321,7 +359,7 @@ function Datapasien(props) {
                                     </View>
                                     <TouchableOpacity onPress={() => { ubahpasien(2) }} style={[style.card, { marginTop: 15, elevation: 5, padding: 20 }]}>
                                         <View>
-                                        <View style={{ flexDirection: "row" }}>
+                                            <View style={{ flexDirection: "row" }}>
                                                 <Text style={[style.nunitosans, style.datapasien, { marginTop: 0 }]}>Rumah sakit</Text>
                                                 <Text style={[style.nunitosans, style.datapasien2, { marginTop: 0 }]}>: {data ? data.hospital : ""}</Text>
                                             </View>
